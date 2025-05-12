@@ -1,6 +1,7 @@
 @use './_variables' as vars;
 @use './atoms/logo';
 @use './organisms/navbar';
+@use './organisms/Navigations';
 
 // Reset basics
 * {
