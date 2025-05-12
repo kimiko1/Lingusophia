@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Navigations = () => {
   return (
-    <div className="navigations container">
+    <div className="navigations">
       <div className="block">
         <div className="item-block orange">
           <a href="/home" className="block-link">
