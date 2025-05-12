@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <header className="navbar">
       <ul className="nav-menu">
-        <NavItem icon={faThLarge} label="Home" href="home" />
+        <NavItem icon={faThLarge} label='' href="home" />
         <NavItem icon={faGraduationCap} label="My learning" href="home" />
         <NavItem icon={faUser} label="My account" href="home" />
       </ul>
