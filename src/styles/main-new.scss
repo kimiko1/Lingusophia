@@ -1,0 +1,184 @@
+// =============================================
+// MAIN STYLESHEET - LearnALanguage
+// Point d'entrée principal pour les styles
+// =============================================
+
+// Import global design tokens and utilities
+@use './themes/mixins' as *;
+
+// ==================== GLOBAL RESET ====================
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px; // Base font size for rem calculations
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  line-height: $line-height-normal;
+  color: $text-primary;
+  background-color: $bg-primary;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ==================== GLOBAL TYPOGRAPHY ====================
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family-primary;
+  line-height: $line-height-tight;
+  font-weight: $font-weight-bold;
+  color: $text-primary;
+}
+
+p {
+  line-height: $line-height-normal;
+  margin-bottom: $spacing-4;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+a {
+  color: $primary-500;
+  text-decoration: none;
+  transition: $transition-colors;
+  
+  &:hover {
+    color: $primary-600;
+    text-decoration: underline;
+  }
+  
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+// ==================== GLOBAL UTILITIES ====================
+.container {
+  @include container;
+}
+
+.sr-only {
+  @include sr-only;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+// ==================== GLOBAL ANIMATIONS ====================
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// ==================== LEGACY COMPATIBILITY ====================
+// Classes pour la rétrocompatibilité avec l'ancien système
+
+.section-title {
+  text-align: center;
+  margin-bottom: $spacing-8;
+  color: $primary-500;
+  @include heading(1);
+}
+
+.section-subtitle {
+  margin-bottom: $spacing-6;
+  color: $text-primary;
+  @include heading(2);
+}
+
+.highlight {
+  color: $primary-500;
+  font-weight: $font-weight-semibold;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: inherit;
+  transition: $transition-colors;
+}
+
+// ==================== LAYOUT HELPERS ====================
+.full-height {
+  min-height: 100vh;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  @include flex-center;
+}
+
+.flex-between {
+  @include flex-between;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-center {
+  @include grid-center;
+}
+
+// ==================== SPACING UTILITIES ====================
+@for $i from 0 through 32 {
+  .mt-#{$i} { margin-top: #{$i * 0.25}rem; }
+  .mb-#{$i} { margin-bottom: #{$i * 0.25}rem; }
+  .ml-#{$i} { margin-left: #{$i * 0.25}rem; }
+  .mr-#{$i} { margin-right: #{$i * 0.25}rem; }
+  .mx-#{$i} { 
+    margin-left: #{$i * 0.25}rem; 
+    margin-right: #{$i * 0.25}rem; 
+  }
+  .my-#{$i} { 
+    margin-top: #{$i * 0.25}rem; 
+    margin-bottom: #{$i * 0.25}rem; 
+  }
+  
+  .pt-#{$i} { padding-top: #{$i * 0.25}rem; }
+  .pb-#{$i} { padding-bottom: #{$i * 0.25}rem; }
+  .pl-#{$i} { padding-left: #{$i * 0.25}rem; }
+  .pr-#{$i} { padding-right: #{$i * 0.25}rem; }
+  .px-#{$i} { 
+    padding-left: #{$i * 0.25}rem; 
+    padding-right: #{$i * 0.25}rem; 
+  }
+  .py-#{$i} { 
+    padding-top: #{$i * 0.25}rem; 
+    padding-bottom: #{$i * 0.25}rem; 
+  }
+}
+
+// Note: Les styles spécifiques des composants sont maintenant importés
+// directement dans chaque composant via leurs fichiers .scss individuels
+// Cela permet une meilleure modularité et des bundles CSS optimisés

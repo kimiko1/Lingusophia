@@ -1,0 +1,180 @@
+@use '../../../styles/themes/mixins' as *;
+
+.lesson-card {
+  position: relative;
+  transition: $transition-base;
+
+  // Variants
+  &--featured {
+    border: 2px solid $color-primary;
+    box-shadow: $shadow-lg;
+    
+    .lesson-card__title {
+      color: $color-primary;
+    }
+  }
+
+  &--compact {
+    .lesson-card__content {
+      padding: $spacing-sm;
+    }
+    
+    .lesson-card__title {
+      font-size: $font-size-sm;
+    }
+    
+    .lesson-card__description {
+      font-size: $font-size-xs;
+    }
+  }
+
+  // Completed state
+  &--completed {
+    background: rgba($color-success, 0.05);
+    border-color: $color-success;
+    
+    .lesson-card__title {
+      color: $color-success-dark;
+    }
+  }
+}
+
+.lesson-card__image {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  border-radius: $border-radius-md $border-radius-md 0 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: $transition-base;
+  }
+
+  .lesson-card:hover & img {
+    transform: scale(1.05);
+  }
+}
+
+.lesson-card__completion-badge {
+  position: absolute;
+  top: $spacing-sm;
+  right: $spacing-sm;
+  width: 28px;
+  height: 28px;
+  background: $color-success;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $shadow-sm;
+}
+
+.lesson-card__check {
+  color: white;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+}
+
+.lesson-card__content {
+  padding: $spacing-md;
+}
+
+.lesson-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-sm;
+  gap: $spacing-sm;
+}
+
+.lesson-card__title {
+  margin: 0;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: $color-text;
+  line-height: $line-height-tight;
+  flex: 1;
+}
+
+.lesson-card__level {
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+
+  &--beginner {
+    background: rgba($color-success, 0.1);
+    color: $color-success-dark;
+    border: 1px solid rgba($color-success, 0.2);
+  }
+
+  &--intermediate {
+    background: rgba($color-warning, 0.1);
+    color: $color-warning-dark;
+    border: 1px solid rgba($color-warning, 0.2);
+  }
+
+  &--advanced {
+    background: rgba($color-danger, 0.1);
+    color: $color-danger-dark;
+    border: 1px solid rgba($color-danger, 0.2);
+  }
+}
+
+.lesson-card__description {
+  margin: 0 0 $spacing-sm;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-relaxed;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lesson-card__meta {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-top: $spacing-sm;
+  padding-top: $spacing-sm;
+  border-top: 1px solid $color-border-light;
+}
+
+.lesson-card__duration {
+  font-size: $font-size-xs;
+  color: $color-text-light;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+// Responsive design
+@include mobile-only {
+  .lesson-card__image {
+    height: 100px;
+  }
+
+  .lesson-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lesson-card__level {
+    align-self: flex-start;
+  }
+}
+
+// Focus states
+.lesson-card:focus-within {
+  .lesson-card__title {
+    color: $color-primary;
+  }
+}

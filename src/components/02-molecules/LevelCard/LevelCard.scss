@@ -1,0 +1,186 @@
+@use '../../../styles/themes/mixins' as *;
+
+.level-card {
+  text-align: center;
+  position: relative;
+  transition: $transition-base;
+
+  // Variants
+  &--featured {
+    border: 2px solid $color-primary;
+    box-shadow: $shadow-lg;
+    
+    .level-card__icon-element {
+      color: $color-primary;
+      transform: scale(1.1);
+    }
+  }
+
+  &--compact {
+    .level-card__content {
+      padding: $spacing-sm;
+    }
+    
+    .level-card__icon-element {
+      font-size: 1.5rem !important;
+    }
+  }
+
+  // Difficulty variants
+  &--beginner {
+    border-left: 4px solid $color-success;
+  }
+
+  &--intermediate {
+    border-left: 4px solid $color-warning;
+  }
+
+  &--advanced {
+    border-left: 4px solid $color-danger;
+  }
+
+  // Locked state
+  &--locked {
+    opacity: 0.6;
+    cursor: not-allowed;
+    
+    .level-card__content {
+      filter: grayscale(100%);
+    }
+  }
+}
+
+.level-card__icon {
+  position: relative;
+  margin-bottom: $spacing-md;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+
+.level-card__icon-element {
+  color: $color-primary;
+  transition: $transition-base;
+  
+  &--locked {
+    color: $color-text-disabled;
+  }
+}
+
+.level-card__lock {
+  position: absolute;
+  bottom: -$spacing-xs;
+  right: -$spacing-xs;
+  font-size: $font-size-sm;
+  background: $color-surface;
+  border-radius: 50%;
+  padding: $spacing-xs;
+  box-shadow: $shadow-sm;
+}
+
+.level-card__content {
+  padding: 0 $spacing-sm;
+}
+
+.level-card__title {
+  margin: 0 0 $spacing-sm;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text;
+}
+
+.level-card__difficulty {
+  display: inline-block;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: $spacing-sm;
+
+  &--beginner {
+    background: rgba($color-success, 0.1);
+    color: $color-success-dark;
+    border: 1px solid rgba($color-success, 0.2);
+  }
+
+  &--intermediate {
+    background: rgba($color-warning, 0.1);
+    color: $color-warning-dark;
+    border: 1px solid rgba($color-warning, 0.2);
+  }
+
+  &--advanced {
+    background: rgba($color-danger, 0.1);
+    color: $color-danger-dark;
+    border: 1px solid rgba($color-danger, 0.2);
+  }
+}
+
+.level-card__description {
+  margin: 0 0 $spacing-md;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-relaxed;
+}
+
+.level-card__progress {
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1px solid $color-border-light;
+}
+
+.level-card__progress-bar {
+  width: 100%;
+  height: 6px;
+  background: $color-background;
+  border-radius: $border-radius-full;
+  overflow: hidden;
+  margin-bottom: $spacing-xs;
+}
+
+.level-card__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, $color-primary, $color-primary-light);
+  border-radius: $border-radius-full;
+  transition: width 0.5s ease-in-out;
+}
+
+.level-card__progress-text {
+  font-size: $font-size-xs;
+  color: $color-text-light;
+  font-weight: $font-weight-medium;
+}
+
+// Hover effects
+.level-card:not(.level-card--locked):hover {
+  .level-card__icon-element {
+    transform: scale(1.1);
+    color: $color-primary-dark;
+  }
+}
+
+// Focus states
+.level-card:focus-within:not(.level-card--locked) {
+  .level-card__title {
+    color: $color-primary;
+  }
+}
+
+// Responsive design
+@include mobile-only {
+  .level-card__icon {
+    height: 60px;
+    margin-bottom: $spacing-sm;
+  }
+
+  .level-card__icon-element {
+    font-size: 1.8rem !important;
+  }
+
+  .level-card__title {
+    font-size: $font-size-base;
+  }
+}

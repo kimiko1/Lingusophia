@@ -1,0 +1,198 @@
+@use "sass:color";
+@use '../../../styles/themes/mixins' as *;
+
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: $spacing-md;
+
+  .calendar {
+    background: $color-white;
+    border-radius: 15px;
+    box-shadow: $shadow-lg;
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+
+    @include mobile-only {
+      padding: 1rem;
+      max-width: 100%;
+    }
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    @include mobile-only {
+      margin-bottom: 1.5rem;
+    }
+
+    .nav-button {
+      background: $color-primary;
+      color: $color-white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: color.adjust($color-primary, $lightness: -10%);
+        transform: scale(1.05);
+      }
+
+      @include mobile-only {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+      }
+    }
+
+    .calendar-title {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-semibold;
+      color: $color-text;
+      margin: 0;
+
+      @include mobile-only {
+        font-size: $font-size-lg;
+      }
+    }
+  }
+
+  .calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+    margin-bottom: 1rem;
+
+    .weekday-header {
+      text-align: center;
+      font-weight: $font-weight-semibold;
+      color: $color-primary;
+      padding: 0.5rem;
+      font-size: $font-size-sm;
+
+      @include mobile-only {
+        font-size: $font-size-xs;
+        padding: 0.3rem;
+      }
+    }
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+
+    .calendar-day {
+      aspect-ratio: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border-radius: $border-radius-sm;
+      font-weight: $font-weight-medium;
+      transition: all 0.2s ease;
+      background: $color-background;
+      color: $color-text;
+      font-size: $font-size-base;
+
+      @include mobile-only {
+        font-size: $font-size-sm;
+        border-radius: $border-radius-xs;
+      }
+
+      &:hover:not(.empty) {
+        background: color.adjust($color-primary, $lightness: 40%);
+        color: $color-primary;
+        transform: scale(1.05);
+      }
+
+      &.empty {
+        background: transparent;
+        cursor: default;
+      }
+
+      &.past {
+        background: $color-gray-light;
+        color: $color-gray;
+        cursor: not-allowed;
+        
+        &:hover {
+          background: $color-gray-light;
+          color: $color-gray;
+          transform: none;
+        }
+      }
+
+      &.today {
+        background: $color-primary;
+        color: $color-white;
+        font-weight: $font-weight-bold;
+        
+        &:hover {
+          background: color.adjust($color-primary, $lightness: -10%);
+          color: $color-white;
+        }
+      }
+
+      &.selected {
+        background: $color-success;
+        color: $color-white;
+        font-weight: $font-weight-bold;
+        
+        &:hover {
+          background: color.adjust($color-success, $lightness: -10%);
+          color: $color-white;
+        }
+      }
+
+      &.today.selected {
+        background: linear-gradient(135deg, $color-primary, $color-success);
+      }
+    }
+  }
+
+  .selected-date-info {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: $color-background;
+    border-radius: $border-radius-md;
+    text-align: center;
+
+    @include mobile-only {
+      margin-top: 1.5rem;
+      padding: 0.8rem;
+    }
+
+    p {
+      margin: 0 0 1rem 0;
+      color: $color-text;
+      font-weight: $font-weight-medium;
+      font-size: $font-size-base;
+
+      @include mobile-only {
+        font-size: $font-size-sm;
+        margin-bottom: 0.75rem;
+      }
+    }
+
+    .schedule-btn {
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}
