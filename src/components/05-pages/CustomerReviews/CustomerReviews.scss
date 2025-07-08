@@ -1,0 +1,332 @@
+@use '../../../styles/themes/mixins' as *;
+
+.customer-reviews {
+  min-height: 80vh;
+  padding: 2rem $spacing-md;
+
+  @include mobile-only {
+    padding: 1rem;
+  }
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: $color-text;
+
+    @include mobile-only {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .section-title {
+    color: $color-text;
+    margin-bottom: 1.5rem;
+    
+    @include mobile-only {
+      font-size: $font-size-xl;
+    }
+  }
+
+  .section-description {
+    color: $color-text-secondary;
+    margin-bottom: 2rem;
+    font-size: $font-size-lg;
+    line-height: 1.6;
+  }
+
+  // Section pour créer des reviews
+  .create-reviews-section {
+    margin-bottom: 4rem;
+
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+
+      @include mobile-only {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .lesson-review-card {
+      padding: 1.5rem;
+      border: 1px solid $color-border;
+      border-radius: $border-radius-md;
+      transition: all 0.3s ease;
+
+      &:hover {
+        box-shadow: $shadow-md;
+        transform: translateY(-2px);
+      }
+
+      .lesson-info {
+        margin-bottom: 1rem;
+
+        .lesson-title {
+          color: $color-text;
+          margin-bottom: 0.5rem;
+          font-size: $font-size-lg;
+        }
+
+        .lesson-details {
+          display: flex;
+          gap: 0.5rem;
+          margin-bottom: 0.5rem;
+
+          .language,
+          .category {
+            background: $color-primary;
+            color: $color-white;
+            padding: 0.25rem 0.5rem;
+            border-radius: $border-radius-sm;
+            font-size: $font-size-xs;
+            font-weight: $font-weight-medium;
+          }
+
+          .category {
+            background: $color-secondary;
+          }
+        }
+
+        .teacher,
+        .completed-date {
+          color: $color-text-secondary;
+          font-size: $font-size-sm;
+          margin: 0.25rem 0;
+        }
+      }
+
+      .review-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+    }
+
+    .no-lessons-card {
+      padding: 2rem;
+      text-align: center;
+      background: $color-background;
+      border-radius: $border-radius-md;
+
+      p {
+        color: $color-text-secondary;
+        font-size: $font-size-lg;
+        margin: 0;
+      }
+    }
+  }
+
+  // Section des reviews existantes
+  .existing-reviews-section {
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+
+      @include mobile-only {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+    }
+
+    .review-card {
+      padding: 1.5rem;
+      border: 1px solid $color-border;
+      border-radius: $border-radius-md;
+      background: $color-white;
+
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+
+        .lesson-title {
+          color: $color-text;
+          margin: 0;
+          font-size: $font-size-base;
+          flex: 1;
+        }
+
+        .rating {
+          margin-left: 1rem;
+        }
+      }
+
+      .review-details {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+
+        .language,
+        .teacher,
+        .date {
+          color: $color-text-secondary;
+          font-size: $font-size-sm;
+        }
+
+        .language {
+          background: $color-primary;
+          color: $color-white;
+          padding: 0.25rem 0.5rem;
+          border-radius: $border-radius-sm;
+          font-weight: $font-weight-medium;
+        }
+      }
+
+      .review-comment {
+        color: $color-text;
+        line-height: 1.6;
+        margin: 0;
+      }
+    }
+
+    .no-reviews-card {
+      padding: 2rem;
+      text-align: center;
+      background: $color-background;
+      border-radius: $border-radius-md;
+
+      p {
+        color: $color-text-secondary;
+        margin: 0;
+      }
+    }
+  }
+
+  // Étoiles
+  .stars {
+    display: flex;
+    gap: 0.25rem;
+
+    .star {
+      color: $color-gray-light;
+      font-size: 1.2rem;
+      transition: color 0.2s ease;
+
+      &.filled {
+        color: $color-warning;
+      }
+
+      &.interactive {
+        cursor: pointer;
+
+        &:hover {
+          color: $color-warning;
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+
+  // Modal styles
+  .review-modal-content {
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+      gap: 1rem;
+
+      .step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: $color-gray-light;
+        color: $color-white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: $font-weight-bold;
+        position: relative;
+
+        &.active {
+          background: $color-primary;
+        }
+
+        &:not(:last-child)::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 100%;
+          width: 1rem;
+          height: 2px;
+          background: $color-gray-light;
+          transform: translateY(-50%);
+        }
+      }
+    }
+
+    .step-content {
+      text-align: center;
+
+      .rating-section {
+        margin: 2rem 0;
+        
+        .stars {
+          justify-content: center;
+          
+          .star {
+            font-size: 2rem;
+            margin: 0 0.25rem;
+          }
+        }
+      }
+
+      .comment-textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 1rem;
+        border: 1px solid $color-border;
+        border-radius: $border-radius-md;
+        font-family: inherit;
+        font-size: $font-size-base;
+        resize: vertical;
+        margin-bottom: 1rem;
+
+        &:focus {
+          outline: none;
+          border-color: $color-primary;
+          box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+        }
+      }
+
+      .final-details {
+        margin: 2rem 0;
+
+        .checkbox-label {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          cursor: pointer;
+          font-size: $font-size-base;
+
+          input[type="checkbox"] {
+            margin: 0;
+          }
+        }
+      }
+
+      .navigation-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+
+        @include mobile-only {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}

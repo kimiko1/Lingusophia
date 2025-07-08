@@ -1,0 +1,179 @@
+@use "sass:color";
+@use '../../../styles/themes/mixins' as *;
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing-md;
+
+  &__section {
+    padding: $spacing-lg;
+  }
+
+  &__section-title {
+    margin-bottom: $spacing-lg;
+    color: $color-primary;
+    border-bottom: 2px solid rgba($color-primary, 0.1);
+    padding-bottom: $spacing-sm;
+  }
+
+  &__options {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__option {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $spacing-md;
+    padding: $spacing-md;
+    border-radius: $radius-md;
+    background: rgba($color-gray-light, 0.3);
+    transition: background-color $duration-fast ease;
+
+    &:hover {
+      background: rgba($color-gray-light, 0.5);
+    }
+  }
+
+  &__option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-sm;
+    cursor: pointer;
+    flex: 1;
+  }
+
+  &__option-text {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    strong {
+      font-weight: $font-weight-semibold;
+      color: $color-text-primary;
+      font-size: $font-size-base;
+    }
+
+    small {
+      color: $color-text-secondary;
+      font-size: $font-size-sm;
+      line-height: $line-height-relaxed;
+    }
+  }
+
+  &__checkbox {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: $color-primary;
+    cursor: pointer;
+  }
+
+  &__select {
+    padding: $spacing-xs $spacing-sm;
+    border: 1px solid $border-light;
+    border-radius: $radius-sm;
+    background: $color-white;
+    font-size: $font-size-sm;
+    min-width: 150px;
+    
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+    }
+  }
+
+  // Section mot de passe
+  &__password-section {
+    margin-top: $spacing-lg;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $border-light;
+  }
+
+  &__password-fields {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    margin-top: $spacing-md;
+    max-width: 400px;
+  }
+
+  // Actions
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-lg;
+    align-items: center;
+  }
+
+  // Zone de danger
+  &__danger-zone {
+    padding: $spacing-lg;
+    border: 2px solid $color-danger;
+    background: rgba($color-danger, 0.05);
+    text-align: center;
+    max-width: 500px;
+  }
+
+  &__danger-title {
+    color: $color-danger;
+    margin-bottom: $spacing-md;
+  }
+
+  &__danger-text {
+    color: $color-text-secondary;
+    margin-bottom: $spacing-lg;
+    line-height: $line-height-relaxed;
+  }
+
+  @include mobile-only {
+    padding: $spacing-sm;
+    gap: $spacing-md;
+
+    &__option {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__option-label {
+      align-items: center;
+    }
+
+    &__select {
+      margin-top: $spacing-xs;
+      width: 100%;
+    }
+
+    &__password-fields {
+      max-width: none;
+    }
+  }
+
+  @include tablet-and-up {
+    padding: $spacing-lg;
+  }
+}
+
+// Styles pour les variantes de boutons danger
+.button--danger {
+  background: $color-danger;
+  border-color: $color-danger;
+  color: $color-white;
+
+  &:hover:not(:disabled) {
+    background: color.adjust($color-danger, $lightness: -10%);
+    border-color: color.adjust($color-danger, $lightness: -10%);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
