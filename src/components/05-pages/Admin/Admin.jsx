@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faUsers, 
@@ -30,6 +31,10 @@ const Admin = ({
   ...props
 }) => {
   const { t } = useTranslation(['pages', 'common']);
+  
+  // Récupérer l'utilisateur authentifié depuis Redux
+  const { user, isAuthenticated } = useSelector(state => state.auth);
+  
   const [activeTab, setActiveTab] = useState('lessons'); // Commence par les leçons par défaut
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItems, setSelectedItems] = useState([]);
@@ -38,32 +43,46 @@ const Admin = ({
   const [currentItem, setCurrentItem] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   
-  // Simulation du rôle utilisateur (dans une vraie app, cela viendrait du contexte d'authentification)
-  const [currentUser] = useState({
-    id: 1,
-    name: 'Sarah Wilson',
-    email: 'sarah.wilson@email.com',
-    role: 'Admin' // Peut être 'Admin', 'Teacher', ou 'Student'
-  });
+  // Utiliser l'utilisateur authentifié au lieu d'une simulation
+  const currentUser = user;
+  
+  // Debug: afficher les informations utilisateur
+  console.log('[ADMIN COMPONENT] Current user:', currentUser);
+  console.log('[ADMIN COMPONENT] Is authenticated:', isAuthenticated);
   
   // Vérifier les permissions
-  const isAdmin = currentUser.role === 'Admin';
-  const isTeacher = currentUser.role === 'Teacher';
-  const isStudent = currentUser.role === 'Student';
+  const isAdmin = currentUser?.role === 'Admin';
+  const isTeacher = currentUser?.role === 'Teacher';
+  const isStudent = currentUser?.role === 'Student';
   const canAccessDashboard = isAdmin;
   const canAccessUsers = isAdmin;
   const canAccessLessons = isAdmin || isTeacher;
   const canAccessBookings = isAdmin || isTeacher;
+
+  // Rediriger si l'utilisateur n'est pas authentifié
+  if (!isAuthenticated) {
+    return (
+      <div className="admin__access-denied">
+        <div className="admin__access-denied-content">
+          <h1>{t('pages:admin.accessDenied.notAuthenticated', 'Non authentifié')}</h1>
+          <p>{t('pages:admin.accessDenied.pleaseLogin', 'Veuillez vous connecter pour accéder à cette page.')}</p>
+          <Button variant="primary" onClick={() => window.location.href = '/login'}>
+            {t('pages:admin.accessDenied.login', 'Se connecter')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   // Rediriger les étudiants (ils n'ont pas accès à l'admin)
   if (isStudent) {
     return (
       <div className="admin__access-denied">
         <div className="admin__access-denied-content">
-          <h1>{t('admin.accessDenied.title')}</h1>
-          <p>{t('admin.accessDenied.message')}</p>
+          <h1>{t('pages:admin.accessDenied.title')}</h1>
+          <p>{t('pages:admin.accessDenied.message')}</p>
           <Button variant="primary" onClick={() => window.history.back()}>
-            {t('admin.accessDenied.goBack')}
+            {t('pages:admin.accessDenied.goBack')}
           </Button>
         </div>
       </div>
@@ -217,34 +236,34 @@ const Admin = ({
 
   // Colonnes pour la table des utilisateurs
   const userColumns = [
-    { key: 'name', label: t('admin.table.name'), sortable: true },
-    { key: 'email', label: t('admin.table.email'), sortable: true },
-    { key: 'role', label: t('admin.table.role'), sortable: true },
-    { key: 'joinDate', label: t('admin.table.joinDate'), sortable: true },
-    { key: 'status', label: t('admin.table.status'), sortable: true },
-    { key: 'actions', label: t('admin.table.actions'), sortable: false }
+    { key: 'name', label: t('pages:admin.table.name'), sortable: true },
+    { key: 'email', label: t('pages:admin.table.email'), sortable: true },
+    { key: 'role', label: t('pages:admin.table.role'), sortable: true },
+    { key: 'joinDate', label: t('pages:admin.table.joinDate'), sortable: true },
+    { key: 'status', label: t('pages:admin.table.status'), sortable: true },
+    { key: 'actions', label: t('pages:admin.table.actions'), sortable: false }
   ];
 
   // Colonnes pour la table des leçons
   const lessonColumns = [
-    { key: 'title', label: t('admin.table.title'), sortable: true },
-    { key: 'language', label: t('admin.table.language'), sortable: true },
-    { key: 'level', label: t('admin.table.level'), sortable: true },
-    { key: 'price', label: t('admin.table.price'), sortable: true },
-    { key: 'teacher', label: t('admin.table.teacher'), sortable: true },
-    { key: 'bookings', label: t('admin.table.bookings'), sortable: true },
-    { key: 'actions', label: t('admin.table.actions'), sortable: false }
+    { key: 'title', label: t('pages:admin.table.title'), sortable: true },
+    { key: 'language', label: t('pages:admin.table.language'), sortable: true },
+    { key: 'level', label: t('pages:admin.table.level'), sortable: true },
+    { key: 'price', label: t('pages:admin.table.price'), sortable: true },
+    { key: 'teacher', label: t('pages:admin.table.teacher'), sortable: true },
+    { key: 'bookings', label: t('pages:admin.table.bookings'), sortable: true },
+    { key: 'actions', label: t('pages:admin.table.actions'), sortable: false }
   ];
 
   // Colonnes pour la table des réservations
   const bookingColumns = [
-    { key: 'studentName', label: t('admin.table.student'), sortable: true },
-    { key: 'lessonTitle', label: t('admin.table.lesson'), sortable: true },
-    { key: 'date', label: t('admin.table.date'), sortable: true },
-    { key: 'time', label: t('admin.table.time'), sortable: true },
-    { key: 'status', label: t('admin.table.status'), sortable: true },
-    { key: 'paymentStatus', label: t('admin.table.payment'), sortable: true },
-    { key: 'actions', label: t('admin.table.actions'), sortable: false }
+    { key: 'studentName', label: t('pages:admin.table.student'), sortable: true },
+    { key: 'lessonTitle', label: t('pages:admin.table.lesson'), sortable: true },
+    { key: 'date', label: t('pages:admin.table.date'), sortable: true },
+    { key: 'time', label: t('pages:admin.table.time'), sortable: true },
+    { key: 'status', label: t('pages:admin.table.status'), sortable: true },
+    { key: 'paymentStatus', label: t('pages:admin.table.payment'), sortable: true },
+    { key: 'actions', label: t('pages:admin.table.actions'), sortable: false }
   ];
 
   // Simulation de requêtes API
@@ -274,7 +293,7 @@ const Admin = ({
       return lessons;
     } else if (isTeacher) {
       // Un professeur ne voit que ses propres leçons
-      return lessons.filter(lesson => lesson.teacher === currentUser.name);
+      return lessons.filter(lesson => lesson.teacher === currentUser?.firstName + ' ' + currentUser?.lastName);
     }
     return [];
   };
@@ -284,7 +303,7 @@ const Admin = ({
       return bookings;
     } else if (isTeacher) {
       // Un professeur ne voit que les réservations de ses leçons
-      return bookings.filter(booking => booking.teacherName === currentUser.name);
+      return bookings.filter(booking => booking.teacherName === currentUser?.firstName + ' ' + currentUser?.lastName);
     }
     return [];
   };
@@ -448,7 +467,7 @@ const Admin = ({
               size="sm"
               onClick={() => handleBookingAction(item.id, 'confirm')}
               className="admin__action-btn admin__action-btn--confirm"
-              title={t('admin.actions.confirm', 'Confirmer')}
+              title={t('pages:admin.actions.confirm', 'Confirmer')}
             >
               <FontAwesomeIcon icon={faCalendarCheck} />
             </Button>
@@ -459,7 +478,7 @@ const Admin = ({
               size="sm"
               onClick={() => handleBookingAction(item.id, 'complete')}
               className="admin__action-btn admin__action-btn--complete"
-              title={t('admin.actions.complete', 'Terminer')}
+              title={t('pages:admin.actions.complete', 'Terminer')}
             >
               <FontAwesomeIcon icon={faCalendarCheck} />
             </Button>
@@ -534,16 +553,16 @@ const Admin = ({
         <div className="admin__header">
           <div className="admin__header-content">
             <Title level={1} className="admin__title">
-              {t('admin.title', 'Administration')}
+              {t('pages:admin.title', 'Administration')}
             </Title>
             <p className="admin__subtitle">
-              {t('admin.subtitle', 'Gérez votre plateforme d\'apprentissage')}
+              {t('pages:admin.subtitle', 'Gérez votre plateforme d\'apprentissage')}
             </p>
           </div>
           <div className="admin__header-actions">
             <Button variant="outline" className="admin__export-btn">
               <FontAwesomeIcon icon={faDownload} />
-              {t('admin.actions.export')}
+              {t('pages:admin.actions.export')}
             </Button>
           </div>
         </div>
@@ -556,7 +575,7 @@ const Admin = ({
               onClick={() => setActiveTab('dashboard')}
             >
               <FontAwesomeIcon icon={faChalkboardTeacher} />
-              {t('admin.tabs.dashboard')}
+              {t('pages:admin.tabs.dashboard')}
             </button>
           )}
           {canAccessUsers && (
@@ -565,7 +584,7 @@ const Admin = ({
               onClick={() => setActiveTab('users')}
             >
               <FontAwesomeIcon icon={faUsers} />
-              {t('admin.tabs.users')}
+              {t('pages:admin.tabs.users')}
             </button>
           )}
           {canAccessLessons && (
@@ -574,7 +593,7 @@ const Admin = ({
               onClick={() => setActiveTab('lessons')}
             >
               <FontAwesomeIcon icon={faBookOpen} />
-              {t('admin.tabs.lessons')}
+              {t('pages:admin.tabs.lessons')}
             </button>
           )}
           {canAccessBookings && (
@@ -583,7 +602,7 @@ const Admin = ({
               onClick={() => setActiveTab('bookings')}
             >
               <FontAwesomeIcon icon={faCalendarCheck} />
-              {t('admin.tabs.bookings')}
+              {t('pages:admin.tabs.bookings')}
             </button>
           )}
         </div>
@@ -595,28 +614,28 @@ const Admin = ({
             <div className="admin__dashboard">
               <div className="admin__stats-grid">
                 <StatsCard
-                  title={t('admin.stats.totalUsers')}
+                  title={t('pages:admin.stats.totalUsers')}
                   value={dashboardStats.totalUsers}
                   icon={faUsers}
                   color="blue"
                   trend="+12%"
                 />
                 <StatsCard
-                  title={t('admin.stats.totalLessons')}
+                  title={t('pages:admin.stats.totalLessons')}
                   value={dashboardStats.totalLessons}
                   icon={faBookOpen}
                   color="green"
                   trend="+8%"
                 />
                 <StatsCard
-                  title={t('admin.stats.totalTeachers')}
+                  title={t('pages:admin.stats.totalTeachers')}
                   value={dashboardStats.totalTeachers}
                   icon={faChalkboardTeacher}
                   color="purple"
                   trend="+3%"
                 />
                 <StatsCard
-                  title={t('admin.stats.totalBookings')}
+                  title={t('pages:admin.stats.totalBookings')}
                   value={dashboardStats.totalBookings}
                   icon={faCalendarCheck}
                   color="orange"
@@ -626,32 +645,32 @@ const Admin = ({
 
               <div className="admin__charts-grid">
                 <Card className="admin__chart-card">
-                  <Title level={3}>{t('admin.stats.monthlyRevenue')}</Title>
+                  <Title level={3}>{t('pages:admin.stats.monthlyRevenue')}</Title>
                   <div className="admin__chart-placeholder">
                     <div className="admin__revenue-display">
                       <span className="admin__revenue-amount">€{dashboardStats.monthlyRevenue.toLocaleString()}</span>
-                      <span className="admin__revenue-period">{t('admin.thisMonth')}</span>
+                      <span className="admin__revenue-period">{t('pages:admin.thisMonth')}</span>
                     </div>
                   </div>
                 </Card>
 
                 <Card className="admin__chart-card">
-                  <Title level={3}>{t('admin.recentActivity')}</Title>
+                  <Title level={3}>{t('pages:admin.recentActivity')}</Title>
                   <div className="admin__activity-list">
                     <div className="admin__activity-item">
                       <span className="admin__activity-dot admin__activity-dot--green"></span>
-                      <span>{t('admin.newUserRegistered')}</span>
-                      <span className="admin__activity-time">{t('admin.timeAgo.twoMinutes')}</span>
+                      <span>{t('pages:admin.newUserRegistered')}</span>
+                      <span className="admin__activity-time">{t('pages:admin.timeAgo.twoMinutes')}</span>
                     </div>
                     <div className="admin__activity-item">
                       <span className="admin__activity-dot admin__activity-dot--blue"></span>
-                      <span>{t('admin.lessonBooked')}</span>
-                      <span className="admin__activity-time">{t('admin.timeAgo.fiveMinutes')}</span>
+                      <span>{t('pages:admin.lessonBooked')}</span>
+                      <span className="admin__activity-time">{t('pages:admin.timeAgo.fiveMinutes')}</span>
                     </div>
                     <div className="admin__activity-item">
                       <span className="admin__activity-dot admin__activity-dot--orange"></span>
-                      <span>{t('admin.newReview')}</span>
-                      <span className="admin__activity-time">{t('admin.timeAgo.twelveMinutes')}</span>
+                      <span>{t('pages:admin.newReview')}</span>
+                      <span className="admin__activity-time">{t('pages:admin.timeAgo.twelveMinutes')}</span>
                     </div>
                   </div>
                 </Card>
@@ -666,7 +685,7 @@ const Admin = ({
                 <div className="admin__search-filter">
                   <Input
                     type="text"
-                    placeholder={t('admin.users.searchPlaceholder')}
+                    placeholder={t('pages:admin.users.searchPlaceholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="admin__search-input"
@@ -674,7 +693,7 @@ const Admin = ({
                   />
                   <Button variant="outline" className="admin__filter-btn">
                     <FontAwesomeIcon icon={faFilter} />
-                    {t('admin.actions.filter')}
+                    {t('pages:admin.actions.filter')}
                   </Button>
                 </div>
                 <Button 
@@ -683,7 +702,7 @@ const Admin = ({
                   className="admin__add-btn"
                 >
                   <FontAwesomeIcon icon={faPlus} />
-                  {t('admin.users.addUser')}
+                  {t('pages:admin.users.addUser')}
                 </Button>
               </div>
 
@@ -707,7 +726,7 @@ const Admin = ({
                 <div className="admin__search-filter">
                   <Input
                     type="text"
-                    placeholder={t('admin.lessons.searchPlaceholder')}
+                    placeholder={t('pages:admin.lessons.searchPlaceholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="admin__search-input"
@@ -715,7 +734,7 @@ const Admin = ({
                   />
                   <Button variant="outline" className="admin__filter-btn">
                     <FontAwesomeIcon icon={faFilter} />
-                    {t('admin.actions.filter')}
+                    {t('pages:admin.actions.filter')}
                   </Button>
                 </div>
                 <Button 
@@ -724,7 +743,7 @@ const Admin = ({
                   className="admin__add-btn"
                 >
                   <FontAwesomeIcon icon={faPlus} />
-                  {t('admin.lessons.addLesson')}
+                  {t('pages:admin.lessons.addLesson')}
                 </Button>
               </div>
 
@@ -745,11 +764,11 @@ const Admin = ({
           {activeTab === 'bookings' && (
             <div className="admin__bookings">
               <div className="admin__section-header">
-                <Title level={2}>{t('admin.bookings.title')}</Title>
+                <Title level={2}>{t('pages:admin.bookings.title')}</Title>
                 <div className="admin__section-actions">
                   <Input
                     type="text"
-                    placeholder={t('admin.bookings.searchPlaceholder')}
+                    placeholder={t('pages:admin.bookings.searchPlaceholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="admin__search-input"
@@ -777,28 +796,28 @@ const Admin = ({
       <Modal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        title={`${modalType.includes('add') ? t('admin.actions.add') : modalType.includes('edit') ? t('admin.actions.edit') : modalType.includes('delete') ? t('admin.actions.delete') : t('admin.actions.view')} ${modalType.includes('user') ? t('admin.modal.user') : modalType.includes('lesson') ? t('admin.modal.lesson') : modalType.includes('booking') ? t('admin.modal.booking', 'réservation') : ''}`}
+        title={`${modalType.includes('add') ? t('pages:admin.actions.add') : modalType.includes('edit') ? t('pages:admin.actions.edit') : modalType.includes('delete') ? t('pages:admin.actions.delete') : t('pages:admin.actions.view')} ${modalType.includes('user') ? t('pages:admin.modal.user') : modalType.includes('lesson') ? t('pages:admin.modal.lesson') : modalType.includes('booking') ? t('pages:admin.modal.booking', 'réservation') : ''}`}
         className="admin__modal"
         size={modalType.includes('delete') ? 'small' : 'large'}
       >
         <div className="admin__modal-content">
           {modalType.includes('delete') ? (
             <div className="admin__delete-confirmation">
-              <p>{t('admin.modal.confirmDelete')}</p>
+              <p>{t('pages:admin.modal.confirmDelete')}</p>
               <div className="admin__modal-actions">
                 <Button 
                   variant="outline" 
                   onClick={handleCloseModal}
                   disabled={isLoading}
                 >
-                  {t('admin.modal.cancel')}
+                  {t('pages:admin.modal.cancel')}
                 </Button>
                 <Button 
                   variant="danger" 
                   onClick={handleConfirmDelete}
                   disabled={isLoading}
                 >
-                  {isLoading ? t('admin.form.deleting') : t('admin.actions.delete')}
+                  {isLoading ? t('pages:admin.form.deleting') : t('pages:admin.actions.delete')}
                 </Button>
               </div>
             </div>
@@ -822,62 +841,62 @@ const Admin = ({
             <div className="admin__booking-details">
               {currentItem && (
                 <div className="admin__booking-info">
-                  <h3>{t('admin.bookings.details', 'Détails de la réservation')}</h3>
+                  <h3>{t('pages:admin.bookings.details', 'Détails de la réservation')}</h3>
                   <div className="admin__booking-grid">
                     <div className="admin__booking-field">
-                      <label>{t('admin.table.student')}:</label>
+                      <label>{t('pages:admin.table.student')}:</label>
                       <span>{currentItem.studentName}</span>
                     </div>
                     <div className="admin__booking-field">
-                      <label>{t('admin.table.email')}:</label>
+                      <label>{t('pages:admin.table.email')}:</label>
                       <span>{currentItem.studentEmail}</span>
                     </div>
                     <div className="admin__booking-field">
-                      <label>{t('admin.table.lesson')}:</label>
+                      <label>{t('pages:admin.table.lesson')}:</label>
                       <span>{currentItem.lessonTitle}</span>
                     </div>
                     <div className="admin__booking-field">
-                      <label>{t('admin.table.teacher')}:</label>
+                      <label>{t('pages:admin.table.teacher')}:</label>
                       <span>{currentItem.teacherName}</span>
                     </div>
                     <div className="admin__booking-field">
-                      <label>{t('admin.table.date')}:</label>
+                      <label>{t('pages:admin.table.date')}:</label>
                       <span>{currentItem.date}</span>
                     </div>
                     <div className="admin__booking-field">
-                      <label>{t('admin.table.time')}:</label>
+                      <label>{t('pages:admin.table.time')}:</label>
                       <span>{currentItem.time}</span>
                     </div>
                     <div className="admin__booking-field">
-                      <label>{t('admin.form.duration')}:</label>
+                      <label>{t('pages:admin.form.duration')}:</label>
                       <span>{currentItem.duration}</span>
                     </div>
                     <div className="admin__booking-field">
-                      <label>{t('admin.table.price')}:</label>
+                      <label>{t('pages:admin.table.price')}:</label>
                       <span>{currentItem.price}€</span>
                     </div>
                     <div className="admin__booking-field">
-                      <label>{t('admin.table.status')}:</label>
+                      <label>{t('pages:admin.table.status')}:</label>
                       <span className={`admin__status admin__status--${currentItem.status?.toLowerCase()}`}>
                         {currentItem.status}
                       </span>
                     </div>
                     <div className="admin__booking-field">
-                      <label>{t('admin.table.payment')}:</label>
+                      <label>{t('pages:admin.table.payment')}:</label>
                       <span className={`admin__payment admin__payment--${currentItem.paymentStatus?.toLowerCase()}`}>
                         {currentItem.paymentStatus}
                       </span>
                     </div>
                     {currentItem.notes && (
                       <div className="admin__booking-field admin__booking-field--full">
-                        <label>{t('admin.bookings.notes', 'Notes')}:</label>
+                        <label>{t('pages:admin.bookings.notes', 'Notes')}:</label>
                         <p>{currentItem.notes}</p>
                       </div>
                     )}
                   </div>
                   <div className="admin__booking-actions">
                     <Button variant="outline" onClick={handleCloseModal}>
-                      {t('admin.modal.close')}
+                      {t('pages:admin.modal.close')}
                     </Button>
                   </div>
                 </div>
@@ -885,9 +904,9 @@ const Admin = ({
             </div>
           ) : (
             <div className="admin__form-placeholder">
-              <p>{t('admin.modal.formPlaceholder', { type: modalType })}</p>
+              <p>{t('pages:admin.modal.formPlaceholder', { type: modalType })}</p>
               <Button variant="primary" onClick={handleCloseModal}>
-                {t('admin.modal.close')}
+                {t('pages:admin.modal.close')}
               </Button>
             </div>
           )}

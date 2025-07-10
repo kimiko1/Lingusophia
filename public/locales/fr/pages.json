@@ -344,5 +344,22 @@
         "priceInvalid": "Le prix doit être un nombre positif"
       }
     }
+  },
+  "login": {
+    "title": "Connexion",
+    "subtitle": "Connectez-vous à votre compte",
+    "loginButton": "Se connecter",
+    "noAccount": "Pas de compte ? Inscrivez-vous",
+    "forgotPassword": "Mot de passe oublié ?",
+    "demoAccounts": "Comptes de démonstration",
+    "adminDemo": "Administrateur",
+    "teacherDemo": "Professeur",
+    "studentDemo": "Étudiant"
+  },
+  "register": {
+    "title": "Inscription",
+    "subtitle": "Créez votre compte gratuit",
+    "registerButton": "S'inscrire",
+    "hasAccount": "Déjà un compte ? Connectez-vous"
   }
 }

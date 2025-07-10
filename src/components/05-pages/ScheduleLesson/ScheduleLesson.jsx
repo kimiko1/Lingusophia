@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Card, Title, Input } from '../../01-atoms';
-import { LessonCard, CategoryCard } from '../../02-molecules';
+import { CategoryCard } from '../../02-molecules';
+import LessonCard from '../../02-molecules/LessonCard';
 import { PageLayout } from '../../04-templates';
 import './ScheduleLesson.scss';
 

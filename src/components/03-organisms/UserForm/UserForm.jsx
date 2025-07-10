@@ -155,7 +155,7 @@ const UserForm = ({
           <div className="user-form__field-group">
             <div className="user-form__field">
               <label className="user-form__label">
-                {t('admin.table.role')}
+                {t('pages:admin.table.role')}
               </label>
               <select
                 name="role"
@@ -164,15 +164,15 @@ const UserForm = ({
                 disabled={isReadOnly}
                 className="user-form__select"
               >
-                <option value="Student">{t('admin.form.roles.student')}</option>
-                <option value="Teacher">{t('admin.form.roles.teacher')}</option>
-                <option value="Admin">{t('admin.form.roles.admin')}</option>
+                <option value="Student">{t('pages:admin.form.roles.student')}</option>
+                <option value="Teacher">{t('pages:admin.form.roles.teacher')}</option>
+                <option value="Admin">{t('pages:admin.form.roles.admin')}</option>
               </select>
             </div>
 
             <div className="user-form__field">
               <label className="user-form__label">
-                {t('admin.table.status')}
+                {t('pages:admin.table.status')}
               </label>
               <select
                 name="status"
@@ -181,9 +181,9 @@ const UserForm = ({
                 disabled={isReadOnly}
                 className="user-form__select"
               >
-                <option value="Active">{t('admin.form.status.active')}</option>
-                <option value="Inactive">{t('admin.form.status.inactive')}</option>
-                <option value="Pending">{t('admin.form.status.pending')}</option>
+                <option value="Active">{t('pages:admin.form.status.active')}</option>
+                <option value="Inactive">{t('pages:admin.form.status.inactive')}</option>
+                <option value="Pending">{t('pages:admin.form.status.pending')}</option>
               </select>
             </div>
           </div>
@@ -252,7 +252,7 @@ const UserForm = ({
               className="user-form__cancel-btn"
             >
               <FontAwesomeIcon icon={faTimes} />
-              {t('admin.modal.cancel')}
+              {t('pages:admin.modal.cancel')}
             </Button>
             <Button
               type="submit"
@@ -261,7 +261,7 @@ const UserForm = ({
               className="user-form__save-btn"
             >
               <FontAwesomeIcon icon={faSave} />
-              {isLoading ? t('admin.form.saving') : (isCreate ? t('admin.form.create') : t('admin.form.update'))}
+              {isLoading ? t('pages:admin.form.saving') : (isCreate ? t('pages:admin.form.create') : t('pages:admin.form.update'))}
             </Button>
           </div>
         )}
