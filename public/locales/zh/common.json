@@ -93,5 +93,9 @@
       "anonymous": "匿名"
     }
   },
+  "noDataFound": "未找到数据",
+  "itemsSelected": "已选择 {{count}} 项",
+  "resultsCount": "{{current}} 个结果，共 {{total}} 个",
+  "comparedToLastMonth": "与上个月相比",
   "locale": "zh-CN"
 }

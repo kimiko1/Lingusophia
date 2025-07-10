@@ -1,0 +1,446 @@
+@use '../../../styles/themes/mixins' as *;
+
+.admin {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    z-index: 0;
+  }
+}
+
+.admin__container {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: $spacing-xl $spacing-lg;
+}
+
+// Header
+.admin__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-2xl;
+  padding: $spacing-xl;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  border-radius: $border-radius-xl;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.admin__header-content {
+  flex: 1;
+}
+
+.admin__title {
+  margin: 0 0 $spacing-sm;
+  color: white;
+  font-size: clamp($font-size-2xl, 5vw, $font-size-4xl);
+  font-weight: $font-weight-bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.admin__subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: $font-size-lg;
+}
+
+.admin__header-actions {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.admin__export-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  transition: $transition-all;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+}
+
+// Tabs
+.admin__tabs {
+  display: flex;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-2xl;
+  background: rgba(255, 255, 255, 0.1);
+  padding: $spacing-sm;
+  border-radius: $border-radius-xl;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin__tab {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-md $spacing-lg;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  border-radius: $border-radius-lg;
+  cursor: pointer;
+  transition: $transition-all;
+  position: relative;
+
+  &:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &--active {
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -$spacing-sm;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 3px;
+      background: $color-primary;
+      border-radius: $border-radius-full;
+    }
+  }
+}
+
+// Content
+.admin__content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: $border-radius-xl;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+// Dashboard
+.admin__dashboard {
+  padding: $spacing-2xl;
+}
+
+.admin__stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-xl;
+  margin-bottom: $spacing-2xl;
+}
+
+.admin__charts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $spacing-xl;
+}
+
+.admin__chart-card {
+  padding: $spacing-xl;
+  border: 1px solid $color-border-light;
+  border-radius: $border-radius-lg;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.admin__chart-placeholder {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $color-primary-light, $color-primary);
+  border-radius: $border-radius-lg;
+  margin-top: $spacing-lg;
+}
+
+.admin__revenue-display {
+  text-align: center;
+  color: white;
+}
+
+.admin__revenue-amount {
+  display: block;
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.admin__revenue-period {
+  font-size: $font-size-sm;
+  opacity: 0.9;
+}
+
+// Activity
+.admin__activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+
+.admin__activity-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: $border-radius-md;
+  transition: $transition-all;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateX(4px);
+  }
+}
+
+.admin__activity-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &--green { background: $color-success; }
+  &--blue { background: $color-primary; }
+  &--orange { background: $color-warning; }
+}
+
+.admin__activity-time {
+  margin-left: auto;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+// Section Header
+.admin__section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $spacing-xl $spacing-xl $spacing-lg;
+  border-bottom: 1px solid $color-border-light;
+}
+
+.admin__search-filter {
+  display: flex;
+  gap: $spacing-md;
+  align-items: center;
+}
+
+.admin__search-input {
+  min-width: 300px;
+}
+
+.admin__filter-btn {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.admin__add-btn {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  background: linear-gradient(135deg, $color-primary, $color-primary-dark);
+  border: none;
+  color: white;
+  transition: $transition-all;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($color-primary, 0.3);
+  }
+}
+
+// Table
+.admin__table-card {
+  margin: 0;
+  border-radius: 0 0 $border-radius-xl $border-radius-xl;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.admin__data-table {
+  background: transparent;
+}
+
+// Actions
+.admin__actions {
+  display: flex;
+  gap: $spacing-xs;
+  justify-content: center;
+}
+
+.admin__action-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: $border-radius-md;
+  transition: $transition-all;
+
+  &--view {
+    color: $color-info;
+    &:hover { background: rgba($color-info, 0.1); }
+  }
+
+  &--edit {
+    color: $color-warning;
+    &:hover { background: rgba($color-warning, 0.1); }
+  }
+
+  &--delete {
+    color: $color-danger;
+    &:hover { background: rgba($color-danger, 0.1); }
+  }
+}
+
+// Modal
+.admin__modal-content {
+  padding: $spacing-lg;
+}
+
+.admin__delete-confirmation {
+  text-align: center;
+
+  p {
+    margin-bottom: $spacing-xl;
+    color: $color-text-secondary;
+  }
+}
+
+.admin__modal-actions {
+  display: flex;
+  gap: $spacing-md;
+  justify-content: center;
+}
+
+.admin__form-placeholder {
+  text-align: center;
+  padding: $spacing-2xl;
+  color: $color-text-secondary;
+}
+
+// Coming Soon
+.admin__coming-soon {
+  text-align: center;
+  padding: $spacing-4xl;
+  color: $color-text-secondary;
+
+  h2 {
+    margin-bottom: $spacing-lg;
+    color: $color-text-primary;
+  }
+}
+
+// Responsive
+@include tablet-and-up {
+  .admin__container {
+    padding: $spacing-lg $spacing-md;
+  }
+
+  .admin__header {
+    flex-direction: column;
+    gap: $spacing-lg;
+    text-align: center;
+  }
+
+  .admin__tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  .admin__charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin__stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-lg;
+  }
+
+  .admin__section-header {
+    flex-direction: column;
+    gap: $spacing-lg;
+    align-items: stretch;
+  }
+
+  .admin__search-filter {
+    flex-direction: column;
+  }
+
+  .admin__search-input {
+    min-width: auto;
+  }
+}
+
+@include mobile-only {
+  .admin__container {
+    padding: $spacing-md $spacing-sm;
+  }
+
+  .admin__header {
+    padding: $spacing-lg;
+  }
+
+  .admin__title {
+    font-size: $font-size-2xl;
+  }
+
+  .admin__dashboard {
+    padding: $spacing-lg;
+  }
+
+  .admin__stats-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+
+  .admin__charts-grid {
+    gap: $spacing-lg;
+  }
+}
+
+// Animations
+.admin__dashboard {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.admin__stats-grid > * {
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+  
+  @for $i from 1 through 4 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

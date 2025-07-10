@@ -224,5 +224,80 @@
         "step3": "Details"
       }
     }
+  },
+  "admin": {
+    "title": "Administration",
+    "subtitle": "Manage your learning platform",
+    "tabs": {
+      "dashboard": "Dashboard",
+      "users": "Users",
+      "lessons": "Lessons",
+      "bookings": "Bookings"
+    },
+    "stats": {
+      "totalUsers": "Total Users",
+      "totalLessons": "Available Lessons",
+      "totalTeachers": "Active Teachers",
+      "totalBookings": "Bookings",
+      "monthlyRevenue": "Monthly Revenue",
+      "activeUsers": "Active Users",
+      "completionRate": "Completion Rate",
+      "averageRating": "Average Rating"
+    },
+    "actions": {
+      "add": "Add",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View",
+      "export": "Export",
+      "filter": "Filter",
+      "search": "Search"
+    },
+    "users": {
+      "title": "User Management",
+      "addUser": "Add User",
+      "searchPlaceholder": "Search for a user..."
+    },
+    "lessons": {
+      "title": "Lesson Management",
+      "addLesson": "Add Lesson",
+      "searchPlaceholder": "Search for a lesson..."
+    },
+    "bookings": {
+      "title": "Booking Management",
+      "comingSoon": "This section will be available soon..."
+    },
+    "thisMonth": "This month",
+    "recentActivity": "Recent Activity",
+    "newUserRegistered": "New user registered",
+    "lessonBooked": "Lesson booked",
+    "newReview": "New review",
+    "timeAgo": {
+      "twoMinutes": "2 minutes ago",
+      "fiveMinutes": "5 minutes ago",
+      "twelveMinutes": "12 minutes ago"
+    },
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "joinDate": "Join Date",
+      "status": "Status",
+      "actions": "Actions",
+      "title": "Title",
+      "language": "Language",
+      "level": "Level",
+      "price": "Price",
+      "teacher": "Teacher",
+      "bookings": "Bookings"
+    },
+    "modal": {
+      "user": "user",
+      "lesson": "lesson",
+      "confirmDelete": "Are you sure you want to delete this item?",
+      "cancel": "Cancel",
+      "close": "Close",
+      "formPlaceholder": "Form {{type}} will be implemented here..."
+    }
   }
 }

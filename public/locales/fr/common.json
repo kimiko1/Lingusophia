@@ -93,5 +93,9 @@
       "anonymous": "Anonyme"
     }
   },
+  "noDataFound": "Aucune donnée trouvée",
+  "itemsSelected": "{{count}} élément(s) sélectionné(s)",
+  "resultsCount": "{{current}} résultat(s) sur {{total}} total",
+  "comparedToLastMonth": "par rapport au mois dernier",
   "locale": "fr-FR"
 }

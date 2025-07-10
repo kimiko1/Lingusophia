@@ -266,6 +266,8 @@ $color-warning: $warning-500;
 $color-warning-dark: $warning-600;
 $color-danger: $error-500;
 $color-danger-dark: $error-600;
+$color-info: $primary-500;
+$color-info-dark: $primary-600;
 $color-text: $text-primary;
 $color-text-primary: $text-primary;
 $color-text-secondary: $text-secondary;
@@ -310,3 +312,16 @@ $spacing-md: $spacing-4;
 $spacing-lg: $spacing-6;
 $spacing-xl: $spacing-8;
 $spacing-2xl: $spacing-12;
+$spacing-3xl: $spacing-16;
+$spacing-4xl: $spacing-20;
+
+// Border radius aliases
+$border-radius-xs: $radius-sm;
+$border-radius-sm: $radius-base;
+$border-radius-md: $radius-md;
+$border-radius-lg: $radius-lg;
+$border-radius-xl: $radius-xl;
+$border-radius-2xl: $radius-2xl;
+
+// Transition aliases
+$transition-all: $transition-base;

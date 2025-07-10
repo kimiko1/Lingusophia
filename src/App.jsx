@@ -9,7 +9,8 @@ import {
   MyLessons,
   CustomerReviews,
   Profile,
-  Settings
+  Settings,
+  Admin
 } from './components/05-pages';
 import { HeaderTemplate } from './components/04-templates';
 import './styles/main-new.scss';
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/customer-reviews" element={<CustomerReviews />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/showcase" element={<ComponentShowcase />} />
         </Routes>
       </HeaderTemplate>
