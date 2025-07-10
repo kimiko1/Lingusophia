@@ -49,6 +49,28 @@
     "language": "Language",
     "level": "Level"
   },
+  "form": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "role": "Role"
+  },
+  "roles": {
+    "student": "Student",
+    "teacher": "Teacher",
+    "admin": "Administrator",
+    "Student": "Student",
+    "Teacher": "Teacher",
+    "Admin": "Administrator"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Invalid email",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "passwordMismatch": "Passwords do not match"
+  },
   "messages": {
     "success": "Operation completed successfully",
     "error": "An error occurred",

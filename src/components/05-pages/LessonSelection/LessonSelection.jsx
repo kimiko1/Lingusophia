@@ -5,7 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faGraduationCap, faCrown } from '@fortawesome/free-solid-svg-icons';
 import { Title, Button } from '../../01-atoms';
-import { LanguageCard, LevelCard, CategoryCard, LessonCard, LessonDetailsModal } from '../../02-molecules';
+import { LanguageCard, LevelCard, CategoryCard, LessonDetailsModal } from '../../02-molecules';
+import LessonCard from '../../02-molecules/LessonCard';
 import './LessonSelection.scss';
 
 // Import flag SVGs

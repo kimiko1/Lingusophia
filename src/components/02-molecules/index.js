@@ -12,3 +12,6 @@ export { default as ReviewSlider } from './ReviewSlider';
 export { default as LessonDetailsModal } from './LessonDetailsModal';
 export { default as StatsCard } from './StatsCard';
 export { default as DataTable } from './DataTable';
+export { default as AuthForm } from './AuthForm';
+export { default as LessonsDisplay } from './LessonsDisplay';
+export { default as UserProfile } from './UserProfile';

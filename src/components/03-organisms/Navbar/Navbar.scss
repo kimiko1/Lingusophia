@@ -1,13 +1,14 @@
 @use '../../../styles/themes/mixins' as *;
+@use '../../../styles/themes/tokens' as *;
 
 .navbar {
-  background: $color-surface;
-  border-bottom: 1px solid $color-border;
+  background: $bg-primary;
+  border-bottom: 1px solid $border-light;
   box-shadow: $shadow-sm;
   position: sticky;
   top: 0;
   z-index: $z-index-navbar;
-  padding: $spacing-md $spacing-lg;
+  padding: $spacing-4 $spacing-6;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -16,8 +17,8 @@
 
   // Variant styles
   &--primary {
-    background: linear-gradient(135deg, $color-primary, $color-primary-dark);
-    border-bottom-color: $color-primary-dark;
+    background: linear-gradient(135deg, $primary-500, $primary-700);
+    border-bottom-color: $primary-700;
     color: white;
 
     .navbar__greeting {
@@ -338,6 +339,64 @@
     .navbar__profile-dropdown {
       animation: slideDown 0.2s ease-out;
     }
+  }
+
+  // Auth section for non-authenticated users
+  &__auth {
+    display: flex;
+    align-items: center;
+    gap: $spacing-4;
+
+    @include mobile-only {
+      display: none;
+    }
+  }
+
+  &__auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+  }
+
+  &__auth-button {
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+    padding: $spacing-2 $spacing-4;
+    border-radius: $radius-md;
+    text-decoration: none;
+    font-weight: 500;
+    transition: $transition-base;
+    font-size: $font-size-sm;
+
+    &--login {
+      color: $primary-500;
+      background: transparent;
+      border: 2px solid $primary-500;
+
+      &:hover {
+        background: $primary-500;
+        color: white;
+      }
+    }
+
+    &--register {
+      color: white;
+      background: $primary-500;
+      border: 2px solid $primary-500;
+
+      &:hover {
+        background: $primary-700;
+        border-color: $primary-700;
+      }
+    }
+  }
+
+  &__profile-role {
+    font-size: $font-size-xs;
+    color: $text-muted;
+    text-transform: capitalize;
+    margin-top: $spacing-1;
   }
 }
 

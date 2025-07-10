@@ -49,6 +49,28 @@
     "language": "语言",
     "level": "级别"
   },
+  "form": {
+    "email": "邮箱",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "firstName": "名",
+    "lastName": "姓",
+    "role": "角色"
+  },
+  "roles": {
+    "student": "学生",
+    "teacher": "教师",
+    "admin": "管理员",
+    "Student": "学生",
+    "Teacher": "教师",
+    "Admin": "管理员"
+  },
+  "validation": {
+    "required": "此字段为必填项",
+    "invalidEmail": "邮箱格式无效",
+    "passwordTooShort": "密码必须至少包含6个字符",
+    "passwordMismatch": "密码不匹配"
+  },
   "messages": {
     "success": "操作成功完成",
     "error": "发生错误",

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../../store/slices/authSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faThLarge, 
@@ -15,7 +17,10 @@ import {
   faStar,
   faChevronDown,
   faCog,
-  faSignOutAlt
+  faSignOutAlt,
+  faSignInAlt,
+  faUserPlus,
+  faUserShield
 } from '@fortawesome/free-solid-svg-icons';
 
 import { NavItem } from '../../02-molecules';
@@ -28,29 +33,33 @@ import './Navbar.scss';
  * Navbar component - Main navigation organism
  * @param {Object} props - Component props
  * @param {string} props.variant - Navigation style variant
- * @param {boolean} props.showUserInfo - Whether to show user greeting
- * @param {string} props.userName - Current user's name
- * @param {function} props.onLogout - Logout handler
- * @param {boolean} props.isLoggedIn - Whether user is logged in
  */
 const Navbar = ({ 
   variant = 'default',
-  showUserInfo = true,
-  userName = 'User',
-  onLogout,
-  isLoggedIn = true,
   ...props
 }) => {
   const { t } = useTranslation('common');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Get auth state from Redux
+  const { isAuthenticated, user } = useSelector(state => state.auth);
+  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const location = useLocation();
 
-  // Navigation items
-  const navItems = [
+  // Navigation items for authenticated users
+  const authenticatedNavItems = [
     { icon: faThLarge, label: t('navigation.home'), href: "/", id: "dashboard" },
     { icon: faCalendarAlt, label: t('navigation.calendar'), href: "/calendar", id: "schedule" },
     { icon: faGraduationCap, label: t('navigation.myLessons'), href: "/my-lessons", id: "lessons" },
+    { icon: faStar, label: t('navigation.customerReviews'), href: "/customer-reviews", id: "reviews" }
+  ];
+
+  // Navigation items for non-authenticated users
+  const publicNavItems = [
+    { icon: faThLarge, label: t('navigation.home'), href: "/", id: "home" },
     { icon: faStar, label: t('navigation.customerReviews'), href: "/customer-reviews", id: "reviews" }
   ];
 
@@ -59,6 +68,11 @@ const Navbar = ({
     { icon: faHistory, label: t('user.learningHistory'), href: "/history" },
     { icon: faCog, label: t('navigation.settings'), href: "/settings" }
   ];
+
+  // Add admin item if user is admin
+  if (user?.role === 'admin') {
+    profileItems.push({ icon: faUserShield, label: "Admin", href: "/admin" });
+  }
 
   // Check if a link is active
   const isActiveLink = (href) => {
@@ -83,9 +97,8 @@ const Navbar = ({
   };
 
   const handleLogout = () => {
-    if (onLogout) {
-      onLogout();
-    }
+    dispatch(logout());
+    navigate('/');
     closeAll();
   };
 
@@ -163,7 +176,7 @@ const Navbar = ({
       {/* Main Navigation */}
       <nav className={`navbar__nav ${isMenuOpen ? 'navbar__nav--open' : ''}`}>
         <ul className="navbar__nav-list">
-          {navItems.map((item) => (
+          {(isAuthenticated ? authenticatedNavItems : publicNavItems).map((item) => (
             <NavItem
               key={item.id}
               icon={item.icon}
@@ -178,7 +191,7 @@ const Navbar = ({
       </nav>
 
       {/* User Section */}
-      {isLoggedIn && (
+      {isAuthenticated ? (
         <div className="navbar__user">
           {/* Language Selector */}
           <div className="navbar__language-selector">
@@ -191,15 +204,13 @@ const Navbar = ({
           </div>
 
           {/* User Greeting - Desktop */}
-          {showUserInfo && (
-            <div className="navbar__greeting">
-              <UserGreeting 
-                name={userName} 
-                variant="primary"
-                animated
-              />
-            </div>
-          )}
+          <div className="navbar__greeting">
+            <UserGreeting 
+              name={user?.firstName || 'User'} 
+              variant="primary"
+              animated
+            />
+          </div>
 
           {/* Profile Avatar */}
           <div className="navbar__profile">
@@ -221,8 +232,9 @@ const Navbar = ({
             <div className={`navbar__profile-dropdown ${isProfileOpen ? 'navbar__profile-dropdown--open' : ''}`}>
               <div className="navbar__profile-header">
                 <div className="navbar__profile-info">
-                  <div className="navbar__profile-name">{userName}</div>
-                  <div className="navbar__profile-email">user@example.com</div>
+                  <div className="navbar__profile-name">{user?.firstName} {user?.lastName}</div>
+                  <div className="navbar__profile-email">{user?.email}</div>
+                  <div className="navbar__profile-role">{t(`common:roles.${user?.role?.toLowerCase()}`)}</div>
                 </div>
               </div>
               
@@ -249,6 +261,30 @@ const Navbar = ({
             </div>
           </div>
         </div>
+      ) : (
+        <div className="navbar__auth">
+          {/* Language Selector */}
+          <div className="navbar__language-selector">
+            <LanguageSelector 
+              variant="dropdown"
+              size="sm"
+              showFlag={true}
+              showNativeName={false}
+            />
+          </div>
+          
+          {/* Auth Buttons */}
+          <div className="navbar__auth-buttons">
+            <Link to="/login" className="navbar__auth-button navbar__auth-button--login">
+              <FontAwesomeIcon icon={faSignInAlt} />
+              <span>Login</span>
+            </Link>
+            <Link to="/register" className="navbar__auth-button navbar__auth-button--register">
+              <FontAwesomeIcon icon={faUserPlus} />
+              <span>Register</span>
+            </Link>
+          </div>
+        </div>
       )}
 
       {/* Overlay for mobile menu */}
@@ -260,11 +296,7 @@ const Navbar = ({
 };
 
 Navbar.propTypes = {
-  variant: PropTypes.oneOf(['default', 'primary', 'minimal']),
-  showUserInfo: PropTypes.bool,
-  userName: PropTypes.string,
-  onLogout: PropTypes.func,
-  isLoggedIn: PropTypes.bool
+  variant: PropTypes.oneOf(['default', 'primary', 'minimal'])
 };
 
 export default Navbar;
