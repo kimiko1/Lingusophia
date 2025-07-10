@@ -223,5 +223,80 @@
         "step3": "Détails"
       }
     }
+  },
+  "admin": {
+    "title": "Administration",
+    "subtitle": "Gérez votre plateforme d'apprentissage",
+    "tabs": {
+      "dashboard": "Tableau de bord",
+      "users": "Utilisateurs",
+      "lessons": "Leçons",
+      "bookings": "Réservations"
+    },
+    "stats": {
+      "totalUsers": "Utilisateurs totaux",
+      "totalLessons": "Leçons disponibles",
+      "totalTeachers": "Professeurs actifs",
+      "totalBookings": "Réservations",
+      "monthlyRevenue": "Revenus mensuels",
+      "activeUsers": "Utilisateurs actifs",
+      "completionRate": "Taux de completion",
+      "averageRating": "Note moyenne"
+    },
+    "actions": {
+      "add": "Ajouter",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "view": "Voir",
+      "export": "Exporter",
+      "filter": "Filtrer",
+      "search": "Rechercher"
+    },
+    "users": {
+      "title": "Gestion des Utilisateurs",
+      "addUser": "Ajouter utilisateur",
+      "searchPlaceholder": "Rechercher un utilisateur..."
+    },
+    "lessons": {
+      "title": "Gestion des Leçons",
+      "addLesson": "Ajouter leçon",
+      "searchPlaceholder": "Rechercher une leçon..."
+    },
+    "bookings": {
+      "title": "Gestion des Réservations",
+      "comingSoon": "Cette section sera bientôt disponible..."
+    },
+    "thisMonth": "Ce mois",
+    "recentActivity": "Activité récente",
+    "newUserRegistered": "Nouvel utilisateur inscrit",
+    "lessonBooked": "Leçon réservée",
+    "newReview": "Nouvelle évaluation",
+    "timeAgo": {
+      "twoMinutes": "Il y a 2 min",
+      "fiveMinutes": "Il y a 5 min",
+      "twelveMinutes": "Il y a 12 min"
+    },
+    "table": {
+      "name": "Nom",
+      "email": "Email",
+      "role": "Rôle",
+      "joinDate": "Date d'inscription",
+      "status": "Statut",
+      "actions": "Actions",
+      "title": "Titre",
+      "language": "Langue",
+      "level": "Niveau",
+      "price": "Prix",
+      "teacher": "Professeur",
+      "bookings": "Réservations"
+    },
+    "modal": {
+      "user": "utilisateur",
+      "lesson": "leçon",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet élément ?",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "formPlaceholder": "Formulaire {{type}} sera implémenté ici..."
+    }
   }
 }

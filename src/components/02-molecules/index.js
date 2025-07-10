@@ -10,3 +10,5 @@ export { default as LessonCard } from './LessonCard';
 export { default as LevelCard } from './LevelCard';
 export { default as ReviewSlider } from './ReviewSlider';
 export { default as LessonDetailsModal } from './LessonDetailsModal';
+export { default as StatsCard } from './StatsCard';
+export { default as DataTable } from './DataTable';

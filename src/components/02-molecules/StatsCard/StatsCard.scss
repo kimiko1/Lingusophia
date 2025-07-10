@@ -1,0 +1,211 @@
+@use '../../../styles/themes/mixins' as *;
+
+.stats-card {
+  position: relative;
+  overflow: hidden;
+  border: none;
+  transition: $transition-all;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  // Color variants
+  &--blue {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  &--green {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+  }
+
+  &--purple {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    color: #333;
+  }
+
+  &--orange {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    color: white;
+  }
+
+  &--red {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
+  }
+}
+
+.stats-card__content {
+  position: relative;
+  z-index: 2;
+  padding: $spacing-xl;
+}
+
+.stats-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-lg;
+}
+
+.stats-card__info {
+  flex: 1;
+}
+
+.stats-card__title {
+  margin: 0 0 $spacing-sm;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stats-card__value {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stats-card__icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: $border-radius-lg;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  
+  svg {
+    font-size: 1.5rem;
+    opacity: 0.9;
+  }
+}
+
+.stats-card__footer {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.stats-card__trend {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-full;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+
+  &--positive {
+    background: rgba(34, 197, 94, 0.2);
+    color: #dcfce7;
+    border-color: rgba(34, 197, 94, 0.3);
+  }
+
+  &--negative {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fecaca;
+    border-color: rgba(239, 68, 68, 0.3);
+  }
+}
+
+.stats-card__trend-label {
+  font-size: $font-size-xs;
+  opacity: 0.8;
+}
+
+.stats-card__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.stats-card__pattern {
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 255, 255, 0.05) 10px,
+    rgba(255, 255, 255, 0.05) 20px
+  );
+  animation: patternMove 20s linear infinite;
+  opacity: 0.3;
+}
+
+// Animation
+@keyframes patternMove {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+// Responsive
+@include mobile-only {
+  .stats-card__content {
+    padding: $spacing-lg;
+  }
+
+  .stats-card__header {
+    margin-bottom: $spacing-md;
+  }
+
+  .stats-card__value {
+    font-size: $font-size-2xl;
+  }
+
+  .stats-card__icon {
+    width: 50px;
+    height: 50px;
+    
+    svg {
+      font-size: 1.25rem;
+    }
+  }
+
+  .stats-card__footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-xs;
+  }
+}
+
+// Hover effects for different colors
+.stats-card--blue:hover {
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+}
+
+.stats-card--green:hover {
+  box-shadow: 0 20px 40px rgba(79, 172, 254, 0.3);
+}
+
+.stats-card--purple:hover {
+  box-shadow: 0 20px 40px rgba(168, 237, 234, 0.3);
+}
+
+.stats-card--orange:hover {
+  box-shadow: 0 20px 40px rgba(255, 154, 158, 0.3);
+}
+
+.stats-card--red:hover {
+  box-shadow: 0 20px 40px rgba(255, 107, 107, 0.3);
+}
