@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Card, Title, Input } from '../../01-atoms';
 import { PageLayout } from '../../04-templates';
 import './Settings.scss';
@@ -7,6 +8,7 @@ import './Settings.scss';
  * Settings - Page des paramètres de l'application
  */
 const Settings = () => {
+  const { t } = useTranslation('pages');
   const [settings, setSettings] = useState({
     notifications: {
       emailNotifications: true,
@@ -56,7 +58,7 @@ const Settings = () => {
 
   const handleSaveSettings = () => {
     // Logique de sauvegarde des paramètres
-    alert('Paramètres sauvegardés avec succès !');
+    alert(t('messages.success', { ns: 'common' }));
   };
 
   const handleChangePassword = () => {

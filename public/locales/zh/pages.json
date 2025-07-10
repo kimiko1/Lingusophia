@@ -1,0 +1,132 @@
+{
+  "home": {
+    "title": "欢迎使用LearnALanguage",
+    "subtitle": "通过我们的互动平台掌握新语言",
+    "description": "选择您今天想要做的事情",
+    "reviews": {
+      "title": "学生评价",
+      "description": "了解我们的学生对学习体验的评价"
+    }
+  },
+  "profile": {
+    "title": "我的资料",
+    "subtitle": "管理您的个人信息",
+    "personalInfo": "个人信息",
+    "recentLessons": "最近的课程",
+    "statistics": "我的统计",
+    "achievementsTitle": "成就",
+    "fields": {
+      "name": "全名",
+      "email": "邮箱",
+      "phone": "电话",
+      "nativeLanguage": "母语",
+      "currentLevel": "当前级别",
+      "bio": "个人简介"
+    },
+    "stats": {
+      "lessonsCompleted": "已完成课程",
+      "hoursStudied": "学习时间",
+      "streak": "连续天数",
+      "favoriteLanguage": "最喜欢的语言"
+    },
+    "achievements": {
+      "firstLesson": "第一节课",
+      "weekStreak": "连续7天",
+      "tenLessons": "完成10节课",
+      "regularStudent": "勤奋学生"
+    }
+  },
+  "calendar": {
+    "title": "日历",
+    "subtitle": "安排您的课程",
+    "selectedDate": "选定日期",
+    "scheduleLesson": "安排课程",
+    "noLessons": "今天没有安排课程",
+    "previousMonth": "上个月",
+    "nextMonth": "下个月",
+    "months": [
+      "一月", "二月", "三月", "四月", "五月", "六月",
+      "七月", "八月", "九月", "十月", "十一月", "十二月"
+    ],
+    "weekdays": [
+      "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"
+    ]
+  },
+  "settings": {
+    "title": "设置",
+    "subtitle": "自定义您的体验",
+    "sections": {
+      "language": "语言",
+      "notifications": "通知",
+      "privacy": "隐私",
+      "account": "账户",
+      "dangerZone": "危险区域"
+    },
+    "options": {
+      "changeLanguage": "更改界面语言",
+      "emailNotifications": "邮件通知",
+      "pushNotifications": "推送通知",
+      "marketingEmails": "营销邮件",
+      "deleteAccount": "删除我的账户"
+    }
+  },
+  "lessons": {
+    "title": "我的课程",
+    "subtitle": "跟踪您的学习进度",
+    "upcoming": "即将到来的课程",
+    "completedLessons": "已完成的课程",
+    "inProgress": "进行中",
+    "difficulty": {
+      "beginner": "初学者",
+      "intermediate": "中级",
+      "advanced": "高级"
+    },
+    "currentLessons": "当前课程",
+    "learningStatistics": "学习统计",
+    "progress": "进度",
+    "finalScore": "最终分数",
+    "nextSession": "下次课程",
+    "started": "开始",
+    "completedDate": "完成",
+    "with": "与",
+    "noOngoingLessons": "您没有正在进行的课程。开始一个新课程来在这里看到它！",
+    "stats": {
+      "lessonsCompleted": "已完成课程",
+      "ongoingLessons": "正在进行的课程",
+      "languagesStudied": "学习的语言",
+      "averageScore": "平均分数"
+    },
+    "categories": {
+      "easy": "简单",
+      "medium": "中等",
+      "hard": "困难"
+    }
+  },
+  "customerReviews": {
+    "title": "学生评价",
+    "shareExperience": "分享您的体验",
+    "shareDescription": "通过分享您对已完成课程的体验来帮助其他学生。",
+    "teacher": "老师",
+    "completed": "已完成",
+    "writeReview": "写评价",
+    "allReviewsCompleted": "做得好！您已经评价了所有完成的课程。",
+    "yourReviews": "您的评价",
+    "noReviews": "您还没有写过任何评价。完成一些课程并分享您的体验！",
+    "modal": {
+      "rateLesson": "为这节课打分",
+      "shareThoughts": "分享您的想法",
+      "finalDetails": "最终详情",
+      "next": "下一步",
+      "back": "返回",
+      "submitAnonymously": "匿名提交",
+      "submitReview": "提交评价",
+      "submitting": "提交中...",
+      "commentPlaceholder": "告诉我们您对这节课的体验...",
+      "stepIndicator": {
+        "step1": "评分",
+        "step2": "评论",
+        "step3": "详情"
+      }
+    }
+  }
+}

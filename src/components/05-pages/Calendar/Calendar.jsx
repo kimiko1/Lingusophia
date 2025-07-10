@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button, Title } from '../../01-atoms';
 import './Calendar.scss';
 
@@ -10,17 +11,16 @@ import './Calendar.scss';
  * @param {Object} props - Component props
  */
 const Calendar = () => {
+  const { t } = useTranslation('pages');
+  const { t: tCommon } = useTranslation('common');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
 
-  // Jours de la semaine en anglais (dimanche à samedi)
-  const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  // Jours de la semaine traduits
+  const daysOfWeek = t('calendar.weekdays', { returnObjects: true });
   
-  // Mois en anglais
-  const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
+  // Mois traduits
+  const months = t('calendar.months', { returnObjects: true });
 
   // Obtenir le premier jour du mois
   const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -118,7 +118,7 @@ const Calendar = () => {
             size="sm"
             onClick={goToPreviousMonth}
             className="nav-button"
-            aria-label="Previous month"
+            aria-label={t('calendar.previousMonth')}
           >
             <FontAwesomeIcon icon={faChevronLeft} />
           </Button>
@@ -135,7 +135,7 @@ const Calendar = () => {
             size="sm"
             onClick={goToNextMonth}
             className="nav-button"
-            aria-label="Next month"
+            aria-label={t('calendar.nextMonth')}
           >
             <FontAwesomeIcon icon={faChevronRight} />
           </Button>
@@ -160,7 +160,7 @@ const Calendar = () => {
         {selectedDate && (
           <div className="selected-date-info">
             <p>
-              Selected date: {selectedDate.toLocaleDateString('en-US', { 
+              {t('calendar.selectedDate')}: {selectedDate.toLocaleDateString(tCommon('locale'), { 
                 weekday: 'long', 
                 year: 'numeric', 
                 month: 'long', 
@@ -173,7 +173,7 @@ const Calendar = () => {
               variant="primary"
               className="schedule-btn"
             >
-              Schedule a lesson
+              {t('calendar.scheduleLesson')}
             </Button>
           </div>
         )}

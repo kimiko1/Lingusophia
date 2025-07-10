@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import './Logo.scss';
 
 /**
@@ -13,7 +14,7 @@ import './Logo.scss';
  * @param {boolean} props.clickable - Whether the logo is clickable
  */
 const Logo = ({ 
-  text = 'LearnALanguage',
+  text,
   size = 'medium',
   variant = 'default',
   className = '',
@@ -21,6 +22,9 @@ const Logo = ({
   clickable = false,
   ...props 
 }) => {
+  const { t } = useTranslation('common');
+  const logoText = text || t('app.name');
+  
   const logoClasses = [
     'logo',
     `logo--${size}`,
@@ -49,7 +53,7 @@ const Logo = ({
       } : undefined}
       {...props}
     >
-      {text}
+      {logoText}
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { Card } from '../../01-atoms';
@@ -24,6 +25,7 @@ const ReviewSlider = ({
   onReviewChange,
   ...props
 }) => {
+  const { t } = useTranslation('common');
   const [reviews, setReviews] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -69,17 +71,6 @@ const ReviewSlider = ({
         },
         {
           id: 4,
-          lessonTitle: 'Spanish Pronunciation',
-          language: 'Spanish',
-          teacher: 'Carlos Rodriguez',
-          rating: 5,
-          comment: 'Perfect lesson for improving pronunciation. Carlos has excellent teaching methods.',
-          studentName: 'Anonymous',
-          isAnonymous: true,
-          date: '2024-12-12'
-        },
-        {
-          id: 5,
           lessonTitle: 'Advanced English Writing',
           language: 'English',
           teacher: 'Emma Wilson',
@@ -154,12 +145,12 @@ const ReviewSlider = ({
   return (
     <div className={sliderClasses} {...props}>
       <div className="review-slider__header">
-        <h2 className="review-slider__title">What Our Students Say</h2>
+        <h2 className="review-slider__title">{t('components.reviewSlider.title')}</h2>
         <div className="review-slider__controls">
           <button 
             className="review-slider__btn review-slider__btn--prev" 
             onClick={prevSlide}
-            aria-label="Previous review"
+            aria-label={t('components.reviewSlider.previousReview')}
             disabled={reviews.length <= 1}
           >
             <FontAwesomeIcon icon={faChevronLeft} />
@@ -167,7 +158,7 @@ const ReviewSlider = ({
           <button 
             className="review-slider__btn review-slider__btn--next" 
             onClick={nextSlide}
-            aria-label="Next review"
+            aria-label={t('components.reviewSlider.nextReview')}
             disabled={reviews.length <= 1}
           >
             <FontAwesomeIcon icon={faChevronRight} />
@@ -185,7 +176,7 @@ const ReviewSlider = ({
                 {currentReview.teacher && (
                   <>
                     <span className="review-slide__separator"> • </span>
-                    <span className="review-slide__teacher">with {currentReview.teacher}</span>
+                    <span className="review-slide__teacher">{t('components.reviewSlider.with')} {currentReview.teacher}</span>
                   </>
                 )}
               </p>
@@ -202,10 +193,10 @@ const ReviewSlider = ({
           <div className="review-slide__footer">
             <div className="review-slide__student-info">
               <span className="review-slide__student-name">
-                - {currentReview.isAnonymous ? 'Anonymous' : currentReview.studentName}
+                - {currentReview.isAnonymous ? t('components.reviewSlider.anonymous') : currentReview.studentName}
               </span>
               <span className="review-slide__date">
-                {new Date(currentReview.date).toLocaleDateString()}
+                {new Date(currentReview.date).toLocaleDateString(t('locale'))}
               </span>
             </div>
           </div>
@@ -219,7 +210,7 @@ const ReviewSlider = ({
               key={index}
               className={`review-slider__indicator ${index === currentIndex ? 'review-slider__indicator--active' : ''}`}
               onClick={() => goToSlide(index)}
-              aria-label={`Go to review ${index + 1}`}
+              aria-label={`${t('components.reviewSlider.goToReview')} ${index + 1}`}
             />
           ))}
         </div>

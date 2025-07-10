@@ -140,6 +140,30 @@
     }
   }
 
+  // Language selector in navbar
+  &__language-selector {
+    display: flex;
+    align-items: center;
+
+    .language-selector {
+      &--buttons {
+        gap: $spacing-xs;
+
+        .language-selector__button {
+          padding: $spacing-xs $spacing-sm;
+          font-size: $font-size-sm;
+          border-radius: $border-radius-sm;
+          min-width: auto;
+
+          &--active {
+            background: $color-primary;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+
   &__greeting {
     display: none;
 

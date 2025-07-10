@@ -1,0 +1,133 @@
+{
+  "home": {
+    "title": "Welcome to LearnALanguage",
+    "subtitle": "Master new languages with our interactive platform",
+    "description": "Select what you'd like to do today",
+    "reviews": {
+      "title": "Student Reviews",
+      "description": "See what our students have to say about their learning experience"
+    }
+  },
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your personal information",
+    "personalInfo": "Personal Information",
+    "recentLessons": "Recent Lessons",
+    "statistics": "My Statistics",
+    "achievementsTitle": "Achievements",
+    "fields": {
+      "name": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "nativeLanguage": "Native Language",
+      "currentLevel": "Current Level",
+      "bio": "Bio"
+    },
+    "stats": {
+      "lessonsCompleted": "Lessons Completed",
+      "hoursStudied": "Hours Studied",
+      "streak": "Consecutive Days",
+      "favoriteLanguage": "Favorite Language"
+    },
+    "achievements": {
+      "firstLesson": "First Lesson",
+      "weekStreak": "7-Day Streak", 
+      "tenLessons": "10 Lessons Completed",
+      "regularStudent": "Regular Student"
+    }
+  },
+  "calendar": {
+    "title": "Calendar",
+    "subtitle": "Schedule your lessons",
+    "selectedDate": "Selected date",
+    "scheduleLesson": "Schedule a lesson",
+    "noLessons": "No lessons scheduled for this day",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "months": [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ],
+    "weekdays": [
+      "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+    ]
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Customize your experience",
+    "sections": {
+      "language": "Language",
+      "notifications": "Notifications",
+      "privacy": "Privacy",
+      "account": "Account",
+      "dangerZone": "Danger Zone"
+    },
+    "options": {
+      "changeLanguage": "Change interface language",
+      "emailNotifications": "Email notifications",
+      "pushNotifications": "Push notifications",
+      "marketingEmails": "Marketing emails",
+      "deleteAccount": "Delete my account"
+    }
+  },
+  "lessons": {
+    "title": "My Lessons",
+    "subtitle": "Track your learning progress",
+    "upcoming": "Upcoming Lessons",
+    "completed": "Completed Lessons",
+    "inProgress": "In Progress",
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "currentLessons": "Current Lessons",
+    "completedLessons": "Completed Lessons",
+    "learningStatistics": "Learning Statistics",
+    "progress": "Progress",
+    "finalScore": "Final Score",
+    "nextSession": "Next session",
+    "started": "Started",
+    "completedDate": "Completed",
+    "with": "with",
+    "noOngoingLessons": "You don't have any ongoing lessons. Start a new lesson to see it here!",
+    "stats": {
+      "lessonsCompleted": "Lessons Completed",
+      "ongoingLessons": "Ongoing Lessons",
+      "languagesStudied": "Languages Studied",
+      "averageScore": "Average Score"
+    },
+    "categories": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    }
+  },
+  "customerReviews": {
+    "title": "Customer Reviews",
+    "shareExperience": "Share Your Experience",
+    "shareDescription": "Help other students by sharing your experience with completed lessons.",
+    "teacher": "Teacher",
+    "completed": "Completed",
+    "writeReview": "Write Review",
+    "allReviewsCompleted": "Great job! You've reviewed all your completed lessons.",
+    "yourReviews": "Your Reviews",
+    "noReviews": "You haven't written any reviews yet. Complete some lessons and share your experience!",
+    "modal": {
+      "rateLesson": "Rate this lesson",
+      "shareThoughts": "Share your thoughts",
+      "finalDetails": "Final details",
+      "next": "Next",
+      "back": "Back",
+      "submitAnonymously": "Submit anonymously",
+      "submitReview": "Submit Review",
+      "submitting": "Submitting...",
+      "commentPlaceholder": "Tell us about your experience with this lesson...",
+      "stepIndicator": {
+        "step1": "Rating",
+        "step2": "Comment",
+        "step3": "Details"
+      }
+    }
+  }
+}

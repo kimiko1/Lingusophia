@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Card, Title, Input } from '../../01-atoms';
 import { LessonCard } from '../../02-molecules';
 import { PageLayout } from '../../04-templates';
@@ -8,6 +9,7 @@ import './Profile.scss';
  * Profile - Page de profil utilisateur
  */
 const Profile = () => {
+  const { t } = useTranslation('pages');
   const [isEditing, setIsEditing] = useState(false);
   const [userInfo, setUserInfo] = useState({
     name: 'Jean Dupont',
@@ -55,7 +57,7 @@ const Profile = () => {
   const handleSave = () => {
     setIsEditing(false);
     // Logique de sauvegarde
-    alert('Profil mis à jour avec succès !');
+    alert(t('messages.success', { ns: 'common' }));
   };
 
   const handleInputChange = (field, value) => {
@@ -66,21 +68,21 @@ const Profile = () => {
   };
 
   return (
-    <PageLayout title="Mon Profil" subtitle="Gérez vos informations personnelles">
+    <PageLayout title={t('profile.title')} subtitle={t('profile.subtitle')}>
       <div className="profile">
         <div className="profile__main">
           {/* Informations personnelles */}
           <Card className="profile__info-card">
             <div className="profile__header">
               <Title level={2} size="lg" className="profile__section-title">
-                Informations personnelles
+                {t('profile.personalInfo')}
               </Title>
               <Button
                 variant={isEditing ? 'primary' : 'outline'}
                 size="sm"
                 onClick={() => isEditing ? handleSave() : setIsEditing(true)}
               >
-                {isEditing ? 'Sauvegarder' : 'Modifier'}
+                {isEditing ? t('buttons.save', { ns: 'common' }) : t('buttons.edit', { ns: 'common' })}
               </Button>
             </div>
 
@@ -88,19 +90,19 @@ const Profile = () => {
               <div className="profile__avatar">
                 <img
                   src="/api/placeholder/120/120"
-                  alt="Avatar"
+                  alt={t('user.profile', { ns: 'common' })}
                   className="profile__avatar-img"
                 />
                 {isEditing && (
                   <Button variant="outline" size="xs" className="profile__avatar-btn">
-                    Changer
+                    {t('buttons.edit', { ns: 'common' })}
                   </Button>
                 )}
               </div>
 
               <div className="profile__fields">
                 <div className="profile__field">
-                  <label className="profile__label">Nom complet</label>
+                  <label className="profile__label">{t('profile.fields.name')}</label>
                   {isEditing ? (
                     <Input
                       value={userInfo.name}
@@ -112,7 +114,7 @@ const Profile = () => {
                 </div>
 
                 <div className="profile__field">
-                  <label className="profile__label">Email</label>
+                  <label className="profile__label">{t('profile.fields.email')}</label>
                   {isEditing ? (
                     <Input
                       type="email"
@@ -125,7 +127,7 @@ const Profile = () => {
                 </div>
 
                 <div className="profile__field">
-                  <label className="profile__label">Téléphone</label>
+                  <label className="profile__label">{t('profile.fields.phone')}</label>
                   {isEditing ? (
                     <Input
                       type="tel"
@@ -138,7 +140,7 @@ const Profile = () => {
                 </div>
 
                 <div className="profile__field">
-                  <label className="profile__label">Langue maternelle</label>
+                  <label className="profile__label">{t('profile.fields.nativeLanguage')}</label>
                   {isEditing ? (
                     <Input
                       value={userInfo.language}
@@ -150,16 +152,16 @@ const Profile = () => {
                 </div>
 
                 <div className="profile__field">
-                  <label className="profile__label">Niveau actuel</label>
+                  <label className="profile__label">{t('profile.fields.currentLevel')}</label>
                   {isEditing ? (
                     <select
                       value={userInfo.level}
                       onChange={(e) => handleInputChange('level', e.target.value)}
                       className="profile__select"
                     >
-                      <option value="Débutant">Débutant</option>
-                      <option value="Intermédiaire">Intermédiaire</option>
-                      <option value="Avancé">Avancé</option>
+                      <option value="Débutant">{t('lessons.difficulty.beginner')}</option>
+                      <option value="Intermédiaire">{t('lessons.difficulty.intermediate')}</option>
+                      <option value="Avancé">{t('lessons.difficulty.advanced')}</option>
                       <option value="Expert">Expert</option>
                     </select>
                   ) : (
@@ -168,7 +170,7 @@ const Profile = () => {
                 </div>
 
                 <div className="profile__field profile__field--full">
-                  <label className="profile__label">Bio</label>
+                  <label className="profile__label">{t('profile.fields.bio')}</label>
                   {isEditing ? (
                     <textarea
                       value={userInfo.bio}
@@ -187,7 +189,7 @@ const Profile = () => {
           {/* Leçons récentes */}
           <Card className="profile__lessons-card">
             <Title level={2} size="lg" className="profile__section-title">
-              Leçons récentes
+              {t('profile.recentLessons')}
             </Title>
             <div className="profile__lessons-list">
               {recentLessons.map(lesson => (
@@ -196,11 +198,11 @@ const Profile = () => {
                     <h4 className="profile__lesson-title">{lesson.title}</h4>
                     <p className="profile__lesson-teacher">avec {lesson.teacher}</p>
                     <p className="profile__lesson-date">
-                      {new Date(lesson.date).toLocaleDateString('fr-FR')} - {lesson.duration}min
+                      {new Date(lesson.date).toLocaleDateString(t('locale', { ns: 'common' }))} - {lesson.duration}min
                     </p>
                   </div>
                   <span className="profile__lesson-status profile__lesson-status--completed">
-                    Terminé
+                    {t('lessons.completed')}
                   </span>
                 </div>
               ))}
@@ -212,23 +214,23 @@ const Profile = () => {
         <aside className="profile__sidebar">
           <Card className="profile__stats-card">
             <Title level={3} size="md" className="profile__section-title">
-              Mes statistiques
+              {t('profile.statistics')}
             </Title>
             <div className="profile__stats">
               <div className="profile__stat">
                 <span className="profile__stat-number">{stats.lessonsCompleted}</span>
-                <span className="profile__stat-label">Leçons terminées</span>
+                <span className="profile__stat-label">{t('profile.stats.lessonsCompleted')}</span>
               </div>
               <div className="profile__stat">
                 <span className="profile__stat-number">{stats.hoursStudied}h</span>
-                <span className="profile__stat-label">Heures d'étude</span>
+                <span className="profile__stat-label">{t('profile.stats.hoursStudied')}</span>
               </div>
               <div className="profile__stat">
                 <span className="profile__stat-number">{stats.streak}</span>
-                <span className="profile__stat-label">Jours consécutifs</span>
+                <span className="profile__stat-label">{t('profile.stats.streak')}</span>
               </div>
               <div className="profile__stat profile__stat--full">
-                <span className="profile__stat-label">Langue favorite</span>
+                <span className="profile__stat-label">{t('profile.stats.favoriteLanguage')}</span>
                 <span className="profile__stat-value">{stats.favoriteLanguage}</span>
               </div>
             </div>
@@ -236,24 +238,24 @@ const Profile = () => {
 
           <Card className="profile__achievements-card">
             <Title level={3} size="md" className="profile__section-title">
-              Accomplissements
+              {t('profile.achievementsTitle')}
             </Title>
             <div className="profile__achievements">
               <div className="profile__achievement">
                 <span className="profile__achievement-icon">🎯</span>
-                <span className="profile__achievement-name">Première leçon</span>
+                <span className="profile__achievement-name">{t('profile.achievements.firstLesson')}</span>
               </div>
               <div className="profile__achievement">
                 <span className="profile__achievement-icon">🔥</span>
-                <span className="profile__achievement-name">Série de 7 jours</span>
+                <span className="profile__achievement-name">{t('profile.achievements.weekStreak')}</span>
               </div>
               <div className="profile__achievement">
                 <span className="profile__achievement-icon">📚</span>
-                <span className="profile__achievement-name">10 leçons complétées</span>
+                <span className="profile__achievement-name">{t('profile.achievements.tenLessons')}</span>
               </div>
               <div className="profile__achievement">
                 <span className="profile__achievement-icon">⭐</span>
-                <span className="profile__achievement-name">Étudiant régulier</span>
+                <span className="profile__achievement-name">{t('profile.achievements.regularStudent')}</span>
               </div>
             </div>
           </Card>

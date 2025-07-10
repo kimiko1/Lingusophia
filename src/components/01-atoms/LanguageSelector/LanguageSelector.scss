@@ -1,0 +1,151 @@
+@use '../../../styles/themes/mixins' as *;
+
+.language-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-2;
+
+  // Variante dropdown
+  &--dropdown {
+    .language-selector__select {
+      padding: $spacing-2 $spacing-3;
+      border: 1px solid $border-light;
+      border-radius: $radius-md;
+      background: $bg-primary;
+      color: $text-primary;
+      font-size: $font-size-sm;
+      cursor: pointer;
+      transition: $transition-all;
+
+      &:hover {
+        border-color: $border-medium;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $primary-500;
+        box-shadow: 0 0 0 2px rgba($primary-500, 0.2);
+      }
+    }
+  }
+
+  // Variante tabs
+  &--tabs {
+    border-radius: $radius-lg;
+    background: $bg-secondary;
+    padding: $spacing-1;
+
+    .language-selector__tab {
+      display: flex;
+      align-items: center;
+      gap: $spacing-1;
+      padding: $spacing-2 $spacing-3;
+      border: none;
+      background: transparent;
+      color: $text-secondary;
+      font-size: $font-size-sm;
+      cursor: pointer;
+      border-radius: $radius-md;
+      transition: $transition-all;
+
+      &:hover {
+        background: rgba($primary-500, 0.1);
+        color: $text-primary;
+      }
+
+      &--active {
+        background: $primary-500;
+        color: $color-white;
+        font-weight: $font-weight-semibold;
+      }
+    }
+  }
+
+  // Variante buttons
+  &--buttons {
+    gap: $spacing-1;
+
+    .language-selector__button {
+      display: flex;
+      align-items: center;
+      gap: $spacing-1;
+      padding: $spacing-2 $spacing-3;
+      border: 1px solid $border-light;
+      background: $bg-primary;
+      color: $text-secondary;
+      font-size: $font-size-sm;
+      cursor: pointer;
+      border-radius: $radius-md;
+      transition: $transition-all;
+
+      &:hover {
+        border-color: $primary-500;
+        color: $text-primary;
+      }
+
+      &--active {
+        border-color: $primary-500;
+        background: $primary-500;
+        color: $color-white;
+        font-weight: $font-weight-semibold;
+      }
+    }
+  }
+
+  // Éléments communs
+  &__flag {
+    font-size: 1.2em;
+    line-height: 1;
+  }
+
+  &__code {
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+  }
+
+  &__native-name {
+    font-size: $font-size-sm;
+  }
+
+  // Tailles
+  &--sm {
+    .language-selector__select,
+    .language-selector__tab,
+    .language-selector__button {
+      padding: $spacing-1 $spacing-2;
+      font-size: $font-size-xs;
+    }
+
+    .language-selector__native-name {
+      font-size: $font-size-xs;
+    }
+  }
+
+  &--lg {
+    .language-selector__select,
+    .language-selector__tab,
+    .language-selector__button {
+      padding: $spacing-3 $spacing-4;
+      font-size: $font-size-base;
+    }
+
+    .language-selector__native-name {
+      font-size: $font-size-base;
+    }
+  }
+
+  // Responsive
+  @include mobile-only {
+    &--tabs,
+    &--buttons {
+      flex-direction: column;
+      width: 100%;
+
+      .language-selector__tab,
+      .language-selector__button {
+        justify-content: center;
+        width: 100%;
+      }
+    }
+  }
+}

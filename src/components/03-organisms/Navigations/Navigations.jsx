@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUser,
@@ -26,32 +27,34 @@ const Navigations = ({
   className = '',
   ...props
 }) => {
+  const { t } = useTranslation('common');
+  
   // Default navigation items
   const defaultNavItems = [
     {
       icon: faClock,
-      label: 'Schedule a lesson',
+      label: t('navigation.scheduleLesson'),
       href: '/calendar',
       color: 'orange',
       id: 'schedule'
     },
     {
       icon: faComments,
-      label: 'Customer reviews',
+      label: t('navigation.customerReviews'),
       href: '/customer-reviews',
       color: 'pink',
       id: 'reviews'
     },
     {
       icon: faGraduationCap,
-      label: 'My learning',
+      label: t('navigation.myLessons'),
       href: '/my-lessons',
       color: 'green',
       id: 'learning'
     },
     {
       icon: faUser,
-      label: 'Contact a teacher',
+      label: t('navigation.contactTeacher'),
       href: '/teachers',
       color: 'blue',
       id: 'contact'

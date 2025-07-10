@@ -1,0 +1,132 @@
+{
+  "home": {
+    "title": "Bienvenue sur LearnALanguage",
+    "subtitle": "Maîtrisez de nouvelles langues avec notre plateforme interactive",
+    "description": "Sélectionnez ce que vous souhaitez faire aujourd'hui",
+    "reviews": {
+      "title": "Avis des Étudiants",
+      "description": "Découvrez ce que nos étudiants pensent de leur expérience d'apprentissage"
+    }
+  },
+  "profile": {
+    "title": "Mon Profil",
+    "subtitle": "Gérez vos informations personnelles",
+    "personalInfo": "Informations Personnelles",
+    "recentLessons": "Leçons Récentes",
+    "statistics": "Mes Statistiques",
+    "achievementsTitle": "Accomplissements",
+    "fields": {
+      "name": "Nom Complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "nativeLanguage": "Langue Maternelle",
+      "currentLevel": "Niveau Actuel",
+      "bio": "Bio"
+    },
+    "stats": {
+      "lessonsCompleted": "Leçons Terminées",
+      "hoursStudied": "Heures d'Étude",
+      "streak": "Jours Consécutifs",
+      "favoriteLanguage": "Langue Favorite"
+    },
+    "achievements": {
+      "firstLesson": "Première leçon",
+      "weekStreak": "Série de 7 jours",
+      "tenLessons": "10 leçons complétées",
+      "regularStudent": "Étudiant régulier"
+    }
+  },
+  "calendar": {
+    "title": "Calendrier",
+    "subtitle": "Planifiez vos leçons",
+    "selectedDate": "Date sélectionnée",
+    "scheduleLesson": "Planifier une leçon",
+    "noLessons": "Aucune leçon programmée pour ce jour",
+    "previousMonth": "Mois précédent",
+    "nextMonth": "Mois suivant",
+    "months": [
+      "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+      "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+    ],
+    "weekdays": [
+      "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"
+    ]
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Personnalisez votre expérience",
+    "sections": {
+      "language": "Langue",
+      "notifications": "Notifications",
+      "privacy": "Confidentialité",
+      "account": "Compte",
+      "dangerZone": "Zone de Danger"
+    },
+    "options": {
+      "changeLanguage": "Changer la langue de l'interface",
+      "emailNotifications": "Notifications par email",
+      "pushNotifications": "Notifications push",
+      "marketingEmails": "Emails marketing",
+      "deleteAccount": "Supprimer mon compte"
+    }
+  },
+  "lessons": {
+    "title": "Mes Leçons",
+    "subtitle": "Suivez votre progression d'apprentissage",
+    "upcoming": "Leçons à Venir",
+    "completedLessons": "Leçons Terminées",
+    "inProgress": "En Cours",
+    "difficulty": {
+      "beginner": "Débutant",
+      "intermediate": "Intermédiaire",
+      "advanced": "Avancé"
+    },
+    "currentLessons": "Leçons Actuelles",
+    "learningStatistics": "Statistiques d'Apprentissage",
+    "progress": "Progression",
+    "finalScore": "Score Final",
+    "nextSession": "Prochaine session",
+    "started": "Commencé",
+    "completedDate": "Terminé",
+    "with": "avec",
+    "noOngoingLessons": "Vous n'avez aucune leçon en cours. Commencez une nouvelle leçon pour la voir ici !",
+    "stats": {
+      "lessonsCompleted": "Leçons Terminées",
+      "ongoingLessons": "Leçons en Cours",
+      "languagesStudied": "Langues Étudiées",
+      "averageScore": "Score Moyen"
+    },
+    "categories": {
+      "easy": "Facile",
+      "medium": "Moyen",
+      "hard": "Difficile"
+    }
+  },
+  "customerReviews": {
+    "title": "Avis des Étudiants",
+    "shareExperience": "Partagez Votre Expérience",
+    "shareDescription": "Aidez les autres étudiants en partageant votre expérience avec les leçons terminées.",
+    "teacher": "Professeur",
+    "completed": "Terminé",
+    "writeReview": "Écrire un Avis",
+    "allReviewsCompleted": "Excellent travail ! Vous avez évalué toutes vos leçons terminées.",
+    "yourReviews": "Vos Avis",
+    "noReviews": "Vous n'avez encore écrit aucun avis. Terminez quelques leçons et partagez votre expérience !",
+    "modal": {
+      "rateLesson": "Évaluez cette leçon",
+      "shareThoughts": "Partagez vos pensées",
+      "finalDetails": "Détails finaux",
+      "next": "Suivant",
+      "back": "Retour",
+      "submitAnonymously": "Soumettre anonymement",
+      "submitReview": "Soumettre l'Avis",
+      "submitting": "Envoi en cours...",
+      "commentPlaceholder": "Parlez-nous de votre expérience avec cette leçon...",
+      "stepIndicator": {
+        "step1": "Note",
+        "step2": "Commentaire",
+        "step3": "Détails"
+      }
+    }
+  }
+}

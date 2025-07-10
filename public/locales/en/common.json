@@ -1,0 +1,97 @@
+{
+  "app": {
+    "name": "LearnALanguage",
+    "tagline": "Master languages with confidence"
+  },
+  "navigation": {
+    "home": "Home",
+    "lessons": "Lessons",
+    "calendar": "Calendar",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "myLessons": "My Lessons",
+    "scheduleLesson": "Schedule Lesson",
+    "lessonSelection": "Lesson Selection",
+    "customerReviews": "Customer Reviews",
+    "contactTeacher": "Contact a Teacher"
+  },
+  "user": {
+    "greeting": "Hi",
+    "welcomeBack": "Welcome back",
+    "profile": "Profile",
+    "account": "My account",
+    "learningHistory": "Learning History"
+  },
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "viewAll": "View All",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started"
+  },
+  "forms": {
+    "required": "This field is required",
+    "email": "Please enter a valid email",
+    "password": "Password must be at least 8 characters",
+    "confirmPassword": "Passwords do not match",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone Number",
+    "language": "Language",
+    "level": "Level"
+  },
+  "messages": {
+    "success": "Operation completed successfully",
+    "error": "An error occurred",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "welcome": "Welcome back!",
+    "goodbye": "See you soon!"
+  },
+  "aria": {
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "openProfile": "Open profile menu",
+    "closeProfile": "Close profile menu",
+    "selectLanguage": "Select language",
+    "currentLanguage": "Current language"
+  },
+  "languages": {
+    "en": "English",
+    "fr": "French",
+    "zh": "Chinese"
+  },
+  "components": {
+    "lessonDetailsModal": {
+      "title": "Lesson Details",
+      "goalOfCourse": "Goal of this course:",
+      "whatYouWillLearn": "What you'll learn:",
+      "duration": "Duration:",
+      "level": "Level:",
+      "price": "Price:",
+      "yourTeacher": "Your Teacher",
+      "speciality": "Speciality:",
+      "experience": "Experience:",
+      "cancel": "Cancel",
+      "bookLesson": "Book this lesson"
+    },
+    "reviewSlider": {
+      "title": "What Our Students Say",
+      "previousReview": "Previous review",
+      "nextReview": "Next review",
+      "goToReview": "Go to review",
+      "with": "with",
+      "anonymous": "Anonymous"
+    }
+  },
+  "locale": "en-US"
+}
