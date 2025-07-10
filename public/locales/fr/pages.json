@@ -54,20 +54,74 @@
   },
   "settings": {
     "title": "Paramètres",
-    "subtitle": "Personnalisez votre expérience",
+    "subtitle": "Gérez vos préférences et votre compte",
     "sections": {
-      "language": "Langue",
       "notifications": "Notifications",
-      "privacy": "Confidentialité",
-      "account": "Compte",
-      "dangerZone": "Zone de Danger"
+      "privacy": "Confidentialité", 
+      "preferences": "Préférences",
+      "security": "Sécurité",
+      "dangerZone": "Zone de danger"
     },
-    "options": {
-      "changeLanguage": "Changer la langue de l'interface",
+    "notifications": {
       "emailNotifications": "Notifications par email",
+      "emailNotificationsDesc": "Recevoir des notifications importantes par email",
       "pushNotifications": "Notifications push",
+      "pushNotificationsDesc": "Recevoir des notifications sur votre navigateur",
+      "lessonReminders": "Rappels de leçons",
+      "lessonRemindersDesc": "Recevoir des rappels avant vos leçons programmées",
       "marketingEmails": "Emails marketing",
-      "deleteAccount": "Supprimer mon compte"
+      "marketingEmailsDesc": "Recevoir des offres promotionnelles et nouveautés"
+    },
+    "privacy": {
+      "profileVisibility": "Visibilité du profil",
+      "profileVisibilityDesc": "Qui peut voir votre profil",
+      "showProgress": "Afficher les progrès",
+      "showProgressDesc": "Permettre aux autres de voir vos progrès d'apprentissage",
+      "dataCollection": "Collecte de données analytiques",
+      "dataCollectionDesc": "Aider à améliorer l'application en partageant des données anonymes",
+      "visibilityOptions": {
+        "public": "Public",
+        "friends": "Amis uniquement",
+        "private": "Privé"
+      }
+    },
+    "preferences": {
+      "language": "Langue de l'interface",
+      "languageDesc": "Langue d'affichage de l'application",
+      "theme": "Thème",
+      "themeDesc": "Apparence de l'interface",
+      "autoplay": "Lecture automatique",
+      "autoplayDesc": "Lancer automatiquement les contenus audio",
+      "soundEffects": "Effets sonores",
+      "soundEffectsDesc": "Activer les sons d'interface",
+      "themeOptions": {
+        "light": "Clair",
+        "dark": "Sombre",
+        "auto": "Automatique"
+      }
+    },
+    "security": {
+      "twoFactorAuth": "Authentification à deux facteurs",
+      "twoFactorAuthDesc": "Ajouter une couche de sécurité supplémentaire",
+      "loginAlerts": "Alertes de connexion",
+      "loginAlertsDesc": "Recevoir une notification lors de nouvelles connexions",
+      "changePassword": "Changer le mot de passe",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le nouveau mot de passe",
+      "changePasswordButton": "Changer le mot de passe"
+    },
+    "actions": {
+      "saveSettings": "Sauvegarder les paramètres",
+      "deleteAccount": "Supprimer mon compte",
+      "deleteAccountDesc": "La suppression de votre compte est irréversible. Toutes vos données seront perdues."
+    },
+    "messages": {
+      "passwordMismatch": "Les mots de passe ne correspondent pas !",
+      "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères !",
+      "passwordChanged": "Mot de passe modifié avec succès !",
+      "confirmDeleteAccount": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
+      "accountDeleted": "Compte supprimé. Redirection vers la page d'accueil..."
     }
   },
   "lessons": {
@@ -100,6 +154,47 @@
       "easy": "Facile",
       "medium": "Moyen",
       "hard": "Difficile"
+    }
+  },
+  "scheduleLesson": {
+    "title": "Planifier une leçon",
+    "subtitle": "Choisissez votre professeur, date et heure",
+    "selectDate": "Sélectionnez une date",
+    "availableSlots": "Créneaux disponibles",
+    "chooseTeacher": "Choisissez votre professeur",
+    "bookingSummary": "Résumé de votre réservation",
+    "teacher": "Professeur",
+    "date": "Date",
+    "time": "Heure", 
+    "price": "Prix",
+    "confirmBooking": "Confirmer la réservation",
+    "lessonScheduled": "Leçon planifiée avec {{teacher}} le {{date}} à {{time}}"
+  },
+  "lessonSelection": {
+    "title": "Sélectionnez votre leçon",
+    "chooseLanguage": "Choisir la langue",
+    "chooseLevel": "Choisir le niveau",
+    "chooseCategory": "Choisir la catégorie",
+    "availableLessons": "Leçons disponibles",
+    "backButton": "Retour",
+    "noLessonsAvailable": "Aucune leçon disponible pour cette sélection.",
+    "languages": {
+      "english": "Anglais",
+      "french": "Français", 
+      "chinese": "Chinois",
+      "spanish": "Espagnol",
+      "german": "Allemand",
+      "italian": "Italien"
+    },
+    "levels": {
+      "beginnerDesc": "Parfait pour commencer votre apprentissage",
+      "intermediateDesc": "Développez vos connaissances existantes",
+      "advancedDesc": "Maîtrisez des compétences linguistiques complexes"
+    },
+    "categories": {
+      "easyDesc": "Parfait pour les débutants",
+      "mediumDesc": "Pour les apprenants intermédiaires", 
+      "hardDesc": "Défis de niveau avancé"
     }
   },
   "customerReviews": {

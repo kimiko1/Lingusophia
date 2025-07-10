@@ -17,24 +17,35 @@
   
   &__flag {
     @include flex-center;
-    width: 4rem;
-    height: 4rem;
+    width: 5rem;
+    height: 5rem;
     border-radius: $radius-full;
     background: $bg-secondary;
-    box-shadow: $shadow-md;
+    box-shadow: $shadow-lg;
     transition: $transition-transform;
+    margin-bottom: $spacing-2;
   }
   
   &__emoji {
-    font-size: 2rem;
+    font-size: 2.5rem;
     line-height: 1;
   }
   
   &__flag-img {
-    width: 3rem;
-    height: 3rem;
+    width: 4rem;
+    height: 4rem;
     border-radius: $radius-full;
     object-fit: cover;
+    transition: $transition-transform;
+    
+    // Style spécifique pour les SVG
+    &[src$=".svg"] {
+      border-radius: $radius-lg; // Moins arrondi pour les SVG rectangulaires
+      object-fit: contain; // Maintient les proportions
+      padding: 0.25rem;
+      background: $bg-secondary;
+      box-shadow: $shadow-sm;
+    }
   }
   
   &__info {
@@ -146,23 +157,50 @@
     }
     
     .language-card__flag {
+      width: 6rem;
+      height: 6rem;
+    }
+    
+    .language-card__emoji {
+      font-size: 3rem;
+    }
+    
+    .language-card__flag-img {
       width: 5rem;
       height: 5rem;
+      
+      &[src$=".svg"] {
+        padding: 0.5rem;
+      }
     }
     
     .language-card__title {
       font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
     }
   }
   
   // States
   &:hover {
     .language-card__flag {
-      transform: scale(1.1) rotate(5deg);
+      transform: scale(1.15) rotate(8deg);
+      box-shadow: $shadow-xl;
+    }
+    
+    .language-card__emoji {
+      filter: brightness(1.2);
     }
     
     .language-card__title {
       color: $primary-500;
+      transform: translateY(-2px);
+    }
+    
+    // Enhanced hover effects for SVG flags
+    .language-card__flag-img[src$=".svg"] {
+      transform: scale(1.1);
+      box-shadow: $shadow-xl;
+      filter: brightness(1.1) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
     }
   }
   
@@ -173,6 +211,11 @@
     .language-card__flag {
       transform: scale(1.05);
       box-shadow: $shadow-lg;
+    }
+    
+    .language-card__flag-img[src$=".svg"] {
+      border: 2px solid $primary-500;
+      filter: brightness(1.1) drop-shadow(0 2px 4px rgba($primary-500, 0.3));
     }
     
     .language-card__title {

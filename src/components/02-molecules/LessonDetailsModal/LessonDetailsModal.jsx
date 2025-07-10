@@ -141,10 +141,10 @@ const LessonDetailsModal = ({
       </div>
       
       <div className="lesson-details-modal__actions">
-        <Button variant="outline" onClick={onClose} size="large">
+        <Button variant="outline" onClick={onClose} size="lg">
           {t('components.lessonDetailsModal.cancel')}
         </Button>
-        <Button variant="primary" onClick={handleConfirm} size="large">
+        <Button variant="primary" onClick={handleConfirm} size="lg">
           {t('components.lessonDetailsModal.bookLesson')}
         </Button>
       </div>

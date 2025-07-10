@@ -63,32 +63,32 @@ const Settings = () => {
 
   const handleChangePassword = () => {
     if (passwords.new !== passwords.confirm) {
-      alert('Les mots de passe ne correspondent pas !');
+      alert(t('settings.messages.passwordMismatch'));
       return;
     }
     if (passwords.new.length < 8) {
-      alert('Le mot de passe doit contenir au moins 8 caractères !');
+      alert(t('settings.messages.passwordTooShort'));
       return;
     }
     // Logique de changement de mot de passe
-    alert('Mot de passe modifié avec succès !');
+    alert(t('settings.messages.passwordChanged'));
     setPasswords({ current: '', new: '', confirm: '' });
   };
 
   const handleDeleteAccount = () => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')) {
+    if (window.confirm(t('settings.messages.confirmDeleteAccount'))) {
       // Logique de suppression de compte
-      alert('Compte supprimé. Redirection vers la page d\'accueil...');
+      alert(t('settings.messages.accountDeleted'));
     }
   };
 
   return (
-    <PageLayout title="Paramètres" subtitle="Gérez vos préférences et votre compte">
+    <PageLayout title={t('settings.title')} subtitle={t('settings.subtitle')}>
       <div className="settings">
         {/* Notifications */}
         <Card className="settings__section">
           <Title level={2} size="lg" className="settings__section-title">
-            Notifications
+            {t('settings.sections.notifications')}
           </Title>
           <div className="settings__options">
             <div className="settings__option">
@@ -100,8 +100,8 @@ const Settings = () => {
                   className="settings__checkbox"
                 />
                 <span className="settings__option-text">
-                  <strong>Notifications par email</strong>
-                  <small>Recevoir des notifications importantes par email</small>
+                  <strong>{t('settings.notifications.emailNotifications')}</strong>
+                  <small>{t('settings.notifications.emailNotificationsDesc')}</small>
                 </span>
               </label>
             </div>
@@ -115,8 +115,8 @@ const Settings = () => {
                   className="settings__checkbox"
                 />
                 <span className="settings__option-text">
-                  <strong>Notifications push</strong>
-                  <small>Recevoir des notifications sur votre navigateur</small>
+                  <strong>{t('settings.notifications.pushNotifications')}</strong>
+                  <small>{t('settings.notifications.pushNotificationsDesc')}</small>
                 </span>
               </label>
             </div>
@@ -130,8 +130,8 @@ const Settings = () => {
                   className="settings__checkbox"
                 />
                 <span className="settings__option-text">
-                  <strong>Rappels de leçons</strong>
-                  <small>Recevoir des rappels avant vos leçons programmées</small>
+                  <strong>{t('settings.notifications.lessonReminders')}</strong>
+                  <small>{t('settings.notifications.lessonRemindersDesc')}</small>
                 </span>
               </label>
             </div>
@@ -145,8 +145,8 @@ const Settings = () => {
                   className="settings__checkbox"
                 />
                 <span className="settings__option-text">
-                  <strong>Emails marketing</strong>
-                  <small>Recevoir des offres promotionnelles et nouveautés</small>
+                  <strong>{t('settings.notifications.marketingEmails')}</strong>
+                  <small>{t('settings.notifications.marketingEmailsDesc')}</small>
                 </span>
               </label>
             </div>
@@ -156,22 +156,22 @@ const Settings = () => {
         {/* Confidentialité */}
         <Card className="settings__section">
           <Title level={2} size="lg" className="settings__section-title">
-            Confidentialité
+            {t('settings.sections.privacy')}
           </Title>
           <div className="settings__options">
             <div className="settings__option">
               <label className="settings__option-text">
-                <strong>Visibilité du profil</strong>
-                <small>Qui peut voir votre profil</small>
+                <strong>{t('settings.privacy.profileVisibility')}</strong>
+                <small>{t('settings.privacy.profileVisibilityDesc')}</small>
               </label>
               <select
                 value={settings.privacy.profileVisibility}
                 onChange={(e) => handleSettingChange('privacy', 'profileVisibility', e.target.value)}
                 className="settings__select"
               >
-                <option value="public">Public</option>
-                <option value="friends">Amis uniquement</option>
-                <option value="private">Privé</option>
+                <option value="public">{t('settings.privacy.visibilityOptions.public')}</option>
+                <option value="friends">{t('settings.privacy.visibilityOptions.friends')}</option>
+                <option value="private">{t('settings.privacy.visibilityOptions.private')}</option>
               </select>
             </div>
 
@@ -184,8 +184,8 @@ const Settings = () => {
                   className="settings__checkbox"
                 />
                 <span className="settings__option-text">
-                  <strong>Afficher les progrès</strong>
-                  <small>Permettre aux autres de voir vos progrès d'apprentissage</small>
+                  <strong>{t('settings.privacy.showProgress')}</strong>
+                  <small>{t('settings.privacy.showProgressDesc')}</small>
                 </span>
               </label>
             </div>
@@ -199,8 +199,8 @@ const Settings = () => {
                   className="settings__checkbox"
                 />
                 <span className="settings__option-text">
-                  <strong>Collecte de données analytiques</strong>
-                  <small>Aider à améliorer l'application en partageant des données anonymes</small>
+                  <strong>{t('settings.privacy.dataCollection')}</strong>
+                  <small>{t('settings.privacy.dataCollectionDesc')}</small>
                 </span>
               </label>
             </div>
@@ -210,13 +210,13 @@ const Settings = () => {
         {/* Préférences */}
         <Card className="settings__section">
           <Title level={2} size="lg" className="settings__section-title">
-            Préférences
+            {t('settings.sections.preferences')}
           </Title>
           <div className="settings__options">
             <div className="settings__option">
               <label className="settings__option-text">
-                <strong>Langue de l'interface</strong>
-                <small>Langue d'affichage de l'application</small>
+                <strong>{t('settings.preferences.language')}</strong>
+                <small>{t('settings.preferences.languageDesc')}</small>
               </label>
               <select
                 value={settings.preferences.language}
@@ -232,17 +232,17 @@ const Settings = () => {
 
             <div className="settings__option">
               <label className="settings__option-text">
-                <strong>Thème</strong>
-                <small>Apparence de l'interface</small>
+                <strong>{t('settings.preferences.theme')}</strong>
+                <small>{t('settings.preferences.themeDesc')}</small>
               </label>
               <select
                 value={settings.preferences.theme}
                 onChange={(e) => handleSettingChange('preferences', 'theme', e.target.value)}
                 className="settings__select"
               >
-                <option value="light">Clair</option>
-                <option value="dark">Sombre</option>
-                <option value="auto">Automatique</option>
+                <option value="light">{t('settings.preferences.themeOptions.light')}</option>
+                <option value="dark">{t('settings.preferences.themeOptions.dark')}</option>
+                <option value="auto">{t('settings.preferences.themeOptions.auto')}</option>
               </select>
             </div>
 
@@ -255,8 +255,8 @@ const Settings = () => {
                   className="settings__checkbox"
                 />
                 <span className="settings__option-text">
-                  <strong>Lecture automatique</strong>
-                  <small>Lancer automatiquement les contenus audio</small>
+                  <strong>{t('settings.preferences.autoplay')}</strong>
+                  <small>{t('settings.preferences.autoplayDesc')}</small>
                 </span>
               </label>
             </div>
@@ -270,8 +270,8 @@ const Settings = () => {
                   className="settings__checkbox"
                 />
                 <span className="settings__option-text">
-                  <strong>Effets sonores</strong>
-                  <small>Activer les sons d'interface</small>
+                  <strong>{t('settings.preferences.soundEffects')}</strong>
+                  <small>{t('settings.preferences.soundEffectsDesc')}</small>
                 </span>
               </label>
             </div>
@@ -281,7 +281,7 @@ const Settings = () => {
         {/* Sécurité */}
         <Card className="settings__section">
           <Title level={2} size="lg" className="settings__section-title">
-            Sécurité
+            {t('settings.sections.security')}
           </Title>
           <div className="settings__options">
             <div className="settings__option">
@@ -293,8 +293,8 @@ const Settings = () => {
                   className="settings__checkbox"
                 />
                 <span className="settings__option-text">
-                  <strong>Authentification à deux facteurs</strong>
-                  <small>Ajouter une couche de sécurité supplémentaire</small>
+                  <strong>{t('settings.security.twoFactorAuth')}</strong>
+                  <small>{t('settings.security.twoFactorAuthDesc')}</small>
                 </span>
               </label>
             </div>
@@ -308,8 +308,8 @@ const Settings = () => {
                   className="settings__checkbox"
                 />
                 <span className="settings__option-text">
-                  <strong>Alertes de connexion</strong>
-                  <small>Recevoir une notification lors de nouvelles connexions</small>
+                  <strong>{t('settings.security.loginAlerts')}</strong>
+                  <small>{t('settings.security.loginAlertsDesc')}</small>
                 </span>
               </label>
             </div>
@@ -317,23 +317,23 @@ const Settings = () => {
 
           {/* Changement de mot de passe */}
           <div className="settings__password-section">
-            <Title level={3} size="md">Changer le mot de passe</Title>
+            <Title level={3} size="md">{t('settings.security.changePassword')}</Title>
             <div className="settings__password-fields">
               <Input
                 type="password"
-                placeholder="Mot de passe actuel"
+                placeholder={t('settings.security.currentPassword')}
                 value={passwords.current}
                 onChange={(e) => handlePasswordChange('current', e.target.value)}
               />
               <Input
                 type="password"
-                placeholder="Nouveau mot de passe"
+                placeholder={t('settings.security.newPassword')}
                 value={passwords.new}
                 onChange={(e) => handlePasswordChange('new', e.target.value)}
               />
               <Input
                 type="password"
-                placeholder="Confirmer le nouveau mot de passe"
+                placeholder={t('settings.security.confirmPassword')}
                 value={passwords.confirm}
                 onChange={(e) => handlePasswordChange('confirm', e.target.value)}
               />
@@ -342,7 +342,7 @@ const Settings = () => {
                 onClick={handleChangePassword}
                 disabled={!passwords.current || !passwords.new || !passwords.confirm}
               >
-                Changer le mot de passe
+                {t('settings.security.changePasswordButton')}
               </Button>
             </div>
           </div>
@@ -351,18 +351,18 @@ const Settings = () => {
         {/* Actions */}
         <div className="settings__actions">
           <Button variant="primary" onClick={handleSaveSettings} size="lg">
-            Sauvegarder les paramètres
+            {t('settings.actions.saveSettings')}
           </Button>
           
           <Card className="settings__danger-zone">
             <Title level={3} size="md" className="settings__danger-title">
-              Zone de danger
+              {t('settings.sections.dangerZone')}
             </Title>
             <p className="settings__danger-text">
-              La suppression de votre compte est irréversible. Toutes vos données seront perdues.
+              {t('settings.actions.deleteAccountDesc')}
             </p>
             <Button variant="danger" onClick={handleDeleteAccount}>
-              Supprimer mon compte
+              {t('settings.actions.deleteAccount')}
             </Button>
           </Card>
         </div>

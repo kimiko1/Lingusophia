@@ -34,6 +34,7 @@ const LevelCard = ({
   const cardClasses = [
     'level-card',
     `level-card--${variant}`,
+    isSelected && 'level-card--selected',
     isLocked && 'level-card--locked',
     difficulty && `level-card--${difficulty.toLowerCase()}`,
     className
@@ -48,7 +49,6 @@ const LevelCard = ({
   return (
     <Card 
       className={cardClasses}
-      isSelected={isSelected}
       onClick={handleClick}
       interactive={!!onClick && !isLocked}
       {...props}

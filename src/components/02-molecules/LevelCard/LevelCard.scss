@@ -48,6 +48,18 @@
       filter: grayscale(100%);
     }
   }
+
+  // Selected state
+  &--selected {
+    border-color: $color-primary;
+    box-shadow: $shadow-lg;
+    transform: translateY(-2px);
+    
+    .level-card__icon-element {
+      color: $color-primary;
+      transform: scale(1.1);
+    }
+  }
 }
 
 .level-card__icon {
