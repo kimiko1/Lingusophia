@@ -227,6 +227,11 @@
   "admin": {
     "title": "Administration",
     "subtitle": "Gérez votre plateforme d'apprentissage",
+    "accessDenied": {
+      "title": "Accès refusé",
+      "message": "Vous n'avez pas les permissions nécessaires pour accéder à cette page.",
+      "goBack": "Retour"
+    },
     "tabs": {
       "dashboard": "Tableau de bord",
       "users": "Utilisateurs",
@@ -250,7 +255,9 @@
       "view": "Voir",
       "export": "Exporter",
       "filter": "Filtrer",
-      "search": "Rechercher"
+      "search": "Rechercher",
+      "confirm": "Confirmer",
+      "complete": "Terminer"
     },
     "users": {
       "title": "Gestion des Utilisateurs",
@@ -264,7 +271,11 @@
     },
     "bookings": {
       "title": "Gestion des Réservations",
-      "comingSoon": "Cette section sera bientôt disponible..."
+      "searchPlaceholder": "Rechercher une réservation...",
+      "details": "Détails de la réservation",
+      "notes": "Notes",
+      "student": "Étudiant",
+      "lesson": "Leçon"
     },
     "thisMonth": "Ce mois",
     "recentActivity": "Activité récente",
@@ -288,15 +299,50 @@
       "level": "Niveau",
       "price": "Prix",
       "teacher": "Professeur",
-      "bookings": "Réservations"
+      "bookings": "Réservations",
+      "student": "Étudiant",
+      "lesson": "Leçon",
+      "date": "Date",
+      "time": "Heure",
+      "payment": "Paiement"
     },
     "modal": {
       "user": "utilisateur",
       "lesson": "leçon",
+      "booking": "réservation",
       "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet élément ?",
       "cancel": "Annuler",
       "close": "Fermer",
       "formPlaceholder": "Formulaire {{type}} sera implémenté ici..."
+    },
+    "form": {
+      "saving": "Sauvegarde...",
+      "deleting": "Suppression...",
+      "create": "Créer",
+      "update": "Mettre à jour",
+      "duration": "Durée",
+      "minutes": "minutes",
+      "category": "Catégorie",
+      "description": "Description",
+      "roles": {
+        "student": "Étudiant",
+        "teacher": "Professeur",
+        "admin": "Administrateur"
+      },
+      "status": {
+        "active": "Actif",
+        "inactive": "Inactif",
+        "pending": "En attente",
+        "draft": "Brouillon"
+      },
+      "placeholders": {
+        "lessonTitle": "Ex: Conversation anglaise pour débutants",
+        "teacherName": "Ex: Sarah Wilson",
+        "lessonDescription": "Décrivez les objectifs et le contenu de cette leçon..."
+      },
+      "validation": {
+        "priceInvalid": "Le prix doit être un nombre positif"
+      }
     }
   }
 }

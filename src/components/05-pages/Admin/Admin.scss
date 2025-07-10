@@ -309,6 +309,24 @@
     color: $color-danger;
     &:hover { background: rgba($color-danger, 0.1); }
   }
+
+  &--confirm {
+    color: var(--color-success);
+    
+    &:hover {
+      background: var(--color-success-bg);
+      color: var(--color-success);
+    }
+  }
+
+  &--complete {
+    color: var(--color-info);
+    
+    &:hover {
+      background: var(--color-info-bg);
+      color: var(--color-info);
+    }
+  }
 }
 
 // Modal
@@ -346,6 +364,161 @@
   h2 {
     margin-bottom: $spacing-lg;
     color: $color-text-primary;
+  }
+}
+
+// Booking details modal
+.admin__booking-details {
+  padding: $spacing-xl;
+}
+
+.admin__booking-info {
+  h3 {
+    margin-bottom: $spacing-lg;
+    color: var(--color-text-primary);
+    font-size: $font-size-xl;
+  }
+}
+
+.admin__booking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-lg;
+  margin-bottom: $spacing-xl;
+}
+
+.admin__booking-field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  &--full {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    font-size: $font-size-sm;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  span, p {
+    color: var(--color-text-primary);
+    font-size: $font-size-base;
+  }
+
+  p {
+    margin: 0;
+    padding: $spacing-sm;
+    background: var(--color-surface);
+    border-radius: $border-radius-md;
+    border: 1px solid var(--color-border);
+  }
+}
+
+.admin__status {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-full;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &--confirmed {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+  }
+
+  &--pending {
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+  }
+
+  &--completed {
+    background: var(--color-info-bg);
+    color: var(--color-info);
+  }
+
+  &--cancelled {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+  }
+}
+
+.admin__payment {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-full;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &--paid {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+  }
+
+  &--pending {
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+  }
+
+  &--failed {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+  }
+}
+
+.admin__booking-actions {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-lg;
+  padding-top: $spacing-lg;
+  border-top: 1px solid var(--color-border);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+// Access denied page
+.admin__access-denied {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+}
+
+.admin__access-denied-content {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: $border-radius-xl;
+  padding: $spacing-3xl;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 500px;
+  width: 100%;
+
+  h1 {
+    color: var(--color-danger);
+    margin-bottom: $spacing-lg;
+    font-size: $font-size-2xl;
+  }
+
+  p {
+    color: var(--color-text-secondary);
+    margin-bottom: $spacing-xl;
+    font-size: $font-size-lg;
+    line-height: 1.6;
   }
 }
 
@@ -442,5 +615,49 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+// Modal styles
+.admin__modal {
+  .modal__content {
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+.admin__modal-content {
+  padding: 0;
+}
+
+.admin__delete-confirmation {
+  padding: $spacing-xl;
+  text-align: center;
+
+  p {
+    margin-bottom: $spacing-xl;
+    font-size: $font-size-lg;
+    color: var(--color-text-primary);
+  }
+}
+
+.admin__modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-lg;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.admin__form-placeholder {
+  padding: $spacing-xl;
+  text-align: center;
+  
+  p {
+    margin-bottom: $spacing-lg;
+    color: var(--color-text-secondary);
   }
 }
