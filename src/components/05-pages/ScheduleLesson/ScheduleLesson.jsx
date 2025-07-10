@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Card, Title, Input } from '../../01-atoms';
 import { LessonCard, CategoryCard } from '../../02-molecules';
 import { PageLayout } from '../../04-templates';
@@ -8,6 +9,7 @@ import './ScheduleLesson.scss';
  * ScheduleLesson - Page de planification d'une leçon
  */
 const ScheduleLesson = () => {
+  const { t } = useTranslation('pages');
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [selectedTeacher, setSelectedTeacher] = useState(null);
@@ -45,20 +47,24 @@ const ScheduleLesson = () => {
 
   const handleScheduleLesson = () => {
     if (selectedDate && selectedTime && selectedTeacher) {
-      alert(`Leçon planifiée avec ${selectedTeacher.name} le ${selectedDate} à ${selectedTime}`);
+      alert(t('scheduleLesson.lessonScheduled', { 
+        teacher: selectedTeacher.name, 
+        date: selectedDate, 
+        time: selectedTime 
+      }));
     }
   };
 
   return (
     <PageLayout 
-      title="Planifier une leçon"
-      subtitle="Choisissez votre professeur, date et heure"
+      title={t('scheduleLesson.title')}
+      subtitle={t('scheduleLesson.subtitle')}
     >
       <div className="schedule-lesson">
         {/* Section de sélection de date */}
         <Card className="schedule-lesson__date-section">
           <Title level={2} size="lg" className="schedule-lesson__section-title">
-            Sélectionnez une date
+            {t('scheduleLesson.selectDate')}
           </Title>
           <Input
             type="date"
@@ -72,7 +78,7 @@ const ScheduleLesson = () => {
         {/* Section de sélection d'heure */}
         <Card className="schedule-lesson__time-section">
           <Title level={2} size="lg" className="schedule-lesson__section-title">
-            Créneaux disponibles
+            {t('scheduleLesson.availableSlots')}
           </Title>
           <div className="schedule-lesson__time-slots">
             {timeSlots.map((time) => (
@@ -92,7 +98,7 @@ const ScheduleLesson = () => {
         {/* Section de sélection de professeur */}
         <Card className="schedule-lesson__teacher-section">
           <Title level={2} size="lg" className="schedule-lesson__section-title">
-            Choisissez votre professeur
+            {t('scheduleLesson.chooseTeacher')}
           </Title>
           <div className="schedule-lesson__teachers">
             {availableTeachers.map((teacher) => (
@@ -128,13 +134,13 @@ const ScheduleLesson = () => {
         {selectedDate && selectedTime && selectedTeacher && (
           <Card className="schedule-lesson__summary">
             <Title level={2} size="lg" className="schedule-lesson__section-title">
-              Résumé de votre réservation
+              {t('scheduleLesson.bookingSummary')}
             </Title>
             <div className="schedule-lesson__summary-content">
-              <p><strong>Professeur:</strong> {selectedTeacher.name}</p>
-              <p><strong>Date:</strong> {new Date(selectedDate).toLocaleDateString('fr-FR')}</p>
-              <p><strong>Heure:</strong> {selectedTime}</p>
-              <p><strong>Prix:</strong> ${selectedTeacher.price}</p>
+              <p><strong>{t('scheduleLesson.teacher')}:</strong> {selectedTeacher.name}</p>
+              <p><strong>{t('scheduleLesson.date')}:</strong> {new Date(selectedDate).toLocaleDateString('fr-FR')}</p>
+              <p><strong>{t('scheduleLesson.time')}:</strong> {selectedTime}</p>
+              <p><strong>{t('scheduleLesson.price')}:</strong> ${selectedTeacher.price}</p>
             </div>
             <Button
               variant="primary"
@@ -142,7 +148,7 @@ const ScheduleLesson = () => {
               onClick={handleScheduleLesson}
               className="schedule-lesson__confirm-btn"
             >
-              Confirmer la réservation
+              {t('scheduleLesson.confirmBooking')}
             </Button>
           </Card>
         )}

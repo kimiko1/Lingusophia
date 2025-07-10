@@ -54,20 +54,74 @@
   },
   "settings": {
     "title": "Settings",
-    "subtitle": "Customize your experience",
+    "subtitle": "Manage your preferences and account",
     "sections": {
-      "language": "Language",
       "notifications": "Notifications",
       "privacy": "Privacy",
-      "account": "Account",
+      "preferences": "Preferences",
+      "security": "Security",
       "dangerZone": "Danger Zone"
     },
-    "options": {
-      "changeLanguage": "Change interface language",
+    "notifications": {
       "emailNotifications": "Email notifications",
+      "emailNotificationsDesc": "Receive important notifications via email",
       "pushNotifications": "Push notifications",
+      "pushNotificationsDesc": "Receive notifications on your browser",
+      "lessonReminders": "Lesson reminders",
+      "lessonRemindersDesc": "Receive reminders before your scheduled lessons",
       "marketingEmails": "Marketing emails",
-      "deleteAccount": "Delete my account"
+      "marketingEmailsDesc": "Receive promotional offers and news"
+    },
+    "privacy": {
+      "profileVisibility": "Profile visibility",
+      "profileVisibilityDesc": "Who can see your profile",
+      "showProgress": "Show progress",
+      "showProgressDesc": "Allow others to see your learning progress",
+      "dataCollection": "Analytics data collection",
+      "dataCollectionDesc": "Help improve the application by sharing anonymous data",
+      "visibilityOptions": {
+        "public": "Public",
+        "friends": "Friends only",
+        "private": "Private"
+      }
+    },
+    "preferences": {
+      "language": "Interface language",
+      "languageDesc": "Application display language",
+      "theme": "Theme",
+      "themeDesc": "Interface appearance",
+      "autoplay": "Autoplay",
+      "autoplayDesc": "Automatically play audio content",
+      "soundEffects": "Sound effects",
+      "soundEffectsDesc": "Enable interface sounds",
+      "themeOptions": {
+        "light": "Light",
+        "dark": "Dark",
+        "auto": "Auto"
+      }
+    },
+    "security": {
+      "twoFactorAuth": "Two-factor authentication",
+      "twoFactorAuthDesc": "Add an extra layer of security",
+      "loginAlerts": "Login alerts",
+      "loginAlertsDesc": "Receive notification for new logins",
+      "changePassword": "Change password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "changePasswordButton": "Change password"
+    },
+    "actions": {
+      "saveSettings": "Save settings",
+      "deleteAccount": "Delete my account",
+      "deleteAccountDesc": "Deleting your account is irreversible. All your data will be lost."
+    },
+    "messages": {
+      "passwordMismatch": "Passwords do not match!",
+      "passwordTooShort": "Password must be at least 8 characters long!",
+      "passwordChanged": "Password changed successfully!",
+      "confirmDeleteAccount": "Are you sure you want to delete your account? This action is irreversible.",
+      "accountDeleted": "Account deleted. Redirecting to homepage..."
     }
   },
   "lessons": {
@@ -101,6 +155,47 @@
       "easy": "Easy",
       "medium": "Medium",
       "hard": "Hard"
+    }
+  },
+  "scheduleLesson": {
+    "title": "Schedule a Lesson",
+    "subtitle": "Choose your teacher, date and time",
+    "selectDate": "Select a date",
+    "availableSlots": "Available slots",
+    "chooseTeacher": "Choose your teacher",
+    "bookingSummary": "Your booking summary",
+    "teacher": "Teacher",
+    "date": "Date",
+    "time": "Time",
+    "price": "Price", 
+    "confirmBooking": "Confirm booking",
+    "lessonScheduled": "Lesson scheduled with {{teacher}} on {{date}} at {{time}}"
+  },
+  "lessonSelection": {
+    "title": "Select Your Lesson",
+    "chooseLanguage": "Choose Language",
+    "chooseLevel": "Choose Level",
+    "chooseCategory": "Choose Category",
+    "availableLessons": "Available Lessons",
+    "backButton": "Back",
+    "noLessonsAvailable": "No lessons available for this selection.",
+    "languages": {
+      "english": "English",
+      "french": "French", 
+      "chinese": "Chinese",
+      "spanish": "Spanish",
+      "german": "German",
+      "italian": "Italian"
+    },
+    "levels": {
+      "beginnerDesc": "Perfect for starting your language journey",
+      "intermediateDesc": "Build on your existing knowledge",
+      "advancedDesc": "Master complex language skills"
+    },
+    "categories": {
+      "easyDesc": "Perfect for beginners",
+      "mediumDesc": "For intermediate learners", 
+      "hardDesc": "Advanced level challenges"
     }
   },
   "customerReviews": {

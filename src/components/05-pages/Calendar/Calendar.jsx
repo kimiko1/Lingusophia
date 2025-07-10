@@ -169,7 +169,7 @@ const Calendar = () => {
             </p>
             <Button
               as={Link}
-              to="/schedule-lesson"
+              to="/lesson-selection"
               variant="primary"
               className="schedule-btn"
             >

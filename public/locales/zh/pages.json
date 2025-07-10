@@ -54,20 +54,74 @@
   },
   "settings": {
     "title": "设置",
-    "subtitle": "自定义您的体验",
+    "subtitle": "管理您的首选项和账户",
     "sections": {
-      "language": "语言",
       "notifications": "通知",
       "privacy": "隐私",
-      "account": "账户",
+      "preferences": "偏好设置",
+      "security": "安全",
       "dangerZone": "危险区域"
     },
-    "options": {
-      "changeLanguage": "更改界面语言",
+    "notifications": {
       "emailNotifications": "邮件通知",
+      "emailNotificationsDesc": "通过邮件接收重要通知",
       "pushNotifications": "推送通知",
+      "pushNotificationsDesc": "在浏览器上接收通知",
+      "lessonReminders": "课程提醒",
+      "lessonRemindersDesc": "在预定课程前接收提醒",
       "marketingEmails": "营销邮件",
-      "deleteAccount": "删除我的账户"
+      "marketingEmailsDesc": "接收促销优惠和新闻"
+    },
+    "privacy": {
+      "profileVisibility": "个人资料可见性",
+      "profileVisibilityDesc": "谁可以看到您的个人资料",
+      "showProgress": "显示进度",
+      "showProgressDesc": "允许其他人查看您的学习进度",
+      "dataCollection": "分析数据收集",
+      "dataCollectionDesc": "通过分享匿名数据帮助改进应用",
+      "visibilityOptions": {
+        "public": "公开",
+        "friends": "仅朋友",
+        "private": "私密"
+      }
+    },
+    "preferences": {
+      "language": "界面语言",
+      "languageDesc": "应用程序显示语言",
+      "theme": "主题",
+      "themeDesc": "界面外观",
+      "autoplay": "自动播放",
+      "autoplayDesc": "自动播放音频内容",
+      "soundEffects": "音效",
+      "soundEffectsDesc": "启用界面声音",
+      "themeOptions": {
+        "light": "浅色",
+        "dark": "深色",
+        "auto": "自动"
+      }
+    },
+    "security": {
+      "twoFactorAuth": "双重身份验证",
+      "twoFactorAuthDesc": "添加额外的安全层",
+      "loginAlerts": "登录提醒",
+      "loginAlertsDesc": "为新登录接收通知",
+      "changePassword": "更改密码",
+      "currentPassword": "当前密码",
+      "newPassword": "新密码",
+      "confirmPassword": "确认新密码",
+      "changePasswordButton": "更改密码"
+    },
+    "actions": {
+      "saveSettings": "保存设置",
+      "deleteAccount": "删除我的账户",
+      "deleteAccountDesc": "删除您的账户是不可逆的。您的所有数据都将丢失。"
+    },
+    "messages": {
+      "passwordMismatch": "密码不匹配！",
+      "passwordTooShort": "密码必须至少8个字符！",
+      "passwordChanged": "密码修改成功！",
+      "confirmDeleteAccount": "您确定要删除您的账户吗？此操作不可逆。",
+      "accountDeleted": "账户已删除。正在重定向到首页..."
     }
   },
   "lessons": {
@@ -100,6 +154,47 @@
       "easy": "简单",
       "medium": "中等",
       "hard": "困难"
+    }
+  },
+  "scheduleLesson": {
+    "title": "安排课程",
+    "subtitle": "选择您的老师、日期和时间",
+    "selectDate": "选择日期",
+    "availableSlots": "可用时段",
+    "chooseTeacher": "选择您的老师",
+    "bookingSummary": "您的预约摘要",
+    "teacher": "老师",
+    "date": "日期",
+    "time": "时间",
+    "price": "价格",
+    "confirmBooking": "确认预约",
+    "lessonScheduled": "已安排与{{teacher}}在{{date}}{{time}}的课程"
+  },
+  "lessonSelection": {
+    "title": "选择您的课程",
+    "chooseLanguage": "选择语言",
+    "chooseLevel": "选择级别",
+    "chooseCategory": "选择类别",
+    "availableLessons": "可用课程",
+    "backButton": "返回",
+    "noLessonsAvailable": "此选择暂无可用课程。",
+    "languages": {
+      "english": "英语",
+      "french": "法语", 
+      "chinese": "中文",
+      "spanish": "西班牙语",
+      "german": "德语",
+      "italian": "意大利语"
+    },
+    "levels": {
+      "beginnerDesc": "开始您的语言学习之旅的完美选择",
+      "intermediateDesc": "在现有知识基础上进一步发展",
+      "advancedDesc": "掌握复杂的语言技能"
+    },
+    "categories": {
+      "easyDesc": "非常适合初学者",
+      "mediumDesc": "适合中级学习者", 
+      "hardDesc": "高级水平挑战"
     }
   },
   "customerReviews": {

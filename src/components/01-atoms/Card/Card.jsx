@@ -14,6 +14,7 @@ const Card = ({
   interactive = false,
   className = '',
   as = 'div',
+  isSelected, // Extract isSelected to prevent it from being passed to DOM
   ...props 
 }) => {
   const Component = as;
@@ -24,6 +25,7 @@ const Card = ({
     `card--padding-${padding}`,
     hover && 'card--hover',
     interactive && 'card--interactive',
+    isSelected && 'card--selected',
     className
   ].filter(Boolean).join(' ');
 
@@ -43,6 +45,7 @@ Card.propTypes = {
   padding: PropTypes.oneOf(['none', 'sm', 'base', 'lg']),
   hover: PropTypes.bool,
   interactive: PropTypes.bool,
+  isSelected: PropTypes.bool,
   className: PropTypes.string,
   as: PropTypes.elementType
 };

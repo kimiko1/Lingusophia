@@ -53,7 +53,7 @@ const LanguageCard = ({
     >
       <div className="language-card__content">
         <div className="language-card__flag">
-          {typeof flag === 'string' ? (
+          {typeof flag === 'string' && flag.length <= 4 ? (
             <span className="language-card__emoji" role="img" aria-label={`${language} flag`}>
               {flag}
             </span>
