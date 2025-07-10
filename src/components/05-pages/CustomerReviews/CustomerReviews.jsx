@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faStar, 
@@ -21,6 +22,7 @@ import './CustomerReviews.scss';
  * @param {Object} props - Component props
  */
 const CustomerReviews = () => {
+  const { t } = useTranslation('pages');
   const [reviews, setReviews] = useState([]);
   const [completedLessons, setCompletedLessons] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -160,16 +162,16 @@ const CustomerReviews = () => {
     <div className="customer-reviews">
       <div className="customer-reviews__container">
         <Title level={1} className="page-title">
-          Customer Reviews
+          {t('customerReviews.title')}
         </Title>
 
         {/* Section pour créer des reviews */}
         <section className="create-reviews-section">
           <Title level={2} className="section-title">
-            Share Your Experience
+            {t('customerReviews.shareExperience')}
           </Title>
           <p className="section-description">
-            Help other students by sharing your thoughts about the lessons you've completed.
+            {t('customerReviews.shareDescription')}
           </p>
 
           <div className="lessons-grid">
@@ -185,9 +187,9 @@ const CustomerReviews = () => {
                       <span className="language">{lesson.language}</span>
                       <span className="category">{lesson.category}</span>
                     </div>
-                    <p className="teacher">Teacher: {lesson.teacher}</p>
+                    <p className="teacher">{t('customerReviews.teacher')}: {lesson.teacher}</p>
                     <p className="completed-date">
-                      Completed: {new Date(lesson.completedDate).toLocaleDateString()}
+                      {t('customerReviews.completed')}: {new Date(lesson.completedDate).toLocaleDateString(t('locale', { ns: 'common' }))}
                     </p>
                   </div>
                   <Button
@@ -196,7 +198,7 @@ const CustomerReviews = () => {
                     className="review-btn"
                   >
                     <FontAwesomeIcon icon={faPlus} />
-                    Write Review
+                    {t('customerReviews.writeReview')}
                   </Button>
                 </Card>
               ))
@@ -205,7 +207,7 @@ const CustomerReviews = () => {
 
           {completedLessons.filter(lesson => !lesson.hasReview).length === 0 && (
             <Card className="no-lessons-card">
-              <p>You have reviewed all your completed lessons! 🎉</p>
+              <p>{t('customerReviews.allReviewsCompleted')}</p>
             </Card>
           )}
         </section>
@@ -213,7 +215,7 @@ const CustomerReviews = () => {
         {/* Section des reviews existantes */}
         <section className="existing-reviews-section">
           <Title level={2} className="section-title">
-            Your Reviews ({reviews.length})
+            {t('customerReviews.yourReviews')} ({reviews.length})
           </Title>
 
           {reviews.length > 0 ? (
@@ -230,8 +232,8 @@ const CustomerReviews = () => {
                   </div>
                   <div className="review-details">
                     <span className="language">{review.language}</span>
-                    <span className="teacher">with {review.teacher}</span>
-                    <span className="date">{new Date(review.date).toLocaleDateString()}</span>
+                    <span className="teacher">{t('customerReviews.teacher')}: {review.teacher}</span>
+                    <span className="date">{new Date(review.date).toLocaleDateString(t('locale', { ns: 'common' }))}</span>
                   </div>
                   <p className="review-comment">{review.comment}</p>
                 </Card>
@@ -239,7 +241,7 @@ const CustomerReviews = () => {
             </div>
           ) : (
             <Card className="no-reviews-card">
-              <p>You haven't written any reviews yet. Complete some lessons and share your experience!</p>
+              <p>{t('customerReviews.noReviews')}</p>
             </Card>
           )}
         </section>
@@ -248,7 +250,7 @@ const CustomerReviews = () => {
         <Modal
           isOpen={isModalOpen}
           onClose={closeModal}
-          title={`Review: ${selectedLesson?.title || ''}`}
+          title={`${t('customerReviews.title')}: ${selectedLesson?.title || ''}`}
           size="large"
         >
           <div className="review-modal-content">
@@ -260,7 +262,7 @@ const CustomerReviews = () => {
 
             {currentStep === 1 && (
               <div className="step-content">
-                <Title level={3}>Rate this lesson</Title>
+                <Title level={3}>{t('customerReviews.modal.rateLesson')}</Title>
                 <div className="rating-section">
                   {renderStars(newReview.rating, true, (rating) => 
                     setNewReview(prev => ({ ...prev, rating }))
@@ -271,30 +273,30 @@ const CustomerReviews = () => {
                   onClick={() => setCurrentStep(2)}
                   disabled={newReview.rating === 0}
                 >
-                  Next
+                  {t('customerReviews.modal.next')}
                 </Button>
               </div>
             )}
 
             {currentStep === 2 && (
               <div className="step-content">
-                <Title level={3}>Share your thoughts</Title>
+                <Title level={3}>{t('customerReviews.modal.shareThoughts')}</Title>
                 <textarea
                   value={newReview.comment}
                   onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
-                  placeholder="Tell us about your experience with this lesson..."
+                  placeholder={t('customerReviews.modal.commentPlaceholder')}
                   className="comment-textarea"
                 />
                 <div className="navigation-buttons">
                   <Button variant="secondary" onClick={() => setCurrentStep(1)}>
-                    Back
+                    {t('customerReviews.modal.back')}
                   </Button>
                   <Button
                     variant="primary"
                     onClick={() => setCurrentStep(3)}
                     disabled={newReview.comment.trim().length < 10}
                   >
-                    Next
+                    {t('customerReviews.modal.next')}
                   </Button>
                 </div>
               </div>
@@ -302,7 +304,7 @@ const CustomerReviews = () => {
 
             {currentStep === 3 && (
               <div className="step-content">
-                <Title level={3}>Final details</Title>
+                <Title level={3}>{t('customerReviews.modal.finalDetails')}</Title>
                 <div className="final-details">
                   <label className="checkbox-label">
                     <input
@@ -310,19 +312,19 @@ const CustomerReviews = () => {
                       checked={newReview.isAnonymous}
                       onChange={(e) => setNewReview(prev => ({ ...prev, isAnonymous: e.target.checked }))}
                     />
-                    Submit anonymously
+                    {t('customerReviews.modal.submitAnonymously')}
                   </label>
                 </div>
                 <div className="navigation-buttons">
                   <Button variant="secondary" onClick={() => setCurrentStep(2)}>
-                    Back
+                    {t('customerReviews.modal.back')}
                   </Button>
                   <Button
                     variant="primary"
                     onClick={handleSubmitReview}
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? 'Submitting...' : 'Submit Review'}
+                    {isSubmitting ? t('customerReviews.modal.submitting') : t('customerReviews.modal.submitReview')}
                   </Button>
                 </div>
               </div>

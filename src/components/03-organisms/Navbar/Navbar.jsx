@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faThLarge, 
@@ -19,6 +20,7 @@ import {
 
 import { NavItem } from '../../02-molecules';
 import { Logo, UserGreeting } from '../../01-atoms';
+import LanguageSelector from '../../01-atoms/LanguageSelector/LanguageSelector';
 import testSvg from '../../../assets/test.svg';
 import './Navbar.scss';
 
@@ -39,22 +41,23 @@ const Navbar = ({
   isLoggedIn = true,
   ...props
 }) => {
+  const { t } = useTranslation('common');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const location = useLocation();
 
   // Navigation items
   const navItems = [
-    { icon: faThLarge, label: "Dashboard", href: "/", id: "dashboard" },
-    { icon: faCalendarAlt, label: "Schedule", href: "/calendar", id: "schedule" },
-    { icon: faGraduationCap, label: "My Lessons", href: "/my-lessons", id: "lessons" },
-    { icon: faStar, label: "Reviews", href: "/customer-reviews", id: "reviews" }
+    { icon: faThLarge, label: t('navigation.home'), href: "/", id: "dashboard" },
+    { icon: faCalendarAlt, label: t('navigation.calendar'), href: "/calendar", id: "schedule" },
+    { icon: faGraduationCap, label: t('navigation.myLessons'), href: "/my-lessons", id: "lessons" },
+    { icon: faStar, label: t('navigation.customerReviews'), href: "/customer-reviews", id: "reviews" }
   ];
 
   const profileItems = [
-    { icon: faUser, label: "Profile", href: "/profile" },
-    { icon: faHistory, label: "Learning History", href: "/history" },
-    { icon: faCog, label: "Settings", href: "/settings" }
+    { icon: faUser, label: t('navigation.profile'), href: "/profile" },
+    { icon: faHistory, label: t('user.learningHistory'), href: "/history" },
+    { icon: faCog, label: t('navigation.settings'), href: "/settings" }
   ];
 
   // Check if a link is active
@@ -140,7 +143,7 @@ const Navbar = ({
         <button 
           className="navbar__menu-toggle"
           onClick={toggleMenu}
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-label={isMenuOpen ? t('aria.closeMenu') : t('aria.openMenu')}
           aria-expanded={isMenuOpen}
         >
           <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
@@ -177,6 +180,16 @@ const Navbar = ({
       {/* User Section */}
       {isLoggedIn && (
         <div className="navbar__user">
+          {/* Language Selector */}
+          <div className="navbar__language-selector">
+            <LanguageSelector 
+              variant="dropdown"
+              size="sm"
+              showFlag={true}
+              showNativeName={false}
+            />
+          </div>
+
           {/* User Greeting - Desktop */}
           {showUserInfo && (
             <div className="navbar__greeting">
@@ -190,12 +203,12 @@ const Navbar = ({
 
           {/* Profile Avatar */}
           <div className="navbar__profile">
-            <img src={testSvg} alt="Profile" className="navbar__avatar" />
+            <img src={testSvg} alt={t('user.profile')} className="navbar__avatar" />
             
             <button 
               className="navbar__profile-toggle"
               onClick={toggleProfile}
-              aria-label="Open profile menu"
+              aria-label={t('aria.openProfile')}
               aria-expanded={isProfileOpen}
             >
               <FontAwesomeIcon 
@@ -229,7 +242,7 @@ const Navbar = ({
                     onClick={handleLogout}
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} />
-                    <span>Logout</span>
+                    <span>{t('navigation.logout')}</span>
                   </button>
                 </li>
               </ul>

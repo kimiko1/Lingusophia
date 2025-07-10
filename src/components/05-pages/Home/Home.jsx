@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import { Navigations } from '../../03-organisms';
 import { ReviewSlider } from '../../02-molecules';
 import { Title } from '../../01-atoms';
@@ -18,6 +19,8 @@ const Home = ({
   user,
   ...props
 }) => {
+  const { t } = useTranslation('pages');
+  
   const homeClasses = [
     'home-page',
     `home-page--${variant}`,
@@ -31,7 +34,7 @@ const Home = ({
         <section className="home-page__hero">
           <div className="home-page__hero-content">
             <Title level={1} className="home-page__hero-title">
-              Welcome to LearnALanguage
+              {t('home.title')}
             </Title>
           </div>
         </section>
@@ -40,7 +43,7 @@ const Home = ({
         <section className="home-page__navigation">
           <div className="home-page__section-header">
             <p className="home-page__section-description">
-              Select what you'd like to do today
+              {t('home.description')}
             </p>
           </div>
           <Navigations />
@@ -50,10 +53,10 @@ const Home = ({
         <section className="home-page__reviews">
           <div className="home-page__section-header">
             <Title level={2} className="home-page__section-title">
-              Student Reviews
+              {t('home.reviews.title')}
             </Title>
             <p className="home-page__section-description">
-              See what our students have to say about their learning experience
+              {t('home.reviews.description')}
             </p>
           </div>
           <ReviewSlider autoPlay={true} autoPlayInterval={6000} />

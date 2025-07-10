@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Title, Card } from '../../01-atoms';
 import './MyLessons.scss';
 
@@ -7,6 +8,8 @@ import './MyLessons.scss';
  * @param {Object} props - Component props
  */
 const MyLessons = () => {
+  const { t } = useTranslation('pages');
+  
   // Simulation des leçons déjà prises (normalement viendraient d'une API)
   const [completedLessons] = useState([
     {
@@ -123,7 +126,7 @@ const MyLessons = () => {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString(t('locale', { ns: 'common' }), {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
@@ -131,7 +134,7 @@ const MyLessons = () => {
   };
 
   const formatDateTime = (dateTimeString) => {
-    return new Date(dateTimeString).toLocaleDateString('en-US', {
+    return new Date(dateTimeString).toLocaleDateString(t('locale', { ns: 'common' }), {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
@@ -143,13 +146,13 @@ const MyLessons = () => {
     <div className="my-lessons">
       <div className="my-lessons__container">
         <Title level={1} className="page-title">
-          My Lessons
+          {t('lessons.title')}
         </Title>
 
         {/* Current Lessons Section */}
         <section className="current-lessons-section">
           <Title level={2} className="section-title">
-            Current Lessons ({currentLessons.length})
+            {t('lessons.currentLessons')} ({currentLessons.length})
           </Title>
           
           {currentLessons.length > 0 ? (
@@ -164,20 +167,20 @@ const MyLessons = () => {
                       className="category-badge"
                       style={{ backgroundColor: getCategoryColor(lesson.category) }}
                     >
-                      {lesson.category}
+                      {t(`lessons.categories.${lesson.category.toLowerCase()}`)}
                     </span>
                   </div>
                   
                   <div className="lesson-details">
                     <div className="lesson-info">
                       <span className="language">{lesson.language}</span>
-                      <span className="level">{lesson.level}</span>
-                      <span className="teacher">with {lesson.teacher}</span>
+                      <span className="level">{t(`lessons.difficulty.${lesson.level.toLowerCase()}`)}</span>
+                      <span className="teacher">{t('lessons.with')} {lesson.teacher}</span>
                     </div>
                     
                     <div className="progress-section">
                       <div className="progress-label">
-                        Progress: {lesson.progress}%
+                        {t('lessons.progress')}: {lesson.progress}%
                       </div>
                       <div className="progress-bar">
                         <div 
@@ -188,11 +191,11 @@ const MyLessons = () => {
                     </div>
                     
                     <div className="next-session">
-                      <strong>Next session:</strong> {formatDateTime(lesson.nextSession)}
+                      <strong>{t('lessons.nextSession')}:</strong> {formatDateTime(lesson.nextSession)}
                     </div>
                     
                     <div className="started-date">
-                      Started: {formatDate(lesson.startedDate)}
+                      {t('lessons.started')}: {formatDate(lesson.startedDate)}
                     </div>
                   </div>
                 </Card>
@@ -200,7 +203,7 @@ const MyLessons = () => {
             </div>
           ) : (
             <Card className="empty-state">
-              <p>You don't have any ongoing lessons. Start a new lesson to see it here!</p>
+              <p>{t('lessons.noOngoingLessons')}</p>
             </Card>
           )}
         </section>
@@ -208,7 +211,7 @@ const MyLessons = () => {
         {/* Completed Lessons Section */}
         <section className="completed-lessons-section">
           <Title level={2} className="section-title">
-            Completed Lessons ({completedLessons.length})
+            {t('lessons.completedLessons')} ({completedLessons.length})
           </Title>
           
           <div className="lessons-grid">
@@ -223,7 +226,7 @@ const MyLessons = () => {
                       className="category-badge"
                       style={{ backgroundColor: getCategoryColor(lesson.category) }}
                     >
-                      {lesson.category}
+                      {t(`lessons.categories.${lesson.category.toLowerCase()}`)}
                     </span>
                     <span 
                       className="grade-badge"
@@ -237,13 +240,13 @@ const MyLessons = () => {
                 <div className="lesson-details">
                   <div className="lesson-info">
                     <span className="language">{lesson.language}</span>
-                    <span className="level">{lesson.level}</span>
-                    <span className="teacher">with {lesson.teacher}</span>
+                    <span className="level">{t(`lessons.difficulty.${lesson.level.toLowerCase()}`)}</span>
+                    <span className="teacher">{t('lessons.with')} {lesson.teacher}</span>
                   </div>
                   
                   <div className="progress-section">
                     <div className="progress-label">
-                      Final Score: {lesson.progress}%
+                      {t('lessons.finalScore')}: {lesson.progress}%
                     </div>
                     <div className="progress-bar completed">
                       <div 
@@ -254,7 +257,7 @@ const MyLessons = () => {
                   </div>
                   
                   <div className="completed-date">
-                    Completed: {formatDate(lesson.completedDate)}
+                    {t('lessons.completedDate')}: {formatDate(lesson.completedDate)}
                   </div>
                 </div>
               </Card>
@@ -265,25 +268,25 @@ const MyLessons = () => {
         {/* Summary Stats */}
         <section className="stats-section">
           <Title level={2} className="section-title">
-            Learning Statistics
+            {t('lessons.learningStatistics')}
           </Title>
           
           <div className="stats-grid">
             <Card className="stat-card">
               <div className="stat-number">{completedLessons.length}</div>
-              <div className="stat-label">Lessons Completed</div>
+              <div className="stat-label">{t('lessons.stats.lessonsCompleted')}</div>
             </Card>
             
             <Card className="stat-card">
               <div className="stat-number">{currentLessons.length}</div>
-              <div className="stat-label">Ongoing Lessons</div>
+              <div className="stat-label">{t('lessons.stats.ongoingLessons')}</div>
             </Card>
             
             <Card className="stat-card">
               <div className="stat-number">
                 {[...new Set(completedLessons.map(l => l.language))].length}
               </div>
-              <div className="stat-label">Languages Studied</div>
+              <div className="stat-label">{t('lessons.stats.languagesStudied')}</div>
             </Card>
             
             <Card className="stat-card">
@@ -293,7 +296,7 @@ const MyLessons = () => {
                   completedLessons.length
                 )}%
               </div>
-              <div className="stat-label">Average Score</div>
+              <div className="stat-label">{t('lessons.stats.averageScore')}</div>
             </Card>
           </div>
         </section>

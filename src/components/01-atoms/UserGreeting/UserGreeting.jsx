@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import './UserGreeting.scss';
 
 /**
@@ -15,7 +16,7 @@ import './UserGreeting.scss';
  */
 const UserGreeting = ({ 
   name,
-  greeting = 'Hi',
+  greeting,
   emoji = '👋',
   variant = 'default',
   size = 'medium',
@@ -23,6 +24,9 @@ const UserGreeting = ({
   animated = false,
   ...props
 }) => {
+  const { t } = useTranslation('common');
+  const greetingText = greeting || t('user.greeting');
+  
   const greetingClasses = [
     'user-greeting',
     `user-greeting--${variant}`,
@@ -34,7 +38,7 @@ const UserGreeting = ({
   return (
     <div className={greetingClasses} {...props}>
       <span className="user-greeting__text">
-        {greeting} {name}
+        {greetingText} {name}
       </span>
       <span 
         className="user-greeting__emoji"

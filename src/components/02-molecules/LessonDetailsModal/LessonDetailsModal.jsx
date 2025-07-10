@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 import { Modal, TeacherInfo, Title, Button } from '../../01-atoms';
 import './LessonDetailsModal.scss';
 
@@ -24,6 +25,8 @@ const LessonDetailsModal = ({
   className = '',
   ...props
 }) => {
+  const { t } = useTranslation('common');
+  
   if (!lesson) return null;
 
   const modalClasses = [
@@ -44,14 +47,14 @@ const LessonDetailsModal = ({
       onClose={onClose} 
       className={modalClasses}
       size="large"
-      title="Lesson Details"
+      title={t('components.lessonDetailsModal.title')}
       {...props}
     >
       <div className="lesson-details-modal__content">
         <div className="lesson-details-modal__left">
           <div className="lesson-details-modal__header">
             <Title level={3} className="lesson-details-modal__section-title">
-              Goal of this course:
+              {t('components.lessonDetailsModal.goalOfCourse')}
             </Title>
           </div>
           
@@ -61,7 +64,7 @@ const LessonDetailsModal = ({
             
             {lesson.goals && lesson.goals.length > 0 && (
               <div className="lesson-details-modal__goals">
-                <h5 className="lesson-details-modal__goals-title">What you'll learn:</h5>
+                <h5 className="lesson-details-modal__goals-title">{t('components.lessonDetailsModal.whatYouWillLearn')}</h5>
                 <ul className="lesson-details-modal__goals-list">
                   {lesson.goals.map((goal, index) => (
                     <li key={index} className="lesson-details-modal__goal-item">
@@ -76,12 +79,12 @@ const LessonDetailsModal = ({
             {lesson.duration && (
               <div className="lesson-details-modal__meta">
                 <div className="lesson-details-modal__meta-item">
-                  <span className="lesson-details-modal__meta-label">Duration:</span>
+                  <span className="lesson-details-modal__meta-label">{t('components.lessonDetailsModal.duration')}</span>
                   <span className="lesson-details-modal__meta-value">{lesson.duration}</span>
                 </div>
                 {lesson.level && (
                   <div className="lesson-details-modal__meta-item">
-                    <span className="lesson-details-modal__meta-label">Level:</span>
+                    <span className="lesson-details-modal__meta-label">{t('components.lessonDetailsModal.level')}</span>
                     <span className={`lesson-details-modal__meta-value lesson-details-modal__level--${lesson.level.toLowerCase()}`}>
                       {lesson.level}
                     </span>
@@ -89,7 +92,7 @@ const LessonDetailsModal = ({
                 )}
                 {lesson.price && (
                   <div className="lesson-details-modal__meta-item">
-                    <span className="lesson-details-modal__meta-label">Price:</span>
+                    <span className="lesson-details-modal__meta-label">{t('components.lessonDetailsModal.price')}</span>
                     <span className="lesson-details-modal__meta-value lesson-details-modal__price">
                       {lesson.price}
                     </span>
@@ -104,7 +107,7 @@ const LessonDetailsModal = ({
           <div className="lesson-details-modal__right">
             <div className="lesson-details-modal__teacher-section">
               <Title level={4} className="lesson-details-modal__section-title">
-                Your Teacher
+                {t('components.lessonDetailsModal.yourTeacher')}
               </Title>
               <TeacherInfo 
                 name={teacher.name} 
@@ -117,12 +120,12 @@ const LessonDetailsModal = ({
                 <div className="lesson-details-modal__teacher-details">
                   {teacher.speciality && (
                     <p className="lesson-details-modal__teacher-speciality">
-                      <strong>Speciality:</strong> {teacher.speciality}
+                      <strong>{t('components.lessonDetailsModal.speciality')}</strong> {teacher.speciality}
                     </p>
                   )}
                   {teacher.experience && (
                     <p className="lesson-details-modal__teacher-experience">
-                      <strong>Experience:</strong> {teacher.experience}
+                      <strong>{t('components.lessonDetailsModal.experience')}</strong> {teacher.experience}
                     </p>
                   )}
                   {teacher.bio && (
@@ -139,10 +142,10 @@ const LessonDetailsModal = ({
       
       <div className="lesson-details-modal__actions">
         <Button variant="outline" onClick={onClose} size="large">
-          Cancel
+          {t('components.lessonDetailsModal.cancel')}
         </Button>
         <Button variant="primary" onClick={handleConfirm} size="large">
-          Book this lesson
+          {t('components.lessonDetailsModal.bookLesson')}
         </Button>
       </div>
     </Modal>

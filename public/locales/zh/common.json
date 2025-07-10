@@ -1,0 +1,97 @@
+{
+  "app": {
+    "name": "LearnALanguage",
+    "tagline": "自信掌握语言"
+  },
+  "navigation": {
+    "home": "首页",
+    "lessons": "课程",
+    "calendar": "日历",
+    "profile": "个人资料",
+    "settings": "设置",
+    "logout": "退出",
+    "myLessons": "我的课程",
+    "scheduleLesson": "安排课程",
+    "lessonSelection": "课程选择",
+    "customerReviews": "客户评价",
+    "contactTeacher": "联系老师"
+  },
+  "user": {
+    "greeting": "你好",
+    "welcomeBack": "欢迎回来",
+    "profile": "个人资料",
+    "account": "我的账户",
+    "learningHistory": "学习历史"
+  },
+  "buttons": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "submit": "提交",
+    "close": "关闭",
+    "confirm": "确认",
+    "viewAll": "查看全部",
+    "learnMore": "了解更多",
+    "getStarted": "开始"
+  },
+  "forms": {
+    "required": "此字段为必填项",
+    "email": "请输入有效的邮箱地址",
+    "password": "密码必须至少包含8个字符",
+    "confirmPassword": "密码不匹配",
+    "firstName": "名",
+    "lastName": "姓",
+    "phone": "电话号码",
+    "language": "语言",
+    "level": "级别"
+  },
+  "messages": {
+    "success": "操作成功完成",
+    "error": "发生错误",
+    "loading": "加载中...",
+    "noData": "无可用数据",
+    "welcome": "欢迎回来！",
+    "goodbye": "再见！"
+  },
+  "aria": {
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单",
+    "openProfile": "打开个人资料菜单",
+    "closeProfile": "关闭个人资料菜单",
+    "selectLanguage": "选择语言",
+    "currentLanguage": "当前语言"
+  },
+  "languages": {
+    "en": "英语",
+    "fr": "法语",
+    "zh": "中文"
+  },
+  "components": {
+    "lessonDetailsModal": {
+      "title": "课程详情",
+      "goalOfCourse": "本课程的目标：",
+      "whatYouWillLearn": "您将学习的内容：",
+      "duration": "时长：",
+      "level": "级别：",
+      "price": "价格：",
+      "yourTeacher": "您的老师",
+      "speciality": "专业：",
+      "experience": "经验：",
+      "cancel": "取消",
+      "bookLesson": "预订此课程"
+    },
+    "reviewSlider": {
+      "title": "学生评价",
+      "previousReview": "上一个评价",
+      "nextReview": "下一个评价",
+      "goToReview": "查看评价",
+      "with": "与",
+      "anonymous": "匿名"
+    }
+  },
+  "locale": "zh-CN"
+}
