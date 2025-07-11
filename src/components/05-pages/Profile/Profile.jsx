@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { Button, Card, Title, Input } from '../../01-atoms';
 import LessonCard from '../../02-molecules/LessonCard';
 import { PageLayout } from '../../04-templates';
+import { userService } from '../../../services';
 import './Profile.scss';
 
 /**
@@ -10,54 +12,88 @@ import './Profile.scss';
  */
 const Profile = () => {
   const { t } = useTranslation('pages');
+  const { user } = useSelector(state => state.auth);
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  
   const [userInfo, setUserInfo] = useState({
-    name: 'Jean Dupont',
-    email: 'jean.dupont@email.com',
-    phone: '+33 6 12 34 56 78',
-    language: 'Français',
-    level: 'Intermédiaire',
-    bio: 'Passionné par l\'apprentissage des langues, je souhaite améliorer mon anglais pour ma carrière professionnelle.'
+    name: '',
+    email: '',
+    phone: '',
+    language: '',
+    level: '',
+    bio: ''
   });
 
-  const [stats] = useState({
-    lessonsCompleted: 42,
-    hoursStudied: 85,
-    streak: 15,
-    favoriteLanguage: 'Anglais'
+  const [stats, setStats] = useState({
+    lessonsCompleted: 0,
+    hoursStudied: 0,
+    streak: 0,
+    favoriteLanguage: ''
   });
 
-  const [recentLessons] = useState([
-    {
-      id: 1,
-      title: 'English Conversation',
-      teacher: 'Sarah Johnson',
-      date: '2024-01-15',
-      duration: 60,
-      status: 'completed'
-    },
-    {
-      id: 2,
-      title: 'Business English',
-      teacher: 'Michael Brown',
-      date: '2024-01-12',
-      duration: 45,
-      status: 'completed'
-    },
-    {
-      id: 3,
-      title: 'Grammar Practice',
-      teacher: 'Sarah Johnson',
-      date: '2024-01-10',
-      duration: 30,
-      status: 'completed'
+  const [recentLessons, setRecentLessons] = useState([]);
+
+  // Charger les données du profil au montage du composant
+  useEffect(() => {
+    if (user?.id) {
+      loadUserProfile();
+      loadUserStats();
+      loadRecentLessons();
     }
-  ]);
+  }, [user?.id]);
 
-  const handleSave = () => {
-    setIsEditing(false);
-    // Logique de sauvegarde
-    alert(t('messages.success', { ns: 'common' }));
+  const loadUserProfile = async () => {
+    try {
+      setLoading(true);
+      const profile = await userService.getCurrentUserProfile();
+      setUserInfo({
+        name: `${profile.firstName} ${profile.lastName}`,
+        email: profile.email,
+        phone: profile.phone || '',
+        language: profile.nativeLanguage || '',
+        level: profile.currentLevel || '',
+        bio: profile.bio || ''
+      });
+    } catch (err) {
+      setError('Erreur lors du chargement du profil');
+      console.error('Erreur lors du chargement du profil:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadUserStats = async () => {
+    try {
+      const userStats = await userService.getUserStats(user.id);
+      setStats(userStats);
+    } catch (err) {
+      console.error('Erreur lors du chargement des statistiques:', err);
+    }
+  };
+
+  const loadRecentLessons = async () => {
+    try {
+      const lessons = await userService.getRecentLessons(user.id, 5);
+      setRecentLessons(lessons);
+    } catch (err) {
+      console.error('Erreur lors du chargement des leçons récentes:', err);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      await userService.updateUserProfile(userInfo);
+      setIsEditing(false);
+      alert(t('messages.success', { ns: 'common' }));
+    } catch (err) {
+      setError('Erreur lors de la sauvegarde');
+      console.error('Erreur lors de la sauvegarde:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleInputChange = (field, value) => {
@@ -192,11 +228,12 @@ const Profile = () => {
               {t('profile.recentLessons')}
             </Title>
             <div className="profile__lessons-list">
-              {recentLessons.map(lesson => (
-                <div key={lesson.id} className="profile__lesson-item">
-                  <div className="profile__lesson-info">
-                    <h4 className="profile__lesson-title">{lesson.title}</h4>
-                    <p className="profile__lesson-teacher">avec {lesson.teacher}</p>
+              {Array.isArray(recentLessons) && recentLessons.length > 0 ? (
+                recentLessons.map(lesson => (
+                  <div key={lesson.id} className="profile__lesson-item">
+                    <div className="profile__lesson-info">
+                      <h4 className="profile__lesson-title">{lesson.title}</h4>
+                      <p className="profile__lesson-teacher">avec {lesson.teacher}</p>
                     <p className="profile__lesson-date">
                       {new Date(lesson.date).toLocaleDateString(t('locale', { ns: 'common' }))} - {lesson.duration}min
                     </p>
@@ -205,7 +242,10 @@ const Profile = () => {
                     {t('lessons.completed')}
                   </span>
                 </div>
-              ))}
+              ))
+              ) : (
+                <p className="profile__no-lessons">{t('profile.noRecentLessons')}</p>
+              )}
             </div>
           </Card>
         </div>

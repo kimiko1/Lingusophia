@@ -7,6 +7,7 @@ import { faPlay, faGraduationCap, faCrown } from '@fortawesome/free-solid-svg-ic
 import { Title, Button } from '../../01-atoms';
 import { LanguageCard, LevelCard, CategoryCard, LessonDetailsModal } from '../../02-molecules';
 import LessonCard from '../../02-molecules/LessonCard';
+import { lessonService } from '../../../services';
 import './LessonSelection.scss';
 
 // Import flag SVGs
@@ -37,6 +38,12 @@ const LessonSelection = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentLesson, setCurrentLesson] = useState(null);
   
+  // API states
+  const [lessons, setLessons] = useState([]);
+  const [filteredLessons, setFilteredLessons] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  
   // Get initial values from URL params
   const urlLanguage = searchParams.get('language');
   const urlLevel = searchParams.get('level');
@@ -46,6 +53,31 @@ const LessonSelection = ({
     if (urlLanguage) setSelectedLanguage(urlLanguage);
     if (urlLevel) setSelectedLevel(urlLevel);
   }, [urlLanguage, urlLevel]);
+
+  // Load lessons when filters change
+  useEffect(() => {
+    loadLessons();
+  }, [selectedLanguage, selectedLevel, selectedCategory]);
+
+  const loadLessons = async () => {
+    try {
+      setLoading(true);
+      const filters = {};
+      
+      if (selectedLanguage) filters.language = selectedLanguage;
+      if (selectedLevel) filters.level = selectedLevel;
+      if (selectedCategory) filters.category = selectedCategory;
+      
+      const fetchedLessons = await lessonService.getFilteredLessons(filters);
+      setLessons(fetchedLessons);
+      setFilteredLessons(fetchedLessons);
+    } catch (err) {
+      setError('Erreur lors du chargement des leçons');
+      console.error('Erreur lors du chargement des leçons:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Available languages
   const languages = [
