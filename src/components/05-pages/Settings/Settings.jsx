@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { Button, Card, Title, Input } from '../../01-atoms';
 import { PageLayout } from '../../04-templates';
+import { userService } from '../../../services';
 import './Settings.scss';
 
 /**
@@ -9,23 +11,28 @@ import './Settings.scss';
  */
 const Settings = () => {
   const { t } = useTranslation('pages');
+  const { user } = useSelector(state => state.auth);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  
   const [settings, setSettings] = useState({
     notifications: {
-      emailNotifications: true,
+      emailNotifications: false,
       pushNotifications: false,
-      lessonReminders: true,
+      lessonReminders: false,
       marketingEmails: false
     },
     privacy: {
-      profileVisibility: 'friends',
-      showProgress: true,
+      profileVisibility: 'private',
+      showProgress: false,
       dataCollection: false
     },
     preferences: {
       language: 'fr',
       theme: 'light',
-      autoplay: true,
-      soundEffects: true
+      autoplay: false,
+      soundEffects: false
     },
     account: {
       twoFactorAuth: false,
@@ -38,6 +45,26 @@ const Settings = () => {
     new: '',
     confirm: ''
   });
+
+  // Charger les paramètres utilisateur au montage du composant
+  useEffect(() => {
+    if (user?.id) {
+      loadUserSettings();
+    }
+  }, [user?.id]);
+
+  const loadUserSettings = async () => {
+    try {
+      setLoading(true);
+      const userSettings = await userService.getUserSettings(user.id);
+      setSettings(userSettings);
+    } catch (err) {
+      setError('Erreur lors du chargement des paramètres');
+      console.error('Erreur lors du chargement des paramètres:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSettingChange = (category, setting, value) => {
     setSettings(prev => ({
@@ -56,35 +83,83 @@ const Settings = () => {
     }));
   };
 
-  const handleSaveSettings = () => {
-    // Logique de sauvegarde des paramètres
-    alert(t('messages.success', { ns: 'common' }));
+  const handleSaveSettings = async () => {
+    try {
+      setLoading(true);
+      await userService.updateUserSettings(user.id, settings);
+      setSuccessMessage(t('messages.success', { ns: 'common' }));
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (err) {
+      setError('Erreur lors de la sauvegarde des paramètres');
+      console.error('Erreur lors de la sauvegarde:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
     if (passwords.new !== passwords.confirm) {
-      alert(t('settings.messages.passwordMismatch'));
+      setError(t('settings.messages.passwordMismatch'));
       return;
     }
     if (passwords.new.length < 8) {
-      alert(t('settings.messages.passwordTooShort'));
+      setError(t('settings.messages.passwordTooShort'));
       return;
     }
-    // Logique de changement de mot de passe
-    alert(t('settings.messages.passwordChanged'));
-    setPasswords({ current: '', new: '', confirm: '' });
+
+    try {
+      setLoading(true);
+      await userService.changePassword({
+        currentPassword: passwords.current,
+        newPassword: passwords.new
+      });
+      setSuccessMessage(t('settings.messages.passwordChanged'));
+      setPasswords({ current: '', new: '', confirm: '' });
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (err) {
+      setError('Erreur lors du changement de mot de passe');
+      console.error('Erreur lors du changement de mot de passe:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     if (window.confirm(t('settings.messages.confirmDeleteAccount'))) {
-      // Logique de suppression de compte
-      alert(t('settings.messages.accountDeleted'));
+      try {
+        setLoading(true);
+        await userService.deleteAccount(user.id);
+        // Rediriger vers la page de connexion ou déconnexion
+        window.location.href = '/login';
+      } catch (err) {
+        setError('Erreur lors de la suppression du compte');
+        console.error('Erreur lors de la suppression du compte:', err);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
     <PageLayout title={t('settings.title')} subtitle={t('settings.subtitle')}>
       <div className="settings">
+        {/* Messages de statut */}
+        {error && (
+          <div className="settings__message settings__message--error">
+            {error}
+          </div>
+        )}
+        {successMessage && (
+          <div className="settings__message settings__message--success">
+            {successMessage}
+          </div>
+        )}
+
+        {loading && (
+          <div className="settings__loading">
+            <p>{t('common:loading')}</p>
+          </div>
+        )}
         {/* Notifications */}
         <Card className="settings__section">
           <Title level={2} size="lg" className="settings__section-title">

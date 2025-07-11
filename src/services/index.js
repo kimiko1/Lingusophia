@@ -1,4 +1,12 @@
 import api from './api';
+import lessonService from './lessonService';
+import userService from './userService';
+import bookingService from './bookingService';
+import teacherService from './teacherService';
+import statsService from './statsService';
+
+// Re-export services as named exports
+export { lessonService, userService, bookingService, teacherService, statsService };
 
 // Service d'authentification
 export const authService = {
@@ -288,5 +296,11 @@ export default {
   usersService,
   lessonsService,
   bookingsService,
-  progressService
+  progressService,
+  lessonService,
+  userService,
+  bookingService,
+  teacherService,
+  statsService
 };
+
