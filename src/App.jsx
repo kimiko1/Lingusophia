@@ -13,65 +13,64 @@ import {
   Settings,
   Admin,
   Login,
-  Register
+  Register,
+  Logout
 } from './components/05-pages';
 import { HeaderTemplate, ProtectedRoute } from './components/04-templates';
-import AuthWrapper from './components/AuthWrapper';
 import './styles/main-new.scss';
 
 
 const App = () => {
   return (
     <Provider store={store}>
-      <AuthWrapper>
-        <Router basename="/">
-          <HeaderTemplate>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/calendar" element={
-                <ProtectedRoute>
-                  <Calendar />
-                </ProtectedRoute>
-              } />
-              <Route path="/schedule-lesson" element={
-                <ProtectedRoute>
-                  <ScheduleLesson />
-                </ProtectedRoute>
-              } />
-              <Route path="/lesson-selection" element={
-                <ProtectedRoute>
-                  <LessonSelection />
-                </ProtectedRoute>
-              } />
-              <Route path="/my-lessons" element={
-                <ProtectedRoute>
-                  <MyLessons />
-                </ProtectedRoute>
-              } />
-              <Route path="/customer-reviews" element={<CustomerReviews />} />
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              } />
-              <Route path="/settings" element={
-                <ProtectedRoute>
-                  <Settings />
-                </ProtectedRoute>
-              } />
-              <Route path="/admin" element={
-                <ProtectedRoute requiredRole="Admin">
-                  <Admin />
-                </ProtectedRoute>
-              } />
-              <Route path="/showcase" element={<ComponentShowcase />} />
-            </Routes>
-          </HeaderTemplate>
-        </Router>
-      </AuthWrapper>
+      <Router basename="/">
+        <HeaderTemplate>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/calendar" element={
+              <ProtectedRoute>
+                <Calendar />
+              </ProtectedRoute>
+            } />
+            <Route path="/schedule-lesson" element={
+              <ProtectedRoute>
+                <ScheduleLesson />
+              </ProtectedRoute>
+            } />
+            <Route path="/lesson-selection" element={
+              <ProtectedRoute>
+                <LessonSelection />
+              </ProtectedRoute>
+            } />
+            <Route path="/my-lessons" element={
+              <ProtectedRoute>
+                <MyLessons />
+              </ProtectedRoute>
+            } />
+            <Route path="/customer-reviews" element={<CustomerReviews />} />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            } />
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            } />
+            <Route path="/admin" element={
+              <ProtectedRoute requiredRole="Admin">
+                <Admin />
+              </ProtectedRoute>
+            } />
+            <Route path="/showcase" element={<ComponentShowcase />} />
+          </Routes>
+        </HeaderTemplate>
+      </Router>
     </Provider>
   );
 };

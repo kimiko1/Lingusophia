@@ -125,7 +125,7 @@ CategoryCard.propTypes = {
   category: PropTypes.string.isRequired,
   isSelected: PropTypes.bool,
   onClick: PropTypes.func,
-  color: PropTypes.oneOf(['green', 'orange', 'red', 'blue', 'purple']),
+  color: PropTypes.string,
   icon: PropTypes.string,
   variant: PropTypes.oneOf(['default', 'card', 'minimal']),
   size: PropTypes.oneOf(['small', 'medium', 'large']),
