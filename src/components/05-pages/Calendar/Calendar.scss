@@ -2,22 +2,23 @@
 @use '../../../styles/themes/mixins' as *;
 
 .calendar-container {
+  min-height: 92vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 60vh;
-  padding: $spacing-md;
+  background: linear-gradient(120deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2.5rem 1rem;
 
   .calendar {
-    background: $color-white;
-    border-radius: 15px;
-    box-shadow: $shadow-lg;
-    padding: 2rem;
-    max-width: 500px;
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 2.5rem 2rem;
+    max-width: 480px;
     width: 100%;
 
     @include mobile-only {
-      padding: 1rem;
+      padding: 1rem 0.5rem;
       max-width: 100%;
     }
   }
@@ -28,43 +29,59 @@
     align-items: center;
     margin-bottom: 2rem;
 
-    @include mobile-only {
-      margin-bottom: 1.5rem;
-    }
-
     .nav-button {
-      background: $color-primary;
-      color: $color-white;
-      border: none;
+      background: #fff;
+      color: #4e8cff;
+      border: 2px solid #4e8cff;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 44px !important;
+      height: 44px !important;
+      min-width: 44px !important;
+      min-height: 44px !important;
+      max-width: 44px !important;
+      max-height: 44px !important;
+      padding: 0 !important;
       display: flex;
       justify-content: center;
       align-items: center;
+      font-size: 1.3rem;
       cursor: pointer;
-      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(78,140,255,0.08);
+      transition: background 0.18s, color 0.18s, border 0.18s, transform 0.18s;
+      outline: none;
 
-      &:hover {
-        background: color.adjust($color-primary, $lightness: -10%);
+      &:hover, &:focus {
+        background: #4e8cff;
+        color: #fff;
+        border-color: #2563eb;
+        transform: scale(1.12);
+      }
+
+      &:active {
+        background: #2563eb;
+        color: #fff;
+        border-color: #2563eb;
         transform: scale(1.05);
       }
 
       @include mobile-only {
-        width: 35px;
-        height: 35px;
-        font-size: 0.9rem;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+        max-width: 36px !important;
+        max-height: 36px !important;
       }
     }
 
     .calendar-title {
-      font-size: $font-size-xl;
-      font-weight: $font-weight-semibold;
-      color: $color-text;
-      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #2d3a4a;
+      margin: 0 1rem;
 
       @include mobile-only {
-        font-size: $font-size-lg;
+        font-size: 1.1rem;
       }
     }
   }
@@ -72,19 +89,19 @@
   .calendar-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0.7rem;
 
     .weekday-header {
       text-align: center;
-      font-weight: $font-weight-semibold;
-      color: $color-primary;
-      padding: 0.5rem;
-      font-size: $font-size-sm;
+      font-weight: 700;
+      color: #4e8cff;
+      padding: 0.5rem 0;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
 
       @include mobile-only {
-        font-size: $font-size-xs;
-        padding: 0.3rem;
+        font-size: 0.85rem;
+        padding: 0.3rem 0;
       }
     }
   }
@@ -92,7 +109,7 @@
   .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
+    gap: 4px;
 
     .calendar-day {
       aspect-ratio: 1;
@@ -100,22 +117,22 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      border-radius: $border-radius-sm;
-      font-weight: $font-weight-medium;
-      transition: all 0.2s ease;
-      background: $color-background;
-      color: $color-text;
-      font-size: $font-size-base;
+      border-radius: 0.7rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      background: #f5f7fa;
+      color: #2d3a4a;
+      transition: background 0.18s, color 0.18s, transform 0.18s;
 
       @include mobile-only {
-        font-size: $font-size-sm;
-        border-radius: $border-radius-xs;
+        font-size: 0.95rem;
+        border-radius: 0.4rem;
       }
 
-      &:hover:not(.empty) {
-        background: color.adjust($color-primary, $lightness: 40%);
-        color: $color-primary;
-        transform: scale(1.05);
+      &:hover:not(.empty):not(.past) {
+        background: color.adjust(#4e8cff, $lightness: 40%);
+        color: #4e8cff;
+        transform: scale(1.07);
       }
 
       &.empty {
@@ -124,73 +141,88 @@
       }
 
       &.past {
-        background: $color-gray-light;
-        color: $color-gray;
+        background: #f0f2f5;
+        color: #b0b8c1;
         cursor: not-allowed;
-        
+
         &:hover {
-          background: $color-gray-light;
-          color: $color-gray;
+          background: #f0f2f5;
+          color: #b0b8c1;
           transform: none;
         }
       }
 
       &.today {
-        background: $color-primary;
-        color: $color-white;
-        font-weight: $font-weight-bold;
-        
+        background: #4e8cff;
+        color: #fff;
+        font-weight: 700;
+        box-shadow: 0 0 0 2px #eaf3ff;
+
         &:hover {
-          background: color.adjust($color-primary, $lightness: -10%);
-          color: $color-white;
+          background: color.adjust(#4e8cff, $lightness: -10%);
+          color: #fff;
         }
       }
 
       &.selected {
-        background: $color-success;
-        color: $color-white;
-        font-weight: $font-weight-bold;
-        
+        background: #1dbf73;
+        color: #fff;
+        font-weight: 700;
+        box-shadow: 0 0 0 2px #e0f7e9;
+
         &:hover {
-          background: color.adjust($color-success, $lightness: -10%);
-          color: $color-white;
+          background: color.adjust(#1dbf73, $lightness: -10%);
+          color: #fff;
         }
       }
 
       &.today.selected {
-        background: linear-gradient(135deg, $color-primary, $color-success);
+        background: linear-gradient(135deg, #4e8cff, #1dbf73);
+        color: #fff;
+        box-shadow: 0 0 0 2px #eaf3ff;
       }
     }
   }
 
   .selected-date-info {
     margin-top: 2rem;
-    padding: 1rem;
-    background: $color-background;
-    border-radius: $border-radius-md;
+    padding: 1.2rem 1rem;
+    background: #f5f7fa;
+    border-radius: 1rem;
     text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 
     @include mobile-only {
-      margin-top: 1.5rem;
-      padding: 0.8rem;
+      margin-top: 1.2rem;
+      padding: 0.8rem 0.5rem;
     }
 
     p {
       margin: 0 0 1rem 0;
-      color: $color-text;
-      font-weight: $font-weight-medium;
-      font-size: $font-size-base;
+      color: #2d3a4a;
+      font-weight: 600;
+      font-size: 1.1rem;
 
       @include mobile-only {
-        font-size: $font-size-sm;
-        margin-bottom: 0.75rem;
+        font-size: 0.98rem;
+        margin-bottom: 0.7rem;
       }
     }
 
     .schedule-btn {
+      background: #4e8cff;
+      color: #fff;
+      border: none;
+      border-radius: 2rem;
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
       text-decoration: none;
-      
+
       &:hover {
+        background: #2563eb;
         text-decoration: none;
       }
     }

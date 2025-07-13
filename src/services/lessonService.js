@@ -4,12 +4,49 @@ import api from './api';
  * Service pour la gestion des leçons
  */
 export const lessonService = {
+
+
+  /**
+   * Récupérer toutes les langues disponibles
+   */
+  async getLanguages() {
+    try {
+      const response = await api.get('api/lessons/languages');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async getAllDifficulty() {
+  try {
+    const response = await api.get('/api/lessons/difficulty');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+},
+
+async getLessonsByUser(userId) {
+  return api.get(`/api/lessons/user/${userId}`);
+},
+
+async getCategories() {
+  try {
+    const response = await api.get('/api/lessons/categories');
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+},
+
+
   /**
    * Récupérer toutes les leçons
    */
   async getAllLessons() {
     try {
-      const response = await api.get('/lessons');
+      const response = await api.get('api/lessons');
       return response.data;
     } catch (error) {
       if (error.response?.status === 404) {
@@ -53,7 +90,7 @@ export const lessonService = {
    */
   async getLessonsByLanguage(language) {
     try {
-      const response = await api.get(`/lessons?language=${language}`);
+      const response = await api.get(`api/lessons?language=${language}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -65,7 +102,7 @@ export const lessonService = {
    */
   async getLessonsByLevel(level) {
     try {
-      const response = await api.get(`/lessons?level=${level}`);
+      const response = await api.get(`api/lessons?level=${level}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -77,7 +114,7 @@ export const lessonService = {
    */
   async getLessonsByCategory(category) {
     try {
-      const response = await api.get(`/lessons?category=${category}`);
+      const response = await api.get(`api/lessons?category=${category}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -90,13 +127,13 @@ export const lessonService = {
   async getFilteredLessons(filters = {}) {
     try {
       const params = new URLSearchParams();
-      
+
       if (filters.language) params.append('language', filters.language);
       if (filters.level) params.append('level', filters.level);
       if (filters.category) params.append('category', filters.category);
       if (filters.difficulty) params.append('difficulty', filters.difficulty);
-      
-      const response = await api.get(`/lessons?${params.toString()}`);
+
+      const response = await api.get(`api/lessons?${params.toString()}`);
       return response.data;
     } catch (error) {
       throw error;
@@ -145,6 +182,18 @@ export const lessonService = {
   async deleteLesson(id) {
     try {
       const response = await api.delete(`/lessons/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Book a lesson for a user
+   */
+  async bookLesson(lessonId, userId) {
+    try {
+      const response = await api.post('api/lessons/bookings', { lessonId, userId });
       return response.data;
     } catch (error) {
       throw error;

@@ -398,6 +398,40 @@
     text-transform: capitalize;
     margin-top: $spacing-1;
   }
+
+  // États de chargement
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: $spacing-2 0;
+  }
+
+  &__auth-loading {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+
+    .loading-spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid $primary-500;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  // Animation pour le spinner
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 // Animations
@@ -492,7 +526,8 @@
   }
 
   @keyframes slideDown {
-    from, to {
+    from,
+    to {
       opacity: 1;
       transform: translateY(0);
     }

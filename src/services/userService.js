@@ -11,6 +11,7 @@ export const userService = {
   async getCurrentUserProfile() {
     try {
       const response = await api.get('/users/profile');
+      // Retourner directement la réponse complète pour que le composant puisse gérer response.user
       return response.data;
     } catch (error) {
       throw error;

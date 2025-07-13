@@ -15,6 +15,7 @@
     "recentLessons": "Recent Lessons",
     "statistics": "My Statistics",
     "achievementsTitle": "Achievements",
+    "noRecentLessons": "No recent lessons. Start a new lesson to see it here!",
     "fields": {
       "name": "Full Name",
       "email": "Email",
@@ -145,9 +146,13 @@
     "completedDate": "Completed",
     "with": "with",
     "noOngoingLessons": "You don't have any ongoing lessons. Start a new lesson to see it here!",
+    "noCompletedLessons": "You haven't completed any lessons yet. Start your first lesson now!",
+    "ongoingLessons": "Ongoing Lessons",
     "stats": {
+      "title": "Learning Statistics",
       "lessonsCompleted": "Lessons Completed",
       "ongoingLessons": "Ongoing Lessons",
+      "lessonsInProgress": "Lessons in Progress",
       "languagesStudied": "Languages Studied",
       "averageScore": "Average Score"
     },

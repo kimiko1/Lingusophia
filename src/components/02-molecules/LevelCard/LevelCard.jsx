@@ -102,7 +102,7 @@ LevelCard.propTypes = {
   icon: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  difficulty: PropTypes.oneOf(['Beginner', 'Intermediate', 'Advanced']),
+  difficulty: PropTypes.oneOf(['easy', 'medium', 'hard']),
   progress: PropTypes.number,
   isSelected: PropTypes.bool,
   isLocked: PropTypes.bool,

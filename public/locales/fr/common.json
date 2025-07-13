@@ -119,5 +119,55 @@
   "itemsSelected": "{{count}} élément(s) sélectionné(s)",
   "resultsCount": "{{current}} résultat(s) sur {{total}} total",
   "comparedToLastMonth": "par rapport au mois dernier",
-  "locale": "fr-FR"
+  "locale": "fr-FR",
+  "notSpecified": "Non spécifié",
+  "notAvailable": "Non disponible",
+  "saving": "Sauvegarde...",
+  "errors": {
+    "loadProfile": "Erreur lors du chargement du profil",
+    "saveProfile": "Erreur lors de la sauvegarde du profil"
+  },
+  "profile": {
+    "tabs": {
+      "profile": "Profil",
+      "preferences": "Préférences",
+      "security": "Sécurité",
+      "stats": "Statistiques"
+    },
+    "edit": "Modifier",
+    "personalInfo": "Informations personnelles",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "phone": "Téléphone",
+    "dateOfBirth": "Date de naissance",
+    "bio": "Biographie",
+    "bioPlaceholder": "Parlez-nous de vous...",
+    "noBio": "Aucune biographie ajoutée",
+    "learningPreferences": "Préférences d'apprentissage",
+    "nativeLanguage": "Langue native",
+    "selectLanguage": "Sélectionner une langue",
+    "currentLevel": "Niveau actuel",
+    "selectTimezone": "Sélectionner un fuseau horaire",
+    "timezone": "Fuseau horaire",
+    "accountSecurity": "Sécurité du compte",
+    "password": "Mot de passe",
+    "passwordDescription": "Modifier votre mot de passe",
+    "changePassword": "Changer le mot de passe",
+    "emailVerification": "Vérification email",
+    "emailVerified": "Email vérifié",
+    "emailNotVerified": "Email non vérifié",
+    "verifyEmail": "Vérifier l'email",
+    "twoFactorAuth": "Authentification à deux facteurs",
+    "twoFactorDescription": "Sécurisez votre compte avec 2FA",
+    "enable2FA": "Activer 2FA",
+    "totalLessons": "Leçons totales",
+    "completedLessons": "Leçons terminées",
+    "streak": "Série",
+    "totalHours": "Heures totales"
+  },
+  "levels": {
+    "beginner": "Débutant",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé"
+  }
 }

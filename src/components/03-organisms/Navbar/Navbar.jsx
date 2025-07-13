@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../../store/slices/authSlice';
+import { useAuth } from '../../../contexts/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faThLarge, 
@@ -39,12 +38,11 @@ const Navbar = ({
   ...props
 }) => {
   const { t } = useTranslation('common');
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Get auth state from Redux
-  const { isAuthenticated, user } = useSelector(state => state.auth);
+  // Get auth state from AuthContext
+  const { isAuthenticated, user, isLoading, logout } = useAuth();
   
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -96,10 +94,17 @@ const Navbar = ({
     setIsProfileOpen(false);
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/');
-    closeAll();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+      closeAll();
+    } catch (error) {
+      console.error('Erreur de déconnexion:', error);
+      // Forcer la déconnexion côté UI même si l'API échoue
+      navigate('/');
+      closeAll();
+    }
   };
 
   // Close menus when clicking outside
@@ -141,6 +146,25 @@ const Navbar = ({
     isMenuOpen && 'navbar--menu-open',
     isProfileOpen && 'navbar--profile-open'
   ].filter(Boolean).join(' ');
+
+  // Afficher un indicateur de chargement pendant la vérification d'authentification
+  if (isLoading) {
+    return (
+      <header className={navbarClasses} {...props}>
+        <div className="navbar__loading">
+          <Logo 
+            size="medium" 
+            clickable 
+            onClick={() => window.location.href = '/'}
+            className="navbar__logo"
+          />
+          <div className="navbar__auth-loading">
+            <div className="loading-spinner"></div>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className={navbarClasses} {...props}>

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { login, clearError } from '../../../store/slices/authSlice';
+import { useAuth } from '../../../contexts/AuthContext';
 import { Button, Input, Card, Title } from '../../01-atoms';
 import { PageLayout } from '../../04-templates';
 import './Login.scss';
@@ -13,9 +12,7 @@ import './Login.scss';
 const Login = () => {
   const { t } = useTranslation(['common', 'pages']);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  
-  const { isLoading, error, isAuthenticated, user } = useSelector(state => state.auth);
+  const { isAuthenticated, user, isLoading, login } = useAuth();
   
   const [formData, setFormData] = useState({
     email: '',
@@ -23,6 +20,8 @@ const Login = () => {
   });
   
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Redirection si déjà connecté
   useEffect(() => {
@@ -51,21 +50,24 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(clearError());
+    setError('');
+    setIsSubmitting(true);
 
     if (!formData.email || !formData.password) {
+      setError('Veuillez remplir tous les champs');
+      setIsSubmitting(false);
       return;
     }
 
     try {
-      const result = await dispatch(login(formData));
-      
-      if (result.type === 'auth/login/fulfilled') {
-        // La redirection sera gérée par useEffect
-        console.log('Connexion réussie!');
-      }
+      await login(formData.email, formData.password);
+      // La redirection sera gérée par useEffect
+      console.log('Connexion réussie!');
     } catch (err) {
       console.error('Erreur de connexion:', err);
+      setError(err.message || 'Erreur de connexion');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -131,9 +133,9 @@ const Login = () => {
                 type="submit"
                 variant="primary"
                 className="login-button"
-                disabled={isLoading}
+                disabled={isSubmitting || isLoading}
               >
-                {isLoading ? t('common:loading') : t('pages:login.loginButton')}
+                {(isSubmitting || isLoading) ? t('common:loading') : t('pages:login.loginButton')}
               </Button>
 
               <div className="login-links">

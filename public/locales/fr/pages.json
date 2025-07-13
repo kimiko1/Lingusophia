@@ -15,7 +15,10 @@
     "recentLessons": "Leçons Récentes",
     "statistics": "Mes Statistiques",
     "achievementsTitle": "Accomplissements",
+    "noRecentLessons": "Aucune leçon récente. Commencez une nouvelle leçon pour la voir ici !",
     "fields": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
       "name": "Nom Complet",
       "email": "Email",
       "phone": "Téléphone",
@@ -144,9 +147,13 @@
     "completedDate": "Terminé",
     "with": "avec",
     "noOngoingLessons": "Vous n'avez aucune leçon en cours. Commencez une nouvelle leçon pour la voir ici !",
+    "noCompletedLessons": "Vous n'avez pas encore terminé de leçons. Commencez votre première leçon dès maintenant !",
+    "ongoingLessons": "Leçons en Cours",
     "stats": {
+      "title": "Statistiques d'Apprentissage",
       "lessonsCompleted": "Leçons Terminées",
       "ongoingLessons": "Leçons en Cours",
+      "lessonsInProgress": "Leçons en Progression",
       "languagesStudied": "Langues Étudiées",
       "averageScore": "Score Moyen"
     },
