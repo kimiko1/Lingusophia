@@ -61,8 +61,6 @@ const Login = () => {
 
     try {
       await login(formData.email, formData.password);
-      // La redirection sera gérée par useEffect
-      console.log('Connexion réussie!');
     } catch (err) {
       console.error('Erreur de connexion:', err);
       setError(err.message || 'Erreur de connexion');

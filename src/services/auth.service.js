@@ -58,25 +58,19 @@ class AuthService {
   // Vérifier l'utilisateur connecté
   async me() {
     try {
-      console.log('[AUTH SERVICE] Début appel /api/auth/me');
       const response = await fetch(`${this.baseURL}/api/auth/me`, {
         method: 'GET',
         credentials: 'include',
       });
 
-      console.log('[AUTH SERVICE] Réponse reçue:', response.status, response.statusText);
       const data = await response.json();
-      console.log('[AUTH SERVICE] Données reçues:', data);
       
       if (!response.ok) {
-        console.log('[AUTH SERVICE] Réponse non OK, utilisateur non authentifié');
         return null; // Pas d'erreur, juste pas connecté
       }
 
-      console.log('[AUTH SERVICE] Utilisateur authentifié:', data.user);
       return data.user;
     } catch (error) {
-      console.error('[AUTH SERVICE] Erreur vérification utilisateur:', error);
       return null;
     }
   }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useAuth } from '../../../contexts/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faUsers, 
@@ -17,8 +17,10 @@ import {
   faDownload
 } from '@fortawesome/free-solid-svg-icons';
 import { Title, Button, Input, Card, Modal } from '../../01-atoms';
+
 import { StatsCard, DataTable } from '../../02-molecules';
 import { UserForm, LessonForm } from '../../03-organisms';
+import { userService, lessonService, bookingService, statsService } from '../../../services';
 import './Admin.scss';
 
 /**
@@ -32,10 +34,10 @@ const Admin = ({
 }) => {
   const { t } = useTranslation(['pages', 'common']);
   
-  // Récupérer l'utilisateur authentifié depuis Redux
-  const { user, isAuthenticated } = useSelector(state => state.auth);
+  // Récupérer l'utilisateur authentifié via le context Auth
+  const { user, isAuthenticated } = useAuth();
   
-  const [activeTab, setActiveTab] = useState('lessons'); // Commence par les leçons par défaut
+  const [activeTab, setActiveTab] = useState('users'); // Commence par les utilisateurs par défaut
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItems, setSelectedItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,10 +48,6 @@ const Admin = ({
   // Utiliser l'utilisateur authentifié au lieu d'une simulation
   const currentUser = user;
   
-  // Debug: afficher les informations utilisateur
-  console.log('[ADMIN COMPONENT] Current user:', currentUser);
-  console.log('[ADMIN COMPONENT] Is authenticated:', isAuthenticated);
-  
   // Vérifier les permissions
   const isAdmin = currentUser?.role === 'Admin';
   const isTeacher = currentUser?.role === 'Teacher';
@@ -59,23 +57,21 @@ const Admin = ({
   const canAccessLessons = isAdmin || isTeacher;
   const canAccessBookings = isAdmin || isTeacher;
 
-  // Rediriger si l'utilisateur n'est pas authentifié
-  if (!isAuthenticated) {
+
+  // Garde d'accès admin :
+  if (!user) {
+    // User pas encore chargé (ex: au refresh), on affiche un loader
     return (
       <div className="admin__access-denied">
         <div className="admin__access-denied-content">
-          <h1>{t('pages:admin.accessDenied.notAuthenticated', 'Non authentifié')}</h1>
-          <p>{t('pages:admin.accessDenied.pleaseLogin', 'Veuillez vous connecter pour accéder à cette page.')}</p>
-          <Button variant="primary" onClick={() => window.location.href = '/login'}>
-            {t('pages:admin.accessDenied.login', 'Se connecter')}
-          </Button>
+          <h1>{t('pages:admin.accessDenied.loading', 'Chargement...')}</h1>
         </div>
       </div>
     );
   }
 
-  // Rediriger les étudiants (ils n'ont pas accès à l'admin)
-  if (isStudent) {
+  if (user && user.role !== 'Admin' && user.role !== 'Teacher') {
+    // Accès refusé si pas admin/teacher
     return (
       <div className="admin__access-denied">
         <div className="admin__access-denied-content">
@@ -89,150 +85,31 @@ const Admin = ({
     );
   }
 
-  // Données simulées pour le dashboard
-  const [dashboardStats, setDashboardStats] = useState({
-    totalUsers: 1247,
-    totalLessons: 156,
-    totalTeachers: 23,
-    totalBookings: 892,
-    monthlyRevenue: 15420,
-    activeUsers: 89,
-    completionRate: 76.3,
-    averageRating: 4.8
-  });
+  // Données API
+  const [dashboardStats, setDashboardStats] = useState({});
+  const [users, setUsers] = useState([]);
+  const [lessons, setLessons] = useState([]);
+  const [bookings, setBookings] = useState([]);
 
-  // Données simulées pour les utilisateurs
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: 'Alice Martin',
-      email: 'alice.martin@email.com',
-      role: 'Student',
-      joinDate: '2024-01-15',
-      lastLogin: '2025-01-09',
-      status: 'Active',
-      lessonsCompleted: 12,
-      totalSpent: 420
-    },
-    {
-      id: 2,
-      name: 'Bob Johnson',
-      email: 'bob.johnson@email.com',
-      role: 'Student',
-      joinDate: '2024-02-20',
-      lastLogin: '2025-01-08',
-      status: 'Active',
-      lessonsCompleted: 8,
-      totalSpent: 280
-    },
-    {
-      id: 3,
-      name: 'Sarah Wilson',
-      email: 'sarah.wilson@email.com',
-      role: 'Teacher',
-      joinDate: '2024-01-10',
-      lastLogin: '2025-01-10',
-      status: 'Active',
-      lessonsGiven: 45,
-      rating: 4.9
-    }
-  ]);
-
-  // Données simulées pour les leçons
-  const [lessons, setLessons] = useState([
-    {
-      id: 1,
-      title: 'Basic English Conversation',
-      language: 'English',
-      level: 'Beginner',
-      duration: '30 min',
-      price: 25,
-      teacher: 'Sarah Wilson',
-      bookings: 23,
-      rating: 4.8,
-      status: 'Active'
-    },
-    {
-      id: 2,
-      title: 'French Grammar Essentials',
-      language: 'French',
-      level: 'Intermediate',
-      duration: '45 min',
-      price: 35,
-      teacher: 'Pierre Dubois',
-      bookings: 18,
-      rating: 4.7,
-      status: 'Active'
-    }
-  ]);
-
-  // Données simulées pour les réservations
-  const [bookings, setBookings] = useState([
-    {
-      id: 1,
-      studentName: 'Alice Martin',
-      studentEmail: 'alice.martin@email.com',
-      lessonTitle: 'Basic English Conversation',
-      lessonId: 1,
-      teacherName: 'Sarah Wilson',
-      date: '2025-01-15',
-      time: '14:00',
-      duration: '30 min',
-      price: 25,
-      status: 'Confirmed',
-      paymentStatus: 'Paid',
-      createdAt: '2025-01-10',
-      notes: 'Première leçon - niveau débutant'
-    },
-    {
-      id: 2,
-      studentName: 'Bob Johnson',
-      studentEmail: 'bob.johnson@email.com',
-      lessonTitle: 'Basic English Conversation',
-      lessonId: 1,
-      teacherName: 'Sarah Wilson',
-      date: '2025-01-16',
-      time: '10:00',
-      duration: '30 min',
-      price: 25,
-      status: 'Confirmed',
-      paymentStatus: 'Paid',
-      createdAt: '2025-01-12',
-      notes: 'Cours de conversation'
-    },
-    {
-      id: 3,
-      studentName: 'Marie Dubois',
-      studentEmail: 'marie.dubois@email.com',
-      lessonTitle: 'French Grammar Essentials',
-      lessonId: 2,
-      teacherName: 'Pierre Dubois',
-      date: '2025-01-17',
-      time: '16:00',
-      duration: '45 min',
-      price: 35,
-      status: 'Pending',
-      paymentStatus: 'Pending',
-      createdAt: '2025-01-13',
-      notes: 'Grammaire française intermédiaire'
-    },
-    {
-      id: 4,
-      studentName: 'John Smith',
-      studentEmail: 'john.smith@email.com',
-      lessonTitle: 'Basic English Conversation',
-      lessonId: 1,
-      teacherName: 'Sarah Wilson',
-      date: '2025-01-14',
-      time: '11:00',
-      duration: '30 min',
-      price: 25,
-      status: 'Completed',
-      paymentStatus: 'Paid',
-      createdAt: '2025-01-08',
-      notes: 'Cours terminé avec succès'
-    }
-  ]);
+  // Chargement des données depuis l'API au montage
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        // Récupérer toutes les données admin via userService.getAllUsers
+        const allData = await userService.getAllUsers();
+        setUsers(allData.users || []);
+        setLessons(allData.lessons || []);
+        setBookings(allData.bookings || []);
+        setDashboardStats(allData.stats || {});
+      } catch (err) {
+        console.error('Erreur lors du chargement des données admin:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
   // Colonnes pour la table des utilisateurs
   const userColumns = [
@@ -272,7 +149,6 @@ const Admin = ({
     const loadData = async () => {
       // Simulation d'une requête API
       setTimeout(() => {
-        console.log('Données chargées');
       }, 1000);
     };
     loadData();
@@ -333,23 +209,19 @@ const Admin = ({
     setIsModalOpen(true);
   };
 
-  // Sauvegarder un utilisateur (création ou modification)
+
+  // Sauvegarder un utilisateur (création ou modification) via API
   const handleSaveUser = async (userData) => {
     setIsLoading(true);
     try {
-      // Simulation d'une requête API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      let savedUser;
       if (modalType === 'add-user') {
-        // Ajouter un nouvel utilisateur
-        setUsers(prev => [...prev, userData]);
+        savedUser = await userService.createUser(userData);
+        setUsers(prev => [...prev, savedUser]);
       } else if (modalType === 'edit-user') {
-        // Modifier un utilisateur existant
-        setUsers(prev => prev.map(user => 
-          user.id === userData.id ? userData : user
-        ));
+        savedUser = await userService.updateUser(userData.id, userData);
+        setUsers(prev => prev.map(user => user.id === savedUser.id ? savedUser : user));
       }
-      
       setIsModalOpen(false);
       setCurrentItem(null);
       setModalType('');
@@ -360,23 +232,19 @@ const Admin = ({
     }
   };
 
-  // Sauvegarder une leçon (création ou modification)
+
+  // Sauvegarder une leçon (création ou modification) via API
   const handleSaveLesson = async (lessonData) => {
     setIsLoading(true);
     try {
-      // Simulation d'une requête API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      let savedLesson;
       if (modalType === 'add-lesson') {
-        // Ajouter une nouvelle leçon
-        setLessons(prev => [...prev, lessonData]);
+        savedLesson = await lessonService.createLesson(lessonData);
+        setLessons(prev => [...prev, savedLesson]);
       } else if (modalType === 'edit-lesson') {
-        // Modifier une leçon existante
-        setLessons(prev => prev.map(lesson => 
-          lesson.id === lessonData.id ? lessonData : lesson
-        ));
+        savedLesson = await lessonService.updateLesson(lessonData.id, lessonData);
+        setLessons(prev => prev.map(lesson => lesson.id === savedLesson.id ? savedLesson : lesson));
       }
-      
       setIsModalOpen(false);
       setCurrentItem(null);
       setModalType('');
@@ -387,25 +255,21 @@ const Admin = ({
     }
   };
 
-  // Gérer les actions sur les réservations
+
+  // Gérer les actions sur les réservations via API
   const handleBookingAction = async (bookingId, action) => {
     setIsLoading(true);
     try {
-      // Simulation d'une requête API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      if (action === 'confirm') {
-        setBookings(prev => prev.map(booking => 
-          booking.id === bookingId ? { ...booking, status: 'Confirmed' } : booking
-        ));
-      } else if (action === 'cancel') {
-        setBookings(prev => prev.map(booking => 
-          booking.id === bookingId ? { ...booking, status: 'Cancelled' } : booking
-        ));
-      } else if (action === 'complete') {
-        setBookings(prev => prev.map(booking => 
-          booking.id === bookingId ? { ...booking, status: 'Completed' } : booking
-        ));
+      let updatedBooking;
+      if (action === 'confirm' && bookingService.confirmBooking) {
+        updatedBooking = await bookingService.confirmBooking(bookingId);
+      } else if (action === 'cancel' && bookingService.cancelBooking) {
+        updatedBooking = await bookingService.cancelBooking(bookingId);
+      } else if (action === 'complete' && bookingService.completeBooking) {
+        updatedBooking = await bookingService.completeBooking(bookingId);
+      }
+      if (updatedBooking) {
+        setBookings(prev => prev.map(booking => booking.id === updatedBooking.id ? updatedBooking : booking));
       }
     } catch (error) {
       console.error('Erreur lors de l\'action:', error);
@@ -414,21 +278,21 @@ const Admin = ({
     }
   };
 
-  // Supprimer un élément
+
+  // Supprimer un élément via API
   const handleConfirmDelete = async () => {
     setIsLoading(true);
     try {
-      // Simulation d'une requête API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
       if (modalType === 'delete-user') {
+        await userService.deleteUser(currentItem.id);
         setUsers(prev => prev.filter(user => user.id !== currentItem.id));
       } else if (modalType === 'delete-lesson') {
+        await lessonService.deleteLesson(currentItem.id);
         setLessons(prev => prev.filter(lesson => lesson.id !== currentItem.id));
-      } else if (modalType === 'delete-booking') {
+      } else if (modalType === 'delete-booking' && bookingService.deleteBooking) {
+        await bookingService.deleteBooking(currentItem.id);
         setBookings(prev => prev.filter(booking => booking.id !== currentItem.id));
       }
-      
       setIsModalOpen(false);
       setCurrentItem(null);
       setModalType('');
@@ -526,7 +390,17 @@ const Admin = ({
   };
 
   // Préparation des données avec actions
-  const usersWithActions = users.map(user => ({
+  let usersArray = [];
+  if (Array.isArray(users)) {
+    usersArray = users;
+  } else if (users && typeof users === 'object') {
+    if (Array.isArray(users.users)) {
+      usersArray = users.users;
+    } else if (users.data && Array.isArray(users.data.users)) {
+      usersArray = users.data.users;
+    }
+  }
+  const usersWithActions = usersArray.map(user => ({
     ...user,
     actions: renderActions(user, 'user')
   }));
@@ -613,7 +487,7 @@ const Admin = ({
           {activeTab === 'dashboard' && (
             <div className="admin__dashboard">
               <div className="admin__stats-grid">
-                <StatsCard
+                {/* <StatsCard
                   title={t('pages:admin.stats.totalUsers')}
                   value={dashboardStats.totalUsers}
                   icon={faUsers}
@@ -640,7 +514,7 @@ const Admin = ({
                   icon={faCalendarCheck}
                   color="orange"
                   trend="+15%"
-                />
+                /> */}
               </div>
 
               <div className="admin__charts-grid">
@@ -648,7 +522,7 @@ const Admin = ({
                   <Title level={3}>{t('pages:admin.stats.monthlyRevenue')}</Title>
                   <div className="admin__chart-placeholder">
                     <div className="admin__revenue-display">
-                      <span className="admin__revenue-amount">€{dashboardStats.monthlyRevenue.toLocaleString()}</span>
+                      <span className="admin__revenue-amount">€{(dashboardStats.monthlyRevenue ?? 0).toLocaleString()}</span>
                       <span className="admin__revenue-period">{t('pages:admin.thisMonth')}</span>
                     </div>
                   </div>
@@ -707,14 +581,22 @@ const Admin = ({
               </div>
 
               <Card className="admin__table-card">
-                <DataTable
-                  columns={userColumns}
-                  data={usersWithActions}
-                  searchTerm={searchTerm}
-                  selectedItems={selectedItems}
-                  onSelectionChange={setSelectedItems}
-                  className="admin__data-table"
-                />
+                {usersWithActions.length === 0 ? (
+                  <div className="admin__empty-message">
+                    {isLoading
+                      ? t('pages:admin.users.loading', 'Chargement des utilisateurs...')
+                      : t('pages:admin.users.empty', 'Aucun utilisateur à afficher.')}
+                  </div>
+                ) : (
+                  <DataTable
+                    columns={userColumns}
+                    data={usersWithActions}
+                    searchTerm={searchTerm}
+                    selectedItems={selectedItems}
+                    onSelectionChange={setSelectedItems}
+                    className="admin__data-table"
+                  />
+                )}
               </Card>
             </div>
           )}

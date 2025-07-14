@@ -106,8 +106,6 @@ const Register = () => {
       const result = await dispatch(register(registrationData));
       
       if (result.type === 'auth/register/fulfilled') {
-        console.log('Inscription réussie!');
-        // La redirection sera gérée par useEffect
       }
     } catch (err) {
       console.error('Erreur d\'inscription:', err);

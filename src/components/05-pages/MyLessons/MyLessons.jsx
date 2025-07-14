@@ -19,7 +19,6 @@ const MyLessons = () => {
       const res = await lessonService.getLessonsByUser(user.id);
       // Correction ici :
       setMyLessons(res?.data?.data?.lessons || []);
-      console.log('Réponse API MyLessons:', res);
     } catch (err) {
       setError('Erreur lors du chargement de vos leçons');
     } finally {

@@ -79,7 +79,6 @@ const Profile = () => {
   const handleSaveProfile = async () => {
     try {
       // Convertir les noms de champs pour correspondre à l'API
-      console.log('Saving profile with data:', formData);
       const profileData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
@@ -97,7 +96,6 @@ const Profile = () => {
       if (result.success) {
         setIsEditing(false);
         // Afficher un message de succès
-        console.log('Profile updated successfully');
       } else {
         console.error('Error updating profile:', result.error);
       }

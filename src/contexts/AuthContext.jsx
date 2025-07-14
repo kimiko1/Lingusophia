@@ -27,26 +27,21 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     // Éviter les appels multiples
     if (authChecked) {
-      console.log('[AUTH] Authentification déjà vérifiée');
       return;
     }
     
     try {
-      console.log('[AUTH] Début de la vérification d\'authentification');
       setIsLoading(true);
       setAuthChecked(true);
       
       const userData = await authService.me();
-      console.log('[AUTH] Données utilisateur reçues:', userData);
       
       if (userData) {
         setUser(userData);
         setIsAuthenticated(true);
-        console.log('[AUTH] Utilisateur authentifié avec succès');
       } else {
         setUser(null);
         setIsAuthenticated(false);
-        console.log('[AUTH] Aucun utilisateur authentifié');
       }
     } catch (error) {
       console.error('[AUTH] Erreur vérification auth:', error);
@@ -54,7 +49,6 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
     } finally {
       setIsLoading(false);
-      console.log('[AUTH] Fin de la vérification d\'authentification');
     }
   };
 
