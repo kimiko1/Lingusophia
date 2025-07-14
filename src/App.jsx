@@ -4,7 +4,6 @@ import { store } from './store';
 import { 
   Home, 
   LessonSelection, 
-  ComponentShowcase, 
   Calendar,
   ScheduleLesson,
   MyLessons,
@@ -67,7 +66,6 @@ const App = () => {
                 <Admin />
               </ProtectedRoute>
             } />
-            <Route path="/showcase" element={<ComponentShowcase />} />
           </Routes>
         </HeaderTemplate>
       </Router>

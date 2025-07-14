@@ -115,6 +115,44 @@
       "anonymous": "Anonymous"
     }
   },
+  "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+  "profile": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "learningPreferences": "Learning Preferences",
+    "accountSecurity": "Account Security",
+    "selectLanguage": "Select Language",
+    "selectTimezone": "Select Timezone",
+    "tabs": {
+      "profile": "Profile",
+      "preferences": "Preferences",
+      "security": "Security",
+      "stats": "Stats"
+    },
+    "personalInfo": "Personal Information",
+    "phone": "Phone Number",
+    "dateOfBirth": "Date of Birth",
+    "bio": "Bio",
+    "noBio": "No bio available",
+    "nativeLanguage": "Native Language",
+    "currentLevel": "Current Level",
+    "timezone": "Timezone",
+    "password": "Password",
+    "passwordDescription": "Change your password",
+    "changePassword": "Change Password",
+    "emailVerification": "Email Verification",
+    "verifyEmail": "Verify your email address",
+    "twoFactorAuth": "Two-Factor Authentication",
+    "enable2FA": "Enable Two-Factor Authentication",
+    "totalLessons": "Total Lessons",
+    "completedLessons": "Completed Lessons",
+    "streak": "Streak",
+    "totalHours": "Total Hours"
+  },
   "noDataFound": "No data found",
   "itemsSelected": "{{count}} item(s) selected",
   "resultsCount": "{{current}} result(s) of {{total}} total",

@@ -77,11 +77,6 @@
       color: $color-primary;
     }
 
-    &:focus {
-      outline: 2px solid $color-focus;
-      outline-offset: 2px;
-    }
-
     @include desktop-only {
       display: none;
     }

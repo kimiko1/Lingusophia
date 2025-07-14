@@ -21,9 +21,7 @@ const Logout = () => {
     setLogoutMessage('Déconnexion en cours...');
 
     try {
-      console.log('[LOGOUT PAGE] Début de la déconnexion');
       await logout();
-      console.log('[LOGOUT PAGE] Déconnexion réussie');
       setLogoutMessage('Déconnexion réussie ! Redirection...');
       
       // Rediriger vers la page de connexion après un délai

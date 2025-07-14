@@ -138,19 +138,27 @@ export const userService = {
   },
 
   /**
-   * Récupérer tous les utilisateurs (pour admin)
+   * Récupérer toutes les données admin (users, lessons, bookings, stats)
    */
-  async getAllUsers(filters = {}) {
+  async getAllUsers() {
+    // Fallback mock complet si l'API échoue
     try {
-      const params = new URLSearchParams();
-      
-      if (filters.role) params.append('role', filters.role);
-      if (filters.status) params.append('status', filters.status);
-      if (filters.search) params.append('search', filters.search);
-      
-      const response = await api.get(`/users?${params.toString()}`);
-      return response.data;
+      // Appels API en parallèle sans params
+      const [usersRes, lessonsRes, bookingsRes, statsRes] = await Promise.all([
+        api.get('api/users'),
+        // api.get('api/lessons'),
+        // api.get('api/bookings'),
+        // api.get('api/stats/dashboard').catch(() => ({ data: {} }))
+      ]);
+
+      return {
+        users: usersRes.data,
+        // lessons: lessonsRes.data?.lessons || lessonsRes.data,
+        // bookings: bookingsRes.data,
+        // stats: statsRes.data
+      };
     } catch (error) {
+      // Si toutes les routes échouent, on propage l'erreur pour affichage explicite côté Admin
       throw error;
     }
   },

@@ -21,17 +21,14 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
 
   // Si l'utilisateur n'est pas authentifié, le rediriger vers la page de connexion
   if (!isAuthenticated) {
-    console.log('[PROTECTED ROUTE] ❌ User not authenticated, redirecting to login');
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // Si un rôle spécifique est requis, vérifier si l'utilisateur l'a
   if (requiredRole && user?.role?.toLowerCase() !== requiredRole?.toLowerCase()) {
-    console.log('[PROTECTED ROUTE] ❌ Access denied. Required role:', requiredRole, 'User role:', user?.role);
     return <Navigate to="/" replace />;
   }
 
-  console.log('[PROTECTED ROUTE] ✅ Access granted');
   return children;
 };
 

@@ -3,7 +3,6 @@
 // Pages complètes de l'application
 // =============================================
 
-export { default as ComponentShowcase } from './ComponentShowcase';
 export { default as Home } from './Home';
 export { default as LessonSelection } from './LessonSelection';
 export { default as Calendar } from './Calendar';

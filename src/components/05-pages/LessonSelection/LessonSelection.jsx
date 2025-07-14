@@ -127,7 +127,6 @@ const LessonSelection = ({
       if (selectedCategory) filters.category = selectedCategory.toLowerCase();
 
       const fetchedLessons = await lessonService.getFilteredLessons(filters);
-      console.error('Fetched lessons:', fetchedLessons);
       setLessons(
   Array.isArray(fetchedLessons?.data?.lessons)
     ? fetchedLessons.data.lessons
@@ -459,19 +458,34 @@ const LessonSelection = ({
             ) : (
               <>
                 <div className="lesson-selection__lessons-grid">
-                  {getLessonsForSelection().map((lesson) => (
-                    <LessonCard
-                      key={lesson.id}
-                      title={lesson.title}
-                      description={lesson.description}
-                      duration={lesson.duration || '30 minutes'}
-                      level={lesson.level}
-                      price={lesson.price || 'Gratuit'}
-                      isSelected={selectedLesson === lesson.id}
-                      onClick={() => handleLessonSelect(lesson)}
-                      className="lesson-selection__lesson-card"
-                    />
-                  ))}
+                  {getLessonsForSelection().map((lesson) => {
+                    // Format duration as string (e.g. '1h 15min' or '30 min')
+                    let durationStr = '';
+                    if (typeof lesson.duration === 'number' && !isNaN(lesson.duration)) {
+                      const hours = Math.floor(lesson.duration / 60);
+                      const minutes = lesson.duration % 60;
+                      if (hours > 0) {
+                        durationStr = `${hours}h${minutes > 0 ? ` ${minutes}min` : ''}`;
+                      } else {
+                        durationStr = `${minutes} min`;
+                      }
+                    } else {
+                      durationStr = lesson.duration || '30 min';
+                    }
+                    return (
+                      <LessonCard
+                        key={lesson.id}
+                        title={lesson.title}
+                        description={lesson.description}
+                        duration={durationStr}
+                        level={lesson.level}
+                        price={lesson.price || 'Gratuit'}
+                        isSelected={selectedLesson === lesson.id}
+                        onClick={() => handleLessonSelect(lesson)}
+                        className="lesson-selection__lesson-card"
+                      />
+                    );
+                  })}
                 </div>
                 {getLessonsForSelection().length === 0 && (
                   <div className="lesson-selection__no-lessons">
