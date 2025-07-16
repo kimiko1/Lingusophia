@@ -6,11 +6,13 @@
   "navigation": {
     "home": "首页",
     "lessons": "课程",
+    "bookings": "預訂",
     "calendar": "日历",
     "profile": "个人资料",
     "settings": "设置",
     "logout": "退出",
     "myLessons": "我的课程",
+    "myBookings": "我的預訂",
     "scheduleLesson": "安排课程",
     "lessonSelection": "课程选择",
     "customerReviews": "客户评价",
