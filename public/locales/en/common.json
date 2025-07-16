@@ -6,10 +6,12 @@
   "navigation": {
     "home": "Home",
     "lessons": "Lessons",
+    "bookings": "Bookings",
     "calendar": "Calendar",
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout",
+    "myBookings": "My bookings",
     "myLessons": "My Lessons",
     "scheduleLesson": "Schedule Lesson",
     "lessonSelection": "Lesson Selection",

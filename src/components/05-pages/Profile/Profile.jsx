@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../contexts/AuthContext';
+import { userService } from '../../../services';
 import { 
   User, 
   Settings, 
@@ -23,7 +24,8 @@ import {
 import './Profile.scss';
 const Profile = () => {
   const { t } = useTranslation();
-  const { user, isLoading, isAuthenticated, updateProfile } = useAuth();
+  const { user, isLoading, isAuthenticated } = useAuth();
+  const updateProfile = userService.updateUserProfile;
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
   const [formData, setFormData] = useState({});
@@ -87,44 +89,32 @@ const Profile = () => {
   };
 
   const handleSaveProfile = async () => {
-    try {
-      // Convertir les noms de champs pour correspondre à l'API (snake_case)
-      const profileData = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        phone: formData.phone,
-        bio: formData.bio,
-        nativeLanguage: formData.nativeLanguage,
-        currentLevel: formData.currentLevel,
-        timezone: formData.timezone,
-        avatarUrl: formData.avatarUrl,
-        dateOfBirth: formData.dateOfBirth,
-      };
+  try {
+    const apiData = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      phone: formData.phone,
+      bio: formData.bio,
+      nativeLanguage: formData.nativeLanguage,
+      currentLevel: formData.currentLevel,
+      timezone: formData.timezone,
+      avatarUrl: formData.avatarUrl,
+      dateOfBirth: formData.dateOfBirth,
+    };
 
-      // Envoie les champs attendus par l'API (snake_case)
-      const apiData = {
-        firstName: profileData.firstName,
-        lastName: profileData.lastName,
-        phone: profileData.phone,
-        bio: profileData.bio,
-        nativeLanguage: profileData.nativeLanguage,
-        currentLevel: profileData.currentLevel,
-        timezone: profileData.timezone,
-        avatarUrl: profileData.avatarUrl,
-        dateOfBirth: profileData.dateOfBirth,
-      };
-
-      const result = await updateProfile(apiData);
-if (result.success || result.message === 'Profil mis à jour avec succès') {
-  setIsEditing(false);
-  // Afficher un message de succès
-} else {
-  console.error('Error updating profile:', result.error || result.message || 'Aucune modification détectée ou erreur inconnue');
-}
-    } catch (error) {
-      console.error('Error updating profile:', error);
+    // user.id passé dans l'URL, apiData dans le body
+    const result = await updateProfile(user.id, apiData);
+    if (result.success || result.message === 'Profil mis à jour avec succès') {
+      setIsEditing(false);
+      setFormData(apiData); // Met à jour l'affichage du profil sans reload
+      // Afficher un message de succès si besoin
+    } else {
+      console.error('Error updating profile:', result.error || result.message || 'Aucune modification détectée ou erreur inconnue');
     }
-  };
+  } catch (error) {
+    console.error('Error updating profile:', error);
+  }
+};
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
@@ -166,8 +156,8 @@ if (result.success || result.message === 'Profil mis à jour avec succès') {
           <div className="profile-avatar-section">
             <div className="avatar-container">
               <img 
-                src={user?.avatar_url || '/default-avatar.png'} 
-                alt={user?.first_name || 'User'}
+                src={formData.avatarUrl || formData.avatar_url || '/default-avatar.png'} 
+                alt={formData.firstName || formData.first_name || 'User'}
                 className="profile-avatar"
               />
               <label htmlFor="avatar-upload" className="avatar-upload-btn">
@@ -183,13 +173,13 @@ if (result.success || result.message === 'Profil mis à jour avec succès') {
             </div>
             <div className="profile-info">
               <h1 className="profile-name">
-                {user?.firstName} {user?.lastName}
+                {formData.firstName || formData.first_name} {formData.lastName || formData.last_name}
               </h1>
-              <p className="profile-email">{user?.email}</p>
+              <p className="profile-email">{formData.email || user?.email}</p>
               <div className="profile-badges">
-                <span className="badge role-badge">{user?.role}</span>
-                <span className={`badge status-badge ${user?.status?.toLowerCase()}`}>
-                  {user?.status}
+                <span className="badge role-badge">{formData.role || user?.role}</span>
+                <span className={`badge status-badge ${(formData.status || user?.status)?.toLowerCase()}`}>
+                  {formData.status || user?.status}
                 </span>
               </div>
             </div>
@@ -299,7 +289,7 @@ const ProfileTab = ({ user, formData, editing, onInputChange, t }) => (
               className="form-input"
             />
           ) : (
-            <p className="form-value">{user?.firstName || '-'}</p>
+            <p className="form-value">{formData.firstName || formData.first_name || '-'}</p>
           )}
         </div>
         
@@ -314,7 +304,7 @@ const ProfileTab = ({ user, formData, editing, onInputChange, t }) => (
               className="form-input"
             />
           ) : (
-            <p className="form-value">{user?.lastName || '-'}</p>
+            <p className="form-value">{formData.lastName || formData.last_name || '-'}</p>
           )}
         </div>
         
@@ -324,12 +314,12 @@ const ProfileTab = ({ user, formData, editing, onInputChange, t }) => (
             <input
               type="tel"
               name="phone"
-              value={user.phone || ''}
+              value={formData.phone || ''}
               onChange={onInputChange}
               className="form-input"
             />
           ) : (
-            <p className="form-value">{user?.phone || '-'}</p>
+            <p className="form-value">{formData.phone || '-'}</p>
           )}
         </div>
         
@@ -339,13 +329,13 @@ const ProfileTab = ({ user, formData, editing, onInputChange, t }) => (
             <input
               type="date"
               name="date_of_birth"
-              value={user.dateOfBirth || ''}
+              value={formData.dateOfBirth || ''}
               onChange={onInputChange}
               className="form-input"
             />
           ) : (
             <p className="form-value">
-              {user?.dateOfBirth ? new Date(user.dateOfBirth).toLocaleDateString() : '-'}
+              {formData.dateOfBirth ? new Date(formData.dateOfBirth).toLocaleDateString() : '-'}
             </p>
           )}
         </div>
@@ -364,7 +354,7 @@ const ProfileTab = ({ user, formData, editing, onInputChange, t }) => (
           placeholder={t('profile.bioPlaceholder')}
         />
       ) : (
-        <p className="bio-text">{user?.bio || t('profile.noBio')}</p>
+        <p className="bio-text">{formData.bio || t('profile.noBio')}</p>
       )}
     </div>
   </div>
@@ -381,19 +371,17 @@ const PreferencesTab = ({ user, formData, editing, onInputChange, t }) => (
           {editing ? (
             <select
               name="native_language"
-              value={formData.native_language || ''}
+              value={formData.nativeLanguage || ''}
               onChange={onInputChange}
               className="form-select"
             >
               <option value="">{t('profile.selectLanguage')}</option>
-              <option value="fr">Français</option>
-              <option value="en">English</option>
-              <option value="zh">中文</option>
-              <option value="es">Español</option>
-              <option value="de">Deutsch</option>
+              <option value="French">Français</option>
+              <option value="English">English</option>
+              <option value="Chinese">中文</option>
             </select>
           ) : (
-            <p className="form-value">{user?.nativeLanguage || '-'}</p>
+            <p className="form-value">{formData.nativeLanguage || formData.native_language || '-'}</p>
           )}
         </div>
         
@@ -402,7 +390,7 @@ const PreferencesTab = ({ user, formData, editing, onInputChange, t }) => (
           {editing ? (
             <select
               name="current_level"
-              value={formData.current_level || ''}
+              value={formData.currentLevel || ''}
               onChange={onInputChange}
               className="form-select"
             >
@@ -411,7 +399,7 @@ const PreferencesTab = ({ user, formData, editing, onInputChange, t }) => (
               <option value="Advanced">{t('levels.advanced')}</option>
             </select>
           ) : (
-            <p className="form-value">{user?.current_level || '-'}</p>
+            <p className="form-value">{formData.currentLevel || formData.current_level || '-'}</p>
           )}
         </div>
         
@@ -431,7 +419,7 @@ const PreferencesTab = ({ user, formData, editing, onInputChange, t }) => (
               <option value="Asia/Shanghai">Asia/Shanghai</option>
             </select>
           ) : (
-            <p className="form-value">{user?.timezone || '-'}</p>
+            <p className="form-value">{formData.timezone || '-'}</p>
           )}
         </div>
       </div>

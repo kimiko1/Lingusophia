@@ -6,11 +6,13 @@
   "navigation": {
     "home": "Accueil",
     "lessons": "Leçons",
+    "bookings": "Réservations",
     "calendar": "Calendrier",
     "profile": "Profil",
     "settings": "Paramètres",
     "logout": "Déconnexion",
     "myLessons": "Mes Leçons",
+    "myBookings": "Mes réservations",
     "scheduleLesson": "Planifier une Leçon",
     "lessonSelection": "Sélection de Leçons",
     "customerReviews": "Avis Clients",

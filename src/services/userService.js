@@ -21,14 +21,14 @@ export const userService = {
   /**
    * Mettre à jour le profil de l'utilisateur
    */
-  async updateUserProfile(userData) {
-    try {
-      const response = await api.put('/users/profile', userData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
+  async updateUserProfile(userId, userData) {
+  try {
+    const response = await api.put(`api/users/profile/${userId}`, userData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+},
 
   /**
    * Récupérer les statistiques de l'utilisateur
