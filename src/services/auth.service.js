@@ -2,7 +2,7 @@ import { API_BASE_URL } from '../config/constants';
 
 class AuthService {
   constructor() {
-    this.baseURL = 'http://localhost:3000';
+    this.baseURL = API_BASE_URL;
   }
 
   // Connexion utilisateur
