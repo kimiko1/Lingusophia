@@ -68,37 +68,59 @@ const Profile = () => {
     );
   }
 
+
+  // Gère la correspondance camelCase <-> snake_case pour le formulaire
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    // Mappe les noms de champs snake_case vers camelCase dans le state
+    let key = name;
+    if (key === 'first_name') key = 'firstName';
+    if (key === 'last_name') key = 'lastName';
+    if (key === 'native_language') key = 'nativeLanguage';
+    if (key === 'current_level') key = 'currentLevel';
+    if (key === 'avatar_url') key = 'avatarUrl';
+    if (key === 'date_of_birth') key = 'dateOfBirth';
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [key]: value
     }));
   };
 
   const handleSaveProfile = async () => {
     try {
-      // Convertir les noms de champs pour correspondre à l'API
+      // Convertir les noms de champs pour correspondre à l'API (snake_case)
       const profileData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
         phone: formData.phone,
         bio: formData.bio,
         nativeLanguage: formData.nativeLanguage,
-        currentLevel: formData.current_level,
+        currentLevel: formData.currentLevel,
         timezone: formData.timezone,
-        avatarUrl: formData.avatar_url,
+        avatarUrl: formData.avatarUrl,
         dateOfBirth: formData.dateOfBirth,
       };
-      
-      const result = await updateProfile(profileData);
-      
-      if (result.success) {
-        setIsEditing(false);
-        // Afficher un message de succès
-      } else {
-        console.error('Error updating profile:', result.error);
-      }
+
+      // Envoie les champs attendus par l'API (snake_case)
+      const apiData = {
+        firstName: profileData.firstName,
+        lastName: profileData.lastName,
+        phone: profileData.phone,
+        bio: profileData.bio,
+        nativeLanguage: profileData.nativeLanguage,
+        currentLevel: profileData.currentLevel,
+        timezone: profileData.timezone,
+        avatarUrl: profileData.avatarUrl,
+        dateOfBirth: profileData.dateOfBirth,
+      };
+
+      const result = await updateProfile(apiData);
+if (result.success || result.message === 'Profil mis à jour avec succès') {
+  setIsEditing(false);
+  // Afficher un message de succès
+} else {
+  console.error('Error updating profile:', result.error || result.message || 'Aucune modification détectée ou erreur inconnue');
+}
     } catch (error) {
       console.error('Error updating profile:', error);
     }
