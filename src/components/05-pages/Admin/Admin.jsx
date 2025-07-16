@@ -433,12 +433,6 @@ const Admin = ({
               {t('pages:admin.subtitle', 'Gérez votre plateforme d\'apprentissage')}
             </p>
           </div>
-          <div className="admin__header-actions">
-            <Button variant="outline" className="admin__export-btn">
-              <FontAwesomeIcon icon={faDownload} />
-              {t('pages:admin.actions.export')}
-            </Button>
-          </div>
         </div>
 
         {/* Navigation Tabs */}
