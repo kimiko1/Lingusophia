@@ -10,6 +10,9 @@ import {
   CustomerReviews,
   Profile,
   Settings,
+  Bookings,
+  Success,
+  Cancel,
   Admin,
   Login,
   Register,
@@ -23,51 +26,42 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router basename="/">
-        <HeaderTemplate>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/logout" element={<Logout />} />
-            <Route path="/calendar" element={
-              <ProtectedRoute>
-                <Calendar />
-              </ProtectedRoute>
-            } />
-            <Route path="/schedule-lesson" element={
-              <ProtectedRoute>
-                <ScheduleLesson />
-              </ProtectedRoute>
-            } />
-            <Route path="/lesson-selection" element={
-              <ProtectedRoute>
-                <LessonSelection />
-              </ProtectedRoute>
-            } />
-            <Route path="/my-lessons" element={
-              <ProtectedRoute>
-                <MyLessons />
-              </ProtectedRoute>
-            } />
-            <Route path="/customer-reviews" element={<CustomerReviews />} />
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            } />
-            <Route path="/settings" element={
-              <ProtectedRoute>
-                <Settings />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin" element={
+        <Routes>
+          {/* Routes avec HeaderTemplate */}
+          <Route
+            path="*"
+            element={
+              <HeaderTemplate>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/logout" element={<Logout />} />
+                  <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
+                  <Route path="/schedule-lesson" element={<ProtectedRoute><ScheduleLesson /></ProtectedRoute>} />
+                  <Route path="/lesson-selection" element={<ProtectedRoute><LessonSelection /></ProtectedRoute>} />
+                  <Route path="/my-lessons" element={<ProtectedRoute><MyLessons /></ProtectedRoute>} />
+                  <Route path="/customer-reviews" element={<CustomerReviews />} />
+                  <Route path="/bookings" element={<Bookings />} />
+                  <Route path="/success" element={<Success />} />
+                  <Route path="/cancel" element={<Cancel />} />
+                  <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                  <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+                </Routes>
+              </HeaderTemplate>
+            }
+          />
+          {/* Route admin sans HeaderTemplate */}
+          <Route
+            path="/admin"
+            element={
               <ProtectedRoute requiredRole="Admin">
                 <Admin />
               </ProtectedRoute>
-            } />
-          </Routes>
-        </HeaderTemplate>
+            }
+          />
+        </Routes>
       </Router>
     </Provider>
   );

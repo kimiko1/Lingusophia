@@ -1,3 +1,4 @@
+import { body, head } from 'framer-motion/client';
 import api from './api';
 
 /**
@@ -234,7 +235,24 @@ async getCategories() {
     } catch (error) {
       throw error;
     }
+  },
+
+  /**
+   * Create a payment intent for a lesson
+   */
+  async createPaymentIntent(body, headers) {
+    try {
+      const response = await api.post(
+        '/api/payments/create-checkout-session',
+        body,
+        { headers: { 'Content-Type': 'application/json', ...headers } }
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   }
 };
+
 
 export default lessonService;

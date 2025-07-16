@@ -17,6 +17,7 @@ const MyLessons = () => {
     setError(null);
     try {
       const res = await lessonService.getLessonsByUser(user.id);
+      console.log('Fetched lessons:', res?.data?.data?.lessons); // Debugging line
       // Correction ici :
       setMyLessons(res?.data?.data?.lessons || []);
     } catch (err) {
@@ -35,17 +36,22 @@ const MyLessons = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {!loading && myLessons.length === 0 && <p>Vous n'avez réservé aucune leçon.</p>}
       <div className="my-lessons-list">
-        {myLessons.map(lesson => (
-          <LessonCard
-            key={lesson.id}
-            title={lesson.title}
-            description={lesson.description}
-            duration={lesson.duration}
-            level={lesson.level}
-            price={lesson.price}
-            // Ajoute d'autres props si besoin
-          />
-        ))}
+        {myLessons
+          .filter(lesson => lesson.bookingStatus === 'Confirmed' && lesson.paymentStatus === 'Paid')
+          .map(lesson => (
+            <div key={lesson.id} style={{ marginBottom: 24 }}>
+              <LessonCard
+                title={lesson.title}
+                description={lesson.description}
+                duration={String(lesson.duration)}
+                level={lesson.level}
+                price={lesson.price}
+              />
+              <div style={{ marginTop: 8 }}>
+                <span style={{ fontWeight: 'bold' }}>État&nbsp;: </span>Confirmée et payée
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );

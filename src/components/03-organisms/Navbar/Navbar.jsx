@@ -12,7 +12,7 @@ import {
   faTimes, 
   faCalendarAlt,
   faHistory,
-  faUserCircle,
+  faBookmark,
   faStar,
   faChevronDown,
   faCog,
@@ -52,6 +52,7 @@ const Navbar = ({
     { icon: faThLarge, label: t('navigation.home'), href: "/", id: "dashboard" },
     { icon: faCalendarAlt, label: t('navigation.calendar'), href: "/calendar", id: "schedule" },
     { icon: faGraduationCap, label: t('navigation.myLessons'), href: "/my-lessons", id: "lessons" },
+    { icon: faBookmark, label: t('navigation.bookings'), href: "/bookings", id: "bookings" },
     { icon: faStar, label: t('navigation.customerReviews'), href: "/customer-reviews", id: "reviews" }
   ];
 
