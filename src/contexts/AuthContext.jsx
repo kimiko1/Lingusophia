@@ -89,13 +89,14 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (profileData) => {
     try {
+      console.log('Updating profile with data:', profileData);
       const response = await authService.updateProfile(profileData);
-      
-      if (response.success && response.user) {
-        setUser(response.user);
+      // Accepte le succès si success true OU message de succès
+      if ((response.success && response.user) || response.message === 'Profil mis à jour avec succès') {
+        // Recharge le profil utilisateur après update si possible
+        await checkAuth();
         return response;
       }
-      
       throw new Error(response.message || 'Erreur de mise à jour du profil');
     } catch (error) {
       console.error('Erreur update profile:', error);
