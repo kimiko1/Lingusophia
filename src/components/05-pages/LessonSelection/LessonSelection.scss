@@ -1,0 +1,284 @@
+@use '../../../styles/themes/mixins' as *;
+
+.lesson-selection {
+  min-height: 100vh;
+  background: $color-background;
+
+  &--compact {
+    .lesson-selection__container {
+      max-width: 1000px;
+    }
+  }
+}
+
+.lesson-selection__container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: $spacing-lg $spacing-md;
+}
+
+.lesson-selection__header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-2xl;
+}
+
+.lesson-selection__back-btn {
+  background: none;
+  border: 2px solid $color-primary;
+  color: $color-primary;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius-md;
+  cursor: pointer;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  transition: $transition-base;
+
+  &:hover {
+    background: $color-primary;
+    color: white;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+  }
+}
+
+.lesson-selection__title-section {
+  flex: 1;
+}
+
+.lesson-selection__title {
+  margin: 0 0 $spacing-xs;
+  color: $color-text;
+  font-size: clamp($font-size-xl, 4vw, $font-size-3xl);
+}
+
+.lesson-selection__subtitle {
+  margin: 0;
+  color: $color-text-secondary;
+  font-size: $font-size-lg;
+}
+
+.lesson-selection__categories,
+.lesson-selection__lessons {
+  margin-bottom: $spacing-2xl;
+}
+
+.lesson-selection__section-title {
+  margin-bottom: $spacing-xl;
+  color: $color-text;
+  font-size: $font-size-2xl;
+  text-align: center;
+}
+
+.lesson-selection__category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-lg;
+  justify-items: center;
+}
+
+.lesson-selection__category-card {
+  width: 100%;
+  max-width: 300px;
+}
+
+.lesson-selection__lessons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-lg;
+}
+
+.lesson-selection__lesson-card {
+  width: 100%;
+}
+
+.lesson-selection__no-lessons {
+  text-align: center;
+  padding: $spacing-2xl;
+  background: rgba($color-text-light, 0.05);
+  border-radius: $border-radius-lg;
+  border: 2px dashed $color-border;
+
+  p {
+    margin: 0;
+    color: $color-text-secondary;
+    font-size: $font-size-lg;
+  }
+}
+
+.lesson-selection__error {
+  text-align: center;
+  padding: $spacing-2xl;
+  max-width: 600px;
+  margin: 0 auto;
+
+  h2 {
+    color: $color-danger;
+    margin-bottom: $spacing-md;
+  }
+
+  p {
+    color: $color-text-secondary;
+    font-size: $font-size-lg;
+  }
+}
+
+.lesson-selection__options-grid {
+  display: grid;
+  gap: $spacing-lg;
+  margin-bottom: $spacing-xl;
+
+  // Grille spécifique pour les langues - alignement horizontal
+  &--languages {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    justify-items: center;
+    max-width: 800px;
+    margin: 0 auto $spacing-xl auto;
+  }
+
+  // Grille spécifique pour les niveaux - alignement horizontal
+  &--levels {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    justify-items: center;
+    max-width: 900px;
+    margin: 0 auto $spacing-xl auto;
+  }
+
+  // Grille spécifique pour les catégories - alignement horizontal
+  &--categories {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    justify-items: center;
+    max-width: 900px;
+    margin: 0 auto $spacing-xl auto;
+  }
+
+  // Grille pour les leçons - plus de colonnes
+  &:not(&--languages):not(&--levels):not(&--categories) {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+.lesson-selection__step {
+  margin-bottom: $spacing-2xl;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.lesson-selection__step-title {
+  text-align: center;
+  margin-bottom: $spacing-xl;
+  color: $color-text-primary;
+  font-weight: $font-weight-bold;
+}
+
+// Breadcrumb styles
+.lesson-selection__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-top: $spacing-md;
+  padding: $spacing-sm $spacing-md;
+  background: rgba($color-primary, 0.1);
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($color-primary, 0.2);
+
+  .breadcrumb-item {
+    color: $color-primary;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-sm;
+  }
+
+  .breadcrumb-separator {
+    color: rgba($color-primary, 0.6);
+    font-weight: $font-weight-bold;
+  }
+}
+
+// Responsive design
+@include tablet-and-up {
+  .lesson-selection__container {
+    padding: $spacing-md $spacing-sm;
+  }
+
+  .lesson-selection__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-md;
+    margin-bottom: $spacing-xl;
+  }
+
+  .lesson-selection__back-btn {
+    align-self: flex-start;
+  }
+
+  .lesson-selection__category-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-md;
+  }
+
+  .lesson-selection__lessons-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $spacing-md;
+  }
+}
+
+@include mobile-only {
+  .lesson-selection__container {
+    padding: $spacing-sm;
+  }
+
+  .lesson-selection__header {
+    margin-bottom: $spacing-lg;
+  }
+
+  .lesson-selection__title {
+    font-size: $font-size-xl;
+  }
+
+  .lesson-selection__subtitle {
+    font-size: $font-size-base;
+  }
+
+  .lesson-selection__section-title {
+    font-size: $font-size-xl;
+    margin-bottom: $spacing-lg;
+  }
+
+  .lesson-selection__category-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-sm;
+  }
+
+  .lesson-selection__lessons-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-sm;
+  }
+
+  .lesson-selection__categories,
+  .lesson-selection__lessons {
+    margin-bottom: $spacing-xl;
+  }
+}
+
+// Animation effects
+.lesson-selection__categories {
+  @include slide-up(0.6s, 0.2s);
+}
+
+.lesson-selection__lessons {
+  @include slide-up(0.6s, 0.4s);
+}
+
+// Accessibility
+@media (prefers-reduced-motion: reduce) {
+  .lesson-selection__categories,
+  .lesson-selection__lessons {
+    animation: none;
+  }
+}

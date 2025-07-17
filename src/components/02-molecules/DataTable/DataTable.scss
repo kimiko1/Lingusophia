@@ -1,0 +1,289 @@
+@use '../../../styles/themes/mixins' as *;
+
+.data-table {
+  background: white;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+}
+
+.data-table__wrapper {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba($color-primary, 0.3) transparent;
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba($color-primary, 0.3);
+    border-radius: 3px;
+    
+    &:hover {
+      background: rgba($color-primary, 0.5);
+    }
+  }
+}
+
+.data-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $font-size-sm;
+}
+
+.data-table__head {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-bottom: 2px solid $color-border;
+}
+
+.data-table__row {
+  transition: $transition-all;
+
+  &--header {
+    height: 60px;
+  }
+
+  &--selected {
+    background: rgba($color-primary, 0.05);
+    
+    &:hover {
+      background: rgba($color-primary, 0.1);
+    }
+  }
+
+  &:not(&--header):hover {
+    background: rgba($color-primary, 0.03);
+  }
+}
+
+.data-table__cell {
+  padding: $spacing-md $spacing-lg;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid $color-border-light;
+
+  &--header {
+    font-weight: $font-weight-semibold;
+    color: $color-text-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: $font-size-xs;
+    border-bottom: none;
+  }
+
+  &--sortable {
+    cursor: pointer;
+    user-select: none;
+    
+    &:hover {
+      background: rgba($color-primary, 0.05);
+    }
+  }
+
+  &--checkbox {
+    width: 60px;
+    text-align: center;
+  }
+}
+
+.data-table__header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-sm;
+}
+
+.data-table__sort-icon {
+  color: $color-text-secondary;
+  transition: $transition-colors;
+  font-size: 0.8rem;
+
+  .data-table__cell--sortable:hover & {
+    color: $color-primary;
+  }
+}
+
+// Checkbox styles
+.data-table__checkbox-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.data-table__checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+
+  &:checked ~ .data-table__checkmark {
+    background: $color-primary;
+    border-color: $color-primary;
+    
+    svg {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+.data-table__checkmark {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border: 2px solid $color-border;
+  border-radius: $border-radius-sm;
+  transition: $transition-all;
+
+  svg {
+    color: white;
+    font-size: 0.7rem;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: $transition-all;
+  }
+
+  &:hover {
+    border-color: $color-primary;
+  }
+}
+
+// Status badges
+.data-table__status {
+  display: inline-block;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &--active {
+    background: rgba($color-success, 0.1);
+    color: $color-success-dark;
+    border: 1px solid rgba($color-success, 0.2);
+  }
+
+  &--inactive {
+    background: rgba($color-text-secondary, 0.1);
+    color: $color-text-secondary;
+    border: 1px solid rgba($color-text-secondary, 0.2);
+  }
+
+  &--pending {
+    background: rgba($color-warning, 0.1);
+    color: $color-warning-dark;
+    border: 1px solid rgba($color-warning, 0.2);
+  }
+
+  &--blocked {
+    background: rgba($color-danger, 0.1);
+    color: $color-danger-dark;
+    border: 1px solid rgba($color-danger, 0.2);
+  }
+}
+
+// Empty state
+.data-table__empty {
+  text-align: center;
+  padding: $spacing-4xl;
+  color: $color-text-secondary;
+
+  p {
+    margin: 0;
+    font-size: $font-size-lg;
+  }
+}
+
+// Footer
+.data-table__footer {
+  padding: $spacing-md $spacing-lg;
+  background: $color-background;
+  border-top: 1px solid $color-border-light;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+}
+
+.data-table__info {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.data-table__selection-info {
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+// Responsive
+@include tablet-and-up {
+  .data-table__cell {
+    padding: $spacing-sm $spacing-md;
+    font-size: $font-size-xs;
+  }
+
+  .data-table__row--header {
+    height: 50px;
+  }
+}
+
+@include mobile-only {
+  .data-table__wrapper {
+    border-radius: $border-radius-md;
+  }
+
+  .data-table__cell {
+    padding: $spacing-sm;
+    font-size: $font-size-xs;
+
+    &:first-child {
+      padding-left: $spacing-md;
+    }
+
+    &:last-child {
+      padding-right: $spacing-md;
+    }
+  }
+
+  .data-table__header-content {
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+
+  .data-table__footer {
+    padding: $spacing-sm $spacing-md;
+  }
+}
+
+// Animation
+.data-table__row:not(.data-table__row--header) {
+  animation: fadeInUp 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+@for $i from 1 through 10 {
+  .data-table__row:not(.data-table__row--header):nth-child(#{$i + 1}) {
+    animation-delay: #{$i * 0.05}s;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

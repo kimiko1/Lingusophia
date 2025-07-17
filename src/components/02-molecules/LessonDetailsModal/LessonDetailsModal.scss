@@ -1,0 +1,248 @@
+@use '../../../styles/themes/mixins' as *;
+
+.lesson-details-modal {
+  &--featured {
+    .lesson-details-modal__content {
+      background: linear-gradient(135deg, rgba($color-primary, 0.02), rgba($color-secondary, 0.02));
+    }
+  }
+}
+
+.lesson-details-modal__content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: $spacing-xl;
+  margin-bottom: $spacing-xl;
+
+  @include tablet-and-up {
+    grid-template-columns: 1fr;
+    gap: $spacing-lg;
+  }
+}
+
+.lesson-details-modal__left {
+  padding-right: $spacing-lg;
+  border-right: 1px solid $color-border-light;
+
+  @include tablet-and-up {
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid $color-border-light;
+    padding-bottom: $spacing-lg;
+  }
+}
+
+.lesson-details-modal__right {
+  padding-left: $spacing-md;
+
+  @include tablet-and-up {
+    padding-left: 0;
+    padding-top: $spacing-lg;
+  }
+}
+
+.lesson-details-modal__header {
+  margin-bottom: $spacing-lg;
+}
+
+.lesson-details-modal__section-title {
+  margin: 0 0 $spacing-md;
+  color: $color-primary;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+}
+
+.lesson-details-modal__goal {
+  margin-bottom: $spacing-lg;
+}
+
+.lesson-details-modal__lesson-title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text;
+  margin: 0 0 $spacing-md;
+  line-height: $line-height-tight;
+}
+
+.lesson-details-modal__lesson-description {
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+  line-height: $line-height-relaxed;
+  margin: 0 0 $spacing-lg;
+}
+
+.lesson-details-modal__goals {
+  margin-bottom: $spacing-lg;
+}
+
+.lesson-details-modal__goals-title {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: $color-text;
+  margin: 0 0 $spacing-sm;
+}
+
+.lesson-details-modal__goals-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lesson-details-modal__goal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-relaxed;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.lesson-details-modal__goal-icon {
+  color: $color-success;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xs;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.lesson-details-modal__meta {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  padding: $spacing-md;
+  background: $color-background;
+  border-radius: $border-radius-md;
+  border: 1px solid $color-border-light;
+}
+
+.lesson-details-modal__meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lesson-details-modal__meta-label {
+  font-size: $font-size-sm;
+  color: $color-text-light;
+  font-weight: $font-weight-medium;
+}
+
+.lesson-details-modal__meta-value {
+  font-size: $font-size-sm;
+  color: $color-text;
+  font-weight: $font-weight-medium;
+
+  &.lesson-details-modal__level--beginner {
+    color: $color-success;
+  }
+
+  &.lesson-details-modal__level--intermediate {
+    color: $color-warning;
+  }
+
+  &.lesson-details-modal__level--advanced {
+    color: $color-danger;
+  }
+
+  &.lesson-details-modal__price {
+    color: $color-primary;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-base;
+  }
+}
+
+.lesson-details-modal__teacher-section {
+  text-align: center;
+}
+
+.lesson-details-modal__teacher {
+  margin-bottom: $spacing-lg;
+}
+
+.lesson-details-modal__teacher-details {
+  text-align: left;
+  padding: $spacing-md;
+  background: rgba($color-primary, 0.02);
+  border-radius: $border-radius-md;
+  border: 1px solid rgba($color-primary, 0.1);
+}
+
+.lesson-details-modal__teacher-speciality,
+.lesson-details-modal__teacher-experience {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin: 0 0 $spacing-sm;
+  line-height: $line-height-relaxed;
+
+  strong {
+    color: $color-text;
+    font-weight: $font-weight-semibold;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.lesson-details-modal__teacher-bio {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-relaxed;
+  margin: $spacing-sm 0 0;
+  padding-top: $spacing-sm;
+  border-top: 1px solid $color-border-light;
+  font-style: italic;
+}
+
+.lesson-details-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-md;
+  padding-top: $spacing-lg;
+  border-top: 1px solid $color-border-light;
+
+  @include mobile-only {
+    flex-direction: column-reverse;
+    gap: $spacing-sm;
+  }
+}
+
+// Responsive design
+@include mobile-only {
+  .lesson-details-modal__content {
+    gap: $spacing-md;
+  }
+
+  .lesson-details-modal__left {
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid $color-border-light;
+    padding-bottom: $spacing-md;
+  }
+
+  .lesson-details-modal__right {
+    padding-left: 0;
+    padding-top: $spacing-md;
+  }
+
+  .lesson-details-modal__lesson-title {
+    font-size: $font-size-lg;
+  }
+
+  .lesson-details-modal__meta {
+    padding: $spacing-sm;
+  }
+
+  .lesson-details-modal__teacher-details {
+    padding: $spacing-sm;
+  }
+
+  .lesson-details-modal__actions {
+    padding-top: $spacing-md;
+  }
+}

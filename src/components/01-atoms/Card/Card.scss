@@ -1,0 +1,102 @@
+@use '../../../styles/themes/mixins' as *;
+
+.card {
+  @include card-base;
+  
+  // Animation - moved before nested rules to avoid mixed-decls warning
+  @include fade-in;
+  
+  // Base variant - wrapped in & {} to avoid mixed-decls warning
+  & {
+    background: $bg-primary;
+    border: 1px solid $border-light;
+    box-shadow: $shadow-sm;
+  }
+  
+  // Variants
+  &--elevated {
+    border: none;
+    box-shadow: $shadow-lg;
+  }
+  
+  &--outlined {
+    background: transparent;
+    border: 2px solid $border-medium;
+    box-shadow: none;
+  }
+  
+  &--ghost {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  
+  // Padding variants
+  &--padding-none {
+    padding: 0;
+  }
+  
+  &--padding-sm {
+    @include card-padding(sm);
+  }
+  
+  &--padding-base {
+    @include card-padding(base);
+  }
+  
+  &--padding-lg {
+    @include card-padding(lg);
+  }
+  
+  // Interactive states
+  &--hover {
+    @include card-hover;
+  }
+  
+  &--interactive {
+    cursor: pointer;
+    transition: $transition-all;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: $shadow-xl;
+      border-color: $border-medium;
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: $shadow-md;
+    }
+    
+    &:focus-visible {
+      @include focus-ring;
+    }
+  }
+  
+  // Selected state
+  &--selected {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+    background: rgba($color-primary, 0.05);
+    
+    &.card--interactive:hover {
+      border-color: $color-primary;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.3), $shadow-xl;
+    }
+  }
+}
+
+// Responsive adjustments
+@include mobile-only {
+  .card {
+    border-radius: $radius-lg;
+    
+    &--padding-base {
+      padding: $spacing-4;
+    }
+    
+    &--padding-lg {
+      padding: $spacing-6;
+    }
+  }
+}

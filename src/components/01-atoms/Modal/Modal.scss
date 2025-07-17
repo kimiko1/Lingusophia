@@ -1,0 +1,204 @@
+@use '../../../styles/themes/mixins' as *;
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($color-overlay, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-index-modal;
+  padding: $spacing-md;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal {
+  background: $color-surface;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-xl;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideIn 0.3s ease-out;
+  outline: none;
+
+  // Size variants
+  &--small {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  &--medium {
+    width: 100%;
+    max-width: 600px;
+  }
+
+  &--large {
+    width: 100%;
+    max-width: 800px;
+  }
+
+  &--fullscreen {
+    width: 95vw;
+    height: 95vh;
+    max-width: none;
+    max-height: none;
+  }
+
+  // Style variants
+  &--default {
+    border: 1px solid $color-border;
+  }
+
+  &--primary {
+    border: 2px solid $color-primary;
+    box-shadow: $shadow-xl, 0 0 0 1px $color-primary;
+  }
+
+  &--warning {
+    border: 2px solid $color-warning;
+    box-shadow: $shadow-xl, 0 0 0 1px $color-warning;
+  }
+
+  &--danger {
+    border: 2px solid $color-danger;
+    box-shadow: $shadow-xl, 0 0 0 1px $color-danger;
+  }
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $color-background;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $color-border;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: $color-text-light;
+  }
+}
+
+.modal__close {
+  position: absolute;
+  top: $spacing-md;
+  right: $spacing-md;
+  background: none;
+  border: none;
+  font-size: $font-size-xl;
+  color: $color-text-light;
+  cursor: pointer;
+  padding: $spacing-xs;
+  line-height: 1;
+  border-radius: $border-radius-sm;
+  transition: $transition-fast;
+  z-index: 1;
+
+  &:hover {
+    color: $color-text;
+    background-color: $color-background;
+  }
+
+  &:focus {
+    outline: 2px solid $color-focus;
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.modal__header {
+  padding: $spacing-lg $spacing-lg $spacing-md;
+  border-bottom: 1px solid $color-border;
+}
+
+.modal__title {
+  margin: 0;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text;
+  font-family: $font-family-heading;
+}
+
+.modal__content {
+  padding: $spacing-lg;
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Responsive design
+@include mobile-only {
+  .modal-overlay {
+    padding: $spacing-sm;
+  }
+
+  .modal {
+    &--large,
+    &--medium {
+      max-width: none;
+      width: 100%;
+    }
+
+    &--fullscreen {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+    }
+  }
+
+  .modal__close {
+    top: $spacing-sm;
+    right: $spacing-sm;
+  }
+
+  .modal__header,
+  .modal__content {
+    padding: $spacing-md;
+  }
+
+  .modal__title {
+    font-size: $font-size-lg;
+  }
+}
+
+// Focus management
+.modal:focus {
+  outline: none;
+}
+
+// Reduce motion for accessibility
+@media (prefers-reduced-motion: reduce) {
+  .modal-overlay,
+  .modal {
+    animation: none;
+  }
+}

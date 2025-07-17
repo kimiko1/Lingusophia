@@ -1,0 +1,97 @@
+@use '../../../styles/themes/mixins' as *;
+
+.title {
+  margin: 0;
+  font-family: $font-family-primary;
+  line-height: $line-height-tight;
+  
+  // Level styles
+  &--level-1 {
+    @include heading(1);
+    & {
+      font-weight: $font-weight-extrabold;
+    }
+  }
+  
+  &--level-2 {
+    @include heading(2);
+    & {
+      font-weight: $font-weight-bold;
+    }
+  }
+  
+  &--level-3 {
+    @include heading(3);
+    & {
+      font-weight: $font-weight-bold;
+    }
+  }
+  
+  &--level-4 {
+    @include heading(4);
+    & {
+      font-weight: $font-weight-semibold;
+    }
+  }
+  
+  &--level-5 {
+    @include heading(5);
+    & {
+      font-weight: $font-weight-semibold;
+    }
+  }
+  
+  &--level-6 {
+    @include heading(6);
+    & {
+      font-weight: $font-weight-medium;
+    }
+  }
+  
+  // Color variants
+  &--default {
+    color: $text-primary;
+  }
+  
+  &--primary {
+    color: $primary-500;
+  }
+  
+  &--secondary {
+    color: $text-secondary;
+  }
+  
+  &--muted {
+    color: $text-muted;
+  }
+  
+  // Alignment
+  &--align-left {
+    text-align: left;
+  }
+  
+  &--align-center {
+    text-align: center;
+  }
+  
+  &--align-right {
+    text-align: right;
+  }
+}
+
+// Responsive typography
+@include mobile-only {
+  .title {
+    &--level-1 {
+      font-size: $font-size-2xl;
+    }
+    
+    &--level-2 {
+      font-size: $font-size-xl;
+    }
+    
+    &--level-3 {
+      font-size: $font-size-lg;
+    }
+  }
+}

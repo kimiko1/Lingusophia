@@ -1,0 +1,217 @@
+@use '../../../styles/themes/mixins' as *;
+
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $secondary-color 0%, $primary-color 100%);
+  padding: 2rem;
+}
+
+.register-container {
+  width: 100%;
+  max-width: 550px;
+}
+
+.register-card {
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 2px 40px rgba(0, 0, 0, 0.1);
+  background: white;
+  border: none;
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.register-title {
+  color: $primary-color;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+.register-subtitle {
+  color: $text-muted;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.register-form {
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: $text-color;
+    font-size: 0.9rem;
+  }
+
+  .register-input {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid $border-color;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: $text-muted;
+    }
+
+    &.error {
+      border-color: $error-color;
+      box-shadow: 0 0 0 3px rgba($error-color, 0.1);
+    }
+  }
+
+  .register-select {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid $border-color;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+    cursor: pointer;
+
+    &:focus {
+      border-color: $primary-color;
+      box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+      outline: none;
+    }
+  }
+
+  .password-input-wrapper {
+    position: relative;
+    
+    .password-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: $text-muted;
+      padding: 0.25rem;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba($primary-color, 0.1);
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+.error-message {
+  background: rgba($error-color, 0.1);
+  border: 1px solid rgba($error-color, 0.3);
+  color: $error-color;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.field-error {
+  display: block;
+  color: $error-color;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  margin-left: 0.5rem;
+}
+
+.register-button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba($primary-color, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.register-links {
+  text-align: center;
+
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: $secondary-color;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .register-page {
+    padding: 1rem;
+  }
+
+  .register-card {
+    padding: 2rem;
+  }
+
+  .register-title {
+    font-size: 2rem;
+  }
+
+  .register-form {
+    .form-row {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .register-card {
+    padding: 1.5rem;
+  }
+
+  .register-title {
+    font-size: 1.8rem;
+  }
+}

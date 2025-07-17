@@ -1,0 +1,348 @@
+{
+  "home": {
+    "title": "欢迎使用LearnALanguage",
+    "subtitle": "通过我们的互动平台掌握新语言",
+    "description": "选择您今天想要做的事情",
+    "reviews": {
+      "title": "学生评价",
+      "description": "了解我们的学生对学习体验的评价"
+    }
+  },
+  "profile": {
+    "title": "我的资料",
+    "subtitle": "管理您的个人信息",
+    "personalInfo": "个人信息",
+    "recentLessons": "最近的课程",
+    "statistics": "我的统计",
+    "achievementsTitle": "成就",
+    "fields": {
+      "name": "全名",
+      "email": "邮箱",
+      "phone": "电话",
+      "nativeLanguage": "母语",
+      "currentLevel": "当前级别",
+      "bio": "个人简介"
+    },
+    "stats": {
+      "lessonsCompleted": "已完成课程",
+      "hoursStudied": "学习时间",
+      "streak": "连续天数",
+      "favoriteLanguage": "最喜欢的语言"
+    },
+    "achievements": {
+      "firstLesson": "第一节课",
+      "weekStreak": "连续7天",
+      "tenLessons": "完成10节课",
+      "regularStudent": "勤奋学生"
+    }
+  },
+  "calendar": {
+    "title": "日历",
+    "subtitle": "安排您的课程",
+    "selectedDate": "选定日期",
+    "scheduleLesson": "安排课程",
+    "noLessons": "今天没有安排课程",
+    "previousMonth": "上个月",
+    "nextMonth": "下个月",
+    "months": [
+      "一月", "二月", "三月", "四月", "五月", "六月",
+      "七月", "八月", "九月", "十月", "十一月", "十二月"
+    ],
+    "weekdays": [
+      "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"
+    ]
+  },
+  "settings": {
+    "title": "设置",
+    "subtitle": "管理您的首选项和账户",
+    "sections": {
+      "notifications": "通知",
+      "privacy": "隐私",
+      "preferences": "偏好设置",
+      "security": "安全",
+      "dangerZone": "危险区域"
+    },
+    "notifications": {
+      "emailNotifications": "邮件通知",
+      "emailNotificationsDesc": "通过邮件接收重要通知",
+      "pushNotifications": "推送通知",
+      "pushNotificationsDesc": "在浏览器上接收通知",
+      "lessonReminders": "课程提醒",
+      "lessonRemindersDesc": "在预定课程前接收提醒",
+      "marketingEmails": "营销邮件",
+      "marketingEmailsDesc": "接收促销优惠和新闻"
+    },
+    "privacy": {
+      "profileVisibility": "个人资料可见性",
+      "profileVisibilityDesc": "谁可以看到您的个人资料",
+      "showProgress": "显示进度",
+      "showProgressDesc": "允许其他人查看您的学习进度",
+      "dataCollection": "分析数据收集",
+      "dataCollectionDesc": "通过分享匿名数据帮助改进应用",
+      "visibilityOptions": {
+        "public": "公开",
+        "friends": "仅朋友",
+        "private": "私密"
+      }
+    },
+    "preferences": {
+      "language": "界面语言",
+      "languageDesc": "应用程序显示语言",
+      "theme": "主题",
+      "themeDesc": "界面外观",
+      "autoplay": "自动播放",
+      "autoplayDesc": "自动播放音频内容",
+      "soundEffects": "音效",
+      "soundEffectsDesc": "启用界面声音",
+      "themeOptions": {
+        "light": "浅色",
+        "dark": "深色",
+        "auto": "自动"
+      }
+    },
+    "security": {
+      "twoFactorAuth": "双重身份验证",
+      "twoFactorAuthDesc": "添加额外的安全层",
+      "loginAlerts": "登录提醒",
+      "loginAlertsDesc": "为新登录接收通知",
+      "changePassword": "更改密码",
+      "currentPassword": "当前密码",
+      "newPassword": "新密码",
+      "confirmPassword": "确认新密码",
+      "changePasswordButton": "更改密码"
+    },
+    "actions": {
+      "saveSettings": "保存设置",
+      "deleteAccount": "删除我的账户",
+      "deleteAccountDesc": "删除您的账户是不可逆的。您的所有数据都将丢失。"
+    },
+    "messages": {
+      "passwordMismatch": "密码不匹配！",
+      "passwordTooShort": "密码必须至少8个字符！",
+      "passwordChanged": "密码修改成功！",
+      "confirmDeleteAccount": "您确定要删除您的账户吗？此操作不可逆。",
+      "accountDeleted": "账户已删除。正在重定向到首页..."
+    }
+  },
+  "lessons": {
+    "title": "我的课程",
+    "subtitle": "跟踪您的学习进度",
+    "upcoming": "即将到来的课程",
+    "completedLessons": "已完成的课程",
+    "inProgress": "进行中",
+    "difficulty": {
+      "beginner": "初学者",
+      "intermediate": "中级",
+      "advanced": "高级"
+    },
+    "currentLessons": "当前课程",
+    "learningStatistics": "学习统计",
+    "progress": "进度",
+    "finalScore": "最终分数",
+    "nextSession": "下次课程",
+    "started": "开始",
+    "completedDate": "完成",
+    "with": "与",
+    "noOngoingLessons": "您没有正在进行的课程。开始一个新课程来在这里看到它！",
+    "stats": {
+      "lessonsCompleted": "已完成课程",
+      "ongoingLessons": "正在进行的课程",
+      "languagesStudied": "学习的语言",
+      "averageScore": "平均分数"
+    },
+    "categories": {
+      "easy": "简单",
+      "medium": "中等",
+      "hard": "困难"
+    }
+  },
+  "scheduleLesson": {
+    "title": "安排课程",
+    "subtitle": "选择您的老师、日期和时间",
+    "selectDate": "选择日期",
+    "availableSlots": "可用时段",
+    "chooseTeacher": "选择您的老师",
+    "bookingSummary": "您的预约摘要",
+    "teacher": "老师",
+    "date": "日期",
+    "time": "时间",
+    "price": "价格",
+    "confirmBooking": "确认预约",
+    "lessonScheduled": "已安排与{{teacher}}在{{date}}{{time}}的课程"
+  },
+  "lessonSelection": {
+    "title": "选择您的课程",
+    "chooseLanguage": "选择语言",
+    "chooseLevel": "选择级别",
+    "chooseCategory": "选择类别",
+    "availableLessons": "可用课程",
+    "backButton": "返回",
+    "noLessonsAvailable": "此选择暂无可用课程。",
+    "languages": {
+      "english": "英语",
+      "french": "法语", 
+      "chinese": "中文",
+      "spanish": "西班牙语",
+      "german": "德语",
+      "italian": "意大利语"
+    },
+    "levels": {
+      "beginnerDesc": "开始您的语言学习之旅的完美选择",
+      "intermediateDesc": "在现有知识基础上进一步发展",
+      "advancedDesc": "掌握复杂的语言技能"
+    },
+    "categories": {
+      "easyDesc": "非常适合初学者",
+      "mediumDesc": "适合中级学习者", 
+      "hardDesc": "高级水平挑战"
+    }
+  },
+  "customerReviews": {
+    "title": "学生评价",
+    "shareExperience": "分享您的体验",
+    "shareDescription": "通过分享您对已完成课程的体验来帮助其他学生。",
+    "teacher": "老师",
+    "completed": "已完成",
+    "writeReview": "写评价",
+    "allReviewsCompleted": "做得好！您已经评价了所有完成的课程。",
+    "yourReviews": "您的评价",
+    "noReviews": "您还没有写过任何评价。完成一些课程并分享您的体验！",
+    "modal": {
+      "rateLesson": "为这节课打分",
+      "shareThoughts": "分享您的想法",
+      "finalDetails": "最终详情",
+      "next": "下一步",
+      "back": "返回",
+      "submitAnonymously": "匿名提交",
+      "submitReview": "提交评价",
+      "submitting": "提交中...",
+      "commentPlaceholder": "告诉我们您对这节课的体验...",
+      "stepIndicator": {
+        "step1": "评分",
+        "step2": "评论",
+        "step3": "详情"
+      }
+    }
+  },
+  "admin": {
+    "title": "管理中心",
+    "subtitle": "管理您的学习平台",
+    "accessDenied": {
+      "title": "访问被拒绝",
+      "message": "您没有访问此页面的必要权限。",
+      "goBack": "返回"
+    },
+    "tabs": {
+      "dashboard": "仪表板",
+      "users": "用户",
+      "lessons": "课程",
+      "bookings": "预约"
+    },
+    "stats": {
+      "totalUsers": "总用户数",
+      "totalLessons": "可用课程",
+      "totalTeachers": "活跃教师",
+      "totalBookings": "预约数",
+      "monthlyRevenue": "月收入",
+      "activeUsers": "活跃用户",
+      "completionRate": "完成率",
+      "averageRating": "平均评分"
+    },
+    "actions": {
+      "add": "添加",
+      "edit": "编辑",
+      "delete": "删除",
+      "view": "查看",
+      "export": "导出",
+      "filter": "过滤",
+      "search": "搜索",
+      "confirm": "确认",
+      "complete": "完成"
+    },
+    "users": {
+      "title": "用户管理",
+      "addUser": "添加用户",
+      "searchPlaceholder": "搜索用户..."
+    },
+    "lessons": {
+      "title": "课程管理",
+      "addLesson": "添加课程",
+      "searchPlaceholder": "搜索课程..."
+    },
+    "bookings": {
+      "title": "预约管理",
+      "searchPlaceholder": "搜索预约...",
+      "details": "预约详情",
+      "notes": "备注",
+      "student": "学生",
+      "lesson": "课程"
+    },
+    "thisMonth": "本月",
+    "recentActivity": "最近活动",
+    "newUserRegistered": "新用户注册",
+    "lessonBooked": "课程已预约",
+    "newReview": "新评价",
+    "timeAgo": {
+      "twoMinutes": "2分钟前",
+      "fiveMinutes": "5分钟前",
+      "twelveMinutes": "12分钟前"
+    },
+    "table": {
+      "name": "姓名",
+      "email": "邮箱",
+      "role": "角色",
+      "joinDate": "注册日期",
+      "status": "状态",
+      "actions": "操作",
+      "title": "标题",
+      "language": "语言",
+      "level": "级别",
+      "price": "价格",
+      "teacher": "老师",
+      "bookings": "预约",
+      "student": "学生",
+      "lesson": "课程",
+      "date": "日期",
+      "time": "时间",
+      "payment": "付款"
+    },
+    "modal": {
+      "user": "用户",
+      "lesson": "课程",
+      "booking": "预约",
+      "confirmDelete": "您确定要删除此项吗？",
+      "cancel": "取消",
+      "close": "关闭",
+      "formPlaceholder": "表单 {{type}} 将在此处实现..."
+    },
+    "form": {
+      "saving": "保存中...",
+      "deleting": "删除中...",
+      "create": "创建",
+      "update": "更新",
+      "duration": "时长",
+      "minutes": "分钟",
+      "category": "类别",
+      "description": "描述",
+      "roles": {
+        "student": "学生",
+        "teacher": "老师",
+        "admin": "管理员"
+      },
+      "status": {
+        "active": "活跃",
+        "inactive": "非活跃",
+        "pending": "待定",
+        "draft": "草稿"
+      },
+      "placeholders": {
+        "lessonTitle": "例如：初学者英语对话",
+        "teacherName": "例如：Sarah Wilson",
+        "lessonDescription": "描述本课程的目标和内容..."
+      },
+      "validation": {
+        "priceInvalid": "价格必须是正数"
+      }
+    }
+  }
+}

@@ -1,0 +1,251 @@
+@use '../../../styles/themes/mixins' as *;
+
+.my-lessons {
+  min-height: 80vh;
+  padding: 2.5rem $spacing-lg;
+  background: #f8f9fa;
+
+  @include mobile-only {
+    padding: 1rem;
+  }
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    text-align: center;
+    margin-bottom: 3.5rem;
+    color: $color-primary;
+    font-size: 2.2rem;
+    font-weight: $font-weight-bold;
+    letter-spacing: 0.5px;
+    @include mobile-only {
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+    }
+  }
+
+  .section-title {
+    color: $color-secondary;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: $font-weight-bold;
+    @include mobile-only {
+      font-size: $font-size-xl;
+    }
+  }
+
+  // Sections
+  .current-lessons-section,
+  .completed-lessons-section {
+    margin-bottom: 3rem;
+  }
+
+  .stats-section {
+    margin-bottom: 2rem;
+  }
+
+  // Grids
+  .lessons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+
+    @include mobile-only {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.2rem;
+
+    @include mobile-only {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  // Lesson Cards
+  .lesson-card {
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    border: none;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    transition: box-shadow 0.3s, transform 0.3s;
+    margin-bottom: 0.5rem;
+
+    &:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+      transform: translateY(-3px) scale(1.01);
+    }
+
+    &.current-lesson {
+      border-left: 5px solid $color-primary;
+    }
+
+    &.completed-lesson {
+      border-left: 5px solid $color-success;
+    }
+
+    .lesson-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.2rem;
+
+      .lesson-title {
+        color: $color-primary;
+        margin: 0;
+        font-size: 1.3rem;
+        font-weight: $font-weight-bold;
+        flex: 1;
+        margin-right: 1rem;
+      }
+
+      .badges {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .category-badge,
+      .grade-badge {
+        color: $color-white;
+        padding: 0.25rem 0.5rem;
+        border-radius: $border-radius-sm;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-medium;
+        white-space: nowrap;
+      }
+    }
+
+    .lesson-details {
+      .lesson-info {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+
+        .language {
+          background: $color-primary;
+          color: $color-white;
+          padding: 0.25rem 0.5rem;
+          border-radius: $border-radius-sm;
+          font-size: $font-size-xs;
+          font-weight: $font-weight-medium;
+        }
+
+        .level {
+          background: $color-secondary;
+          color: $color-white;
+          padding: 0.25rem 0.5rem;
+          border-radius: $border-radius-sm;
+          font-size: $font-size-xs;
+          font-weight: $font-weight-medium;
+        }
+
+        .teacher {
+          color: $color-text-secondary;
+          font-size: $font-size-sm;
+          align-self: center;
+        }
+      }
+
+      .progress-section {
+        margin-bottom: 1rem;
+
+        .progress-label {
+          color: $color-text;
+          font-weight: $font-weight-medium;
+          margin-bottom: 0.5rem;
+          font-size: $font-size-sm;
+        }
+
+        .progress-bar {
+          background: $color-gray-light;
+          border-radius: $border-radius-sm;
+          height: 8px;
+          overflow: hidden;
+
+          .progress-fill {
+            background: $color-primary;
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: $border-radius-sm;
+          }
+
+          &.completed .progress-fill {
+            background: $color-success;
+          }
+        }
+      }
+
+      .next-session,
+      .completed-date,
+      .started-date {
+        color: $color-text-secondary;
+        font-size: $font-size-sm;
+        margin: 0.25rem 0;
+      }
+
+      .next-session {
+        color: $color-primary;
+        font-weight: $font-weight-medium;
+      }
+    }
+  }
+
+  // Empty State
+  .empty-state {
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    margin-top: 2rem;
+
+    p {
+      color: $color-text-secondary;
+      margin: 0;
+      font-size: 1.1rem;
+    }
+  }
+
+  // Stats Cards
+  .stat-card {
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-md;
+    background: $color-white;
+    transition: box-shadow 0.3s, transform 0.3s;
+
+    &:hover {
+      box-shadow: $shadow-md;
+      transform: translateY(-2px);
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: $font-weight-bold;
+      color: $color-primary;
+      margin-bottom: 0.5rem;
+
+      @include mobile-only {
+        font-size: 1.5rem;
+      }
+    }
+
+    .stat-label {
+      color: $color-text-secondary;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+    }
+  }
+}
