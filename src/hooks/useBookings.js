@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { bookingsService } from '../services';
+import { bookingService } from '../services';
 
 export const useBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -10,7 +10,7 @@ export const useBookings = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await bookingsService.getAllBookings();
+      const response = await bookingService.getAllBookings();
       setBookings(response);
       return { success: true, data: response };
     } catch (error) {
@@ -25,7 +25,7 @@ export const useBookings = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await bookingsService.getUserBookings(userId);
+      const response = await bookingService.getUserBookings(userId);
       setBookings(response);
       return { success: true, data: response };
     } catch (error) {
@@ -40,7 +40,7 @@ export const useBookings = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await bookingsService.createBooking(bookingData);
+      const response = await bookingService.createBooking(bookingData);
       setBookings(prev => [...prev, response]);
       return { success: true, data: response };
     } catch (error) {
@@ -55,7 +55,7 @@ export const useBookings = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await bookingsService.updateBooking(id, bookingData);
+      const response = await bookingService.updateBooking(id, bookingData);
       setBookings(prev => 
         prev.map(booking => booking.id === id ? response : booking)
       );
@@ -72,7 +72,7 @@ export const useBookings = () => {
     setIsLoading(true);
     setError(null);
     try {
-      await bookingsService.cancelBooking(id);
+      await bookingService.cancelBooking(id);
       setBookings(prev => prev.filter(booking => booking.id !== id));
       return { success: true };
     } catch (error) {

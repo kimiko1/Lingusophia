@@ -89,15 +89,7 @@
 // State variants
 .input-wrapper {
   &--error {
-    .input {
-      border-color: $error-500;
-      
-      &:focus {
-        border-color: $error-500;
-        box-shadow: 0 0 0 3px rgba($error-500, 0.1);
-      }
-    }
-    
+        
     .input__icon {
       color: $error-500;
     }
@@ -105,10 +97,7 @@
   
   &--success {
     .input {
-      border-color: $success-500;
-      
       &:focus {
-        border-color: $success-500;
         box-shadow: 0 0 0 3px rgba($success-500, 0.1);
       }
     }
@@ -124,20 +113,15 @@
   &--filled {
     .input {
       background: $bg-secondary;
-      border: 2px solid transparent;
       
       &:focus {
         background: $bg-primary;
-        border-color: $primary-500;
       }
     }
   }
   
   &--outlined {
     .input {
-      background: transparent;
-      border: 2px solid $border-medium;
-      
       &:focus {
         border-color: $primary-500;
       }

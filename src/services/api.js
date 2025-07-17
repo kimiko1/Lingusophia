@@ -13,10 +13,6 @@ const api = axios.create({
 // Intercepteur pour les requêtes
 api.interceptors.request.use(
   (config) => {
-    // Ajouter des logs en développement
-    if (import.meta.env.MODE === 'development') {
-      console.log('API Request:', config.method?.toUpperCase(), config.url);
-    }
     return config;
   },
   (error) => {
@@ -27,10 +23,6 @@ api.interceptors.request.use(
 // Intercepteur pour les réponses
 api.interceptors.response.use(
   (response) => {
-    // Ajouter des logs en développement
-    if (import.meta.env.MODE === 'development') {
-      console.log('API Response:', response.status, response.config.url);
-    }
     return response;
   },
   (error) => {

@@ -8,7 +8,7 @@ import './LessonCard.scss';
  * @param {Object} props - Component props
  * @param {string} props.title - Lesson title
  * @param {string} props.description - Lesson description
- * @param {string} props.duration - Lesson duration
+ * @param {int} props.duration - Lesson duration
  * @param {string} props.level - Lesson difficulty level
  * @param {string} props.image - Lesson image URL
  * @param {boolean} props.isSelected - Whether the card is selected
@@ -87,7 +87,7 @@ const LessonCard = ({
 LessonCard.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  duration: PropTypes.string,
+  duration: PropTypes.number,
   level: PropTypes.oneOf(['Beginner', 'Intermediate', 'Advanced']),
   image: PropTypes.string,
   isSelected: PropTypes.bool,
