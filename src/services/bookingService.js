@@ -53,7 +53,7 @@ export const bookingService = {
    */
   async createBooking(bookingData) {
     try {
-      const response = await api.post('/bookings', bookingData);
+      const response = await api.post('/create', bookingData);
       return response.data;
     } catch (error) {
       throw error;

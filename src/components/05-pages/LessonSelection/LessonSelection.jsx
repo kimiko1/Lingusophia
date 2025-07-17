@@ -249,7 +249,6 @@ const LessonSelection = ({
     try {
       // Utilise l'id de l'utilisateur connecté
       const userId = user?.id;
-      console.log('Booking lesson for user:', userId, 'Lesson:', lesson.id);
       if (!userId) {
         setError("Utilisateur non connecté");
         return;

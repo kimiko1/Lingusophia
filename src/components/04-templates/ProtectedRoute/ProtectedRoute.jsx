@@ -25,8 +25,20 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
   }
 
   // Si un rôle spécifique est requis, vérifier si l'utilisateur l'a
-  if (requiredRole && user?.role?.toLowerCase() !== requiredRole?.toLowerCase()) {
-    return <Navigate to="/" replace />;
+  if (requiredRole) {
+    const userRole = user?.role;
+    if (Array.isArray(requiredRole)) {
+      // Tableau de rôles autorisés
+      const allowed = requiredRole.map(r => r.toLowerCase());
+      if (!allowed.includes(userRole?.toLowerCase())) {
+        return <Navigate to="/" replace />;
+      }
+    } else {
+      // Chaîne simple
+      if (userRole?.toLowerCase() !== requiredRole?.toLowerCase()) {
+        return <Navigate to="/" replace />;
+      }
+    }
   }
 
   return children;

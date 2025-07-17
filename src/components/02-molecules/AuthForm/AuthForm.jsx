@@ -32,13 +32,6 @@ const AuthForm = ({ mode = 'login' }) => {
           email: formData.email,
           password: formData.password
         });
-        
-        if (result.success) {
-          console.log('Connexion réussie!');
-          // Redirection ou autre action après connexion
-        } else {
-          console.error('Erreur de connexion:', result.error);
-        }
       } else {
         const result = await register({
           email: formData.email,
@@ -46,13 +39,6 @@ const AuthForm = ({ mode = 'login' }) => {
           firstName: formData.firstName,
           lastName: formData.lastName
         });
-        
-        if (result.success) {
-          console.log('Inscription réussie!');
-          // Redirection ou autre action après inscription
-        } else {
-          console.error('Erreur d\'inscription:', result.error);
-        }
       }
     } catch (error) {
       console.error('Erreur:', error);

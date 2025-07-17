@@ -17,7 +17,7 @@
 .register-card {
   padding: 3rem;
   border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 40px rgba(0, 0, 0, 0.1);
   background: white;
   border: none;
 }
@@ -75,8 +75,6 @@
     background: white;
 
     &:focus {
-      border-color: $primary-color;
-      box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
       outline: none;
     }
 

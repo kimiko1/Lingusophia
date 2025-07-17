@@ -39,21 +39,40 @@ const LessonForm = ({
   });
   const [errors, setErrors] = useState({});
 
-  // Initialiser le formulaire avec les données de la leçon
-  useEffect(() => {
-    if (lesson) {
-      setFormData({
-        title: lesson.title || '',
-        language: lesson.language || 'English',
-        level: lesson.level || 'Beginner',
-        duration: lesson.duration?.replace(' min', '') || '30',
-        price: lesson.price?.toString() || '',
-        teacher: lesson.teacher || '',
-        description: lesson.description || '',
-        category: lesson.category || 'easy',
-        status: lesson.status || 'Active'
-      });
+  // Récupérer l'utilisateur connecté (pour le rôle Teacher)
+  const getCurrentTeacherName = () => {
+    if (window && window.localStorage) {
+      try {
+        const userStr = window.localStorage.getItem('user');
+        if (userStr) {
+          const userObj = JSON.parse(userStr);
+          if (userObj && userObj.role === 'Teacher') {
+            return `${userObj.firstName || ''} ${userObj.lastName || ''}`.trim();
+          }
+        }
+      } catch {}
     }
+    return '';
+  };
+
+  useEffect(() => {
+    let teacherValue = lesson?.teacher || '';
+    // Si le rôle est Teacher, préremplir avec prénom + nom et rendre non modifiable
+    const teacherFromUser = getCurrentTeacherName();
+    if (teacherFromUser) {
+      teacherValue = teacherFromUser;
+    }
+    setFormData({
+      title: lesson?.title || '',
+      language: lesson?.language || 'English',
+      level: lesson?.level || 'Beginner',
+      duration: (typeof lesson?.duration === 'string' ? lesson.duration : String(lesson?.duration || '30')).replace(' min', ''),
+      price: lesson?.price?.toString() || '',
+      teacher: teacherValue,
+      description: lesson?.description || '',
+      category: lesson?.category || 'easy',
+      status: lesson?.status || 'Active'
+    });
   }, [lesson]);
 
   // Gérer les changements de formulaire
@@ -136,21 +155,6 @@ const LessonForm = ({
                 onChange={handleChange}
                 placeholder={t('admin.form.placeholders.lessonTitle')}
                 error={errors.title}
-                disabled={isReadOnly}
-                className="lesson-form__input"
-              />
-            </div>
-
-            <div className="lesson-form__field">
-              <label className="lesson-form__label">
-                {t('admin.table.teacher')} *
-              </label>
-              <Input
-                name="teacher"
-                value={formData.teacher}
-                onChange={handleChange}
-                placeholder={t('admin.form.placeholders.teacherName')}
-                error={errors.teacher}
                 disabled={isReadOnly}
                 className="lesson-form__input"
               />
