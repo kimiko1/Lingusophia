@@ -147,9 +147,6 @@
 // ==================== INPUT MIXINS ====================
 @mixin input-base {
   width: 100%;
-  border: 2px solid $border-light;
-  border-radius: $radius-lg;
-  background: $bg-primary;
   color: $text-primary;
   font-family: $font-family-primary;
   transition: $transition-colors;
@@ -160,8 +157,6 @@
 
   &:focus {
     outline: none;
-    border-color: $primary-500;
-    box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
   }
 
   &:disabled {

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import authService from '../services/auth.service';
+import { authService } from '../services';
 
 const AuthContext = createContext();
 
@@ -89,7 +89,6 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (profileData) => {
     try {
-      console.log('Updating profile with data:', profileData);
       const response = await authService.updateProfile(profileData);
       // Accepte le succès si success true OU message de succès
       if ((response.success && response.user) || response.message === 'Profil mis à jour avec succès') {
@@ -106,16 +105,19 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await authService.logout();
+      // Envoie le cookie au backend pour suppression
+      await authService.logout({ credentials: 'include' });
       setUser(null);
       setIsAuthenticated(false);
       setAuthChecked(false); // Permettre une nouvelle vérification après déconnexion
+      window.location.href = '/login';
     } catch (error) {
       console.error('Erreur logout:', error);
       // Déconnexion forcée même en cas d'erreur
       setUser(null);
       setIsAuthenticated(false);
       setAuthChecked(false);
+      window.location.href = '/login';
     }
   };
 

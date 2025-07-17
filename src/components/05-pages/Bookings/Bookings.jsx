@@ -57,7 +57,6 @@ const Bookings = () => {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${user.token}`,
     };
-    console.log(JSON.stringify(body))
 
     const session = await lessonService.createPaymentIntent(body, headers);
 

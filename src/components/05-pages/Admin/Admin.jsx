@@ -22,6 +22,7 @@ import { StatsCard, DataTable } from '../../02-molecules';
 import { UserForm, LessonForm } from '../../03-organisms';
 import { userService, lessonService, bookingService, statsService } from '../../../services';
 import './Admin.scss';
+import { b } from 'framer-motion/client';
 
 /**
  * Admin component - Dashboard d'administration moderne
@@ -37,7 +38,13 @@ const Admin = ({
   // Récupérer l'utilisateur authentifié via le context Auth
   const { user, isAuthenticated } = useAuth();
   
-  const [activeTab, setActiveTab] = useState('users'); // Commence par les utilisateurs par défaut
+  // Définir l'onglet par défaut selon le rôle
+  const [activeTab, setActiveTab] = useState(() => {
+    if (user?.role === 'Teacher') {
+      return 'lessons';
+    }
+    return 'users';
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItems, setSelectedItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -51,7 +58,6 @@ const Admin = ({
   // Vérifier les permissions
   const isAdmin = currentUser?.role === 'Admin';
   const isTeacher = currentUser?.role === 'Teacher';
-  const isStudent = currentUser?.role === 'Student';
   const canAccessDashboard = isAdmin;
   const canAccessUsers = isAdmin;
   const canAccessLessons = isAdmin || isTeacher;
@@ -101,7 +107,7 @@ const Admin = ({
         setUsers(allData.users || []);
         setLessons(allData.lessons || []);
         setBookings(allData.bookings || []);
-        setDashboardStats(allData.stats || {});
+        // setDashboardStats(allData.stats || {});
       } catch (err) {
         console.error('Erreur lors du chargement des données admin:', err);
       } finally {
@@ -127,8 +133,6 @@ const Admin = ({
     { key: 'language', label: t('pages:admin.table.language'), sortable: true },
     { key: 'level', label: t('pages:admin.table.level'), sortable: true },
     { key: 'price', label: t('pages:admin.table.price'), sortable: true },
-    { key: 'teacher', label: t('pages:admin.table.teacher'), sortable: true },
-    { key: 'bookings', label: t('pages:admin.table.bookings'), sortable: true },
     { key: 'actions', label: t('pages:admin.table.actions'), sortable: false }
   ];
 
@@ -136,7 +140,7 @@ const Admin = ({
   const bookingColumns = [
     { key: 'studentName', label: t('pages:admin.table.student'), sortable: true },
     { key: 'lessonTitle', label: t('pages:admin.table.lesson'), sortable: true },
-    { key: 'date', label: t('pages:admin.table.date'), sortable: true },
+    { key: 'scheduled_date', label: t('pages:admin.table.date'), sortable: true },
     { key: 'time', label: t('pages:admin.table.time'), sortable: true },
     { key: 'status', label: t('pages:admin.table.status'), sortable: true },
     { key: 'paymentStatus', label: t('pages:admin.table.payment'), sortable: true },
@@ -165,21 +169,32 @@ const Admin = ({
 
   // Filtrer les données selon les rôles
   const getFilteredLessons = () => {
-    if (isAdmin) {
-      return lessons;
-    } else if (isTeacher) {
-      // Un professeur ne voit que ses propres leçons
-      return lessons.filter(lesson => lesson.teacher === currentUser?.firstName + ' ' + currentUser?.lastName);
+  let lessonsArray = [];
+  if (Array.isArray(lessons)) {
+    lessonsArray = lessons;
+  } else if (lessons && typeof lessons === 'object') {
+    if (Array.isArray(lessons.lessons)) {
+      lessonsArray = lessons.lessons;
+    } else if (lessons.data && Array.isArray(lessons.data.lessons)) {
+      lessonsArray = lessons.data.lessons;
     }
-    return [];
-  };
+  }
+  if (isAdmin) {
+    return lessonsArray;
+  } else if (isTeacher) {
+    return lessonsArray.filter(lesson => lesson.teacher === currentUser?.firstName + ' ' + currentUser?.lastName);
+  }
+  return [];
+};
 
   const getFilteredBookings = () => {
+    // bookings peut être un tableau ou un objet avec .data
+    let bookingsArray = Array.isArray(bookings) ? bookings : bookings?.data || [];
     if (isAdmin) {
-      return bookings;
+      return bookingsArray;
     } else if (isTeacher) {
-      // Un professeur ne voit que les réservations de ses leçons
-      return bookings.filter(booking => booking.teacherName === currentUser?.firstName + ' ' + currentUser?.lastName);
+      // Filtre par teacher_id
+      return bookingsArray.filter(booking => booking.teacher_id === currentUser?.id);
     }
     return [];
   };
@@ -390,30 +405,73 @@ const Admin = ({
   };
 
   // Préparation des données avec actions
-  let usersArray = [];
-  if (Array.isArray(users)) {
-    usersArray = users;
-  } else if (users && typeof users === 'object') {
-    if (Array.isArray(users.users)) {
-      usersArray = users.users;
-    } else if (users.data && Array.isArray(users.data.users)) {
-      usersArray = users.data.users;
-    }
+
+// Normalize lessons array for actions mapping
+let lessonsArray = [];
+if (Array.isArray(lessons)) {
+  lessonsArray = lessons;
+} else if (lessons && typeof lessons === 'object') {
+  if (Array.isArray(lessons.lessons)) {
+    lessonsArray = lessons.lessons;
+  } else if (lessons.data && Array.isArray(lessons.data.lessons)) {
+    lessonsArray = lessons.data.lessons;
   }
-  const usersWithActions = usersArray.map(user => ({
-    ...user,
-    actions: renderActions(user, 'user')
-  }));
+}
 
-  const lessonsWithActions = getFilteredLessons().map(lesson => ({
-    ...lesson,
-    actions: renderActions(lesson, 'lesson')
-  }));
+let usersArray = [];
+if (Array.isArray(users)) {
+  usersArray = users;
+} else if (users && typeof users === 'object') {
+  if (Array.isArray(users.users)) {
+    usersArray = users.users;
+  } else if (users.data && Array.isArray(users.data.users)) {
+    usersArray = users.data.users;
+  }
+}
 
-  const bookingsWithActions = getFilteredBookings().map(booking => ({
-    ...booking,
-    actions: renderActions(booking, 'booking')
-  }));
+const usersWithActions = usersArray.map(user => ({
+  ...user,
+  actions: renderActions(user, 'user')
+}));
+
+const lessonsWithActions = lessonsArray.map(lesson => ({
+  ...lesson,
+  language: lesson.language && typeof lesson.language === 'object' ? lesson.language.name : lesson.language,
+  actions: renderActions(lesson, 'lesson')
+}));
+
+const bookingsWithActions = getFilteredBookings().map(booking => ({
+  ...booking,
+  studentName:
+    booking.studentName ||
+    ((booking.studentFirstName && booking.studentLastName)
+      ? booking.studentFirstName + ' ' + booking.studentLastName
+      : (() => {
+          // Cherche l'utilisateur dans users par id
+          let userObj = null;
+          if (booking.student_id) {
+            if (Array.isArray(usersArray)) {
+              userObj = usersArray.find(u => u.id === booking.student_id);
+            }
+          }
+          return userObj ? `${userObj.firstName} ${userObj.lastName}` : '';
+        })()),
+  lessonTitle:
+    (() => {
+      let lessonObj = null;
+      if (booking.lesson_id) {
+        if (Array.isArray(lessonsArray)) {
+          lessonObj = lessonsArray.find(l => l.id === booking.lesson_id);
+        }
+      }
+      return lessonObj && lessonObj.title ? lessonObj.title : '';
+    })(),
+  scheduled_date:
+    booking.scheduled_date || '',
+  paymentStatus:
+    booking.paymentStatus || booking.payment_status || '',
+  actions: renderActions(booking, 'booking')
+}));
 
   const adminClasses = [
     'admin',

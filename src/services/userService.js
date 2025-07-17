@@ -146,15 +146,15 @@ export const userService = {
       // Appels API en parallèle sans params
       const [usersRes, lessonsRes, bookingsRes, statsRes] = await Promise.all([
         api.get('api/users'),
-        // api.get('api/lessons'),
-        // api.get('api/bookings'),
+        api.get('api/lessons'),
+        api.get('api/bookings/all'),
         // api.get('api/stats/dashboard').catch(() => ({ data: {} }))
       ]);
 
       return {
         users: usersRes.data,
-        // lessons: lessonsRes.data?.lessons || lessonsRes.data,
-        // bookings: bookingsRes.data,
+        lessons: lessonsRes.data?.lessons || lessonsRes.data,
+        bookings: bookingsRes.data,
         // stats: statsRes.data
       };
     } catch (error) {

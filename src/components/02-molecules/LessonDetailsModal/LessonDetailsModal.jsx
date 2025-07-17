@@ -159,7 +159,7 @@ LessonDetailsModal.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     goals: PropTypes.arrayOf(PropTypes.string),
-    duration: PropTypes.string,
+    duration: PropTypes.number,
     level: PropTypes.string,
     price: PropTypes.string
   }),

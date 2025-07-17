@@ -70,7 +70,6 @@ const LessonsDisplay = () => {
               level={lesson.level}
               image={lesson.image}
               isCompleted={lesson.isCompleted}
-              onClick={() => console.log('Lesson clicked:', lesson.id)}
               variant="default"
             />
           ))}
