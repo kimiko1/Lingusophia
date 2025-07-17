@@ -1,0 +1,58 @@
+@use '../../../styles/themes/mixins' as *;
+
+.header-template {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  // Variants
+  &--compact {
+    .header-template__header {
+      box-shadow: $shadow-sm;
+    }
+  }
+
+  &--transparent {
+    .header-template__header {
+      background: transparent;
+      backdrop-filter: blur(10px);
+    }
+  }
+
+  // Fixed position
+  &--fixed {
+    .header-template__header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: $z-index-header;
+    }
+
+    .header-template__content {
+      padding-top: 80px; // Account for fixed header height
+    }
+  }
+}
+
+.header-template__header {
+  background: $color-surface;
+  border-bottom: 1px solid $color-border-light;
+  position: relative;
+  z-index: $z-index-header;
+}
+
+.header-template__content {
+  flex: 1;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+// Responsive design
+@include mobile-only {
+  .header-template--fixed {
+    .header-template__content {
+      padding-top: 70px; // Smaller padding for mobile
+    }
+  }
+}

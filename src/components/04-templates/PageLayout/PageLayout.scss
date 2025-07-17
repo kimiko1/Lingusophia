@@ -1,0 +1,62 @@
+// =============================================
+// PAGE LAYOUT STYLES
+// Layout pour le contenu des pages avec titre et sous-titre
+// =============================================
+
+@use '../../../styles/themes/mixins' as *;
+
+.page-layout {
+  padding: $spacing-6 $spacing-4;
+  margin: 0 auto;
+
+  @include tablet-and-up {
+    padding: $spacing-8 $spacing-6;
+  }
+
+  @include desktop-only {
+    padding: $spacing-10 $spacing-8;
+  }
+
+  // Variants
+  &--centered {
+    text-align: center;
+    
+    .page-layout__header {
+      text-align: center;
+    }
+  }
+
+  &--wide {
+    max-width: 1400px;
+  }
+}
+
+.page-layout__header {
+  margin-bottom: $spacing-8;
+
+  @include tablet-and-up {
+    margin-bottom: $spacing-10;
+  }
+}
+
+.page-layout__title {
+  margin-bottom: $spacing-3;
+  color: $color-text-primary;
+  font-weight: $font-weight-bold;
+}
+
+.page-layout__subtitle {
+  font-size: $font-size-lg;
+  color: $color-text-secondary;
+  margin: 0;
+  max-width: 600px;
+
+  .page-layout--centered & {
+    margin: 0 auto;
+  }
+}
+
+.page-layout__content {
+  // Content area styles
+  position: relative;
+}

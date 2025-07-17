@@ -1,0 +1,146 @@
+@use '../../../styles/themes/mixins' as *;
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+  
+  &--full-width {
+    width: 100%;
+  }
+  
+  &--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.input {
+  @include input-base;
+  
+  // Size variants
+  @include input-size(base);
+  
+  &--sm {
+    @include input-size(sm);
+  }
+  
+  &--lg {
+    @include input-size(lg);
+  }
+  
+  // Icon padding adjustments
+  &--with-icon-left {
+    padding-left: #{$spacing-10};
+  }
+  
+  &--with-icon-right {
+    padding-right: #{$spacing-10};
+  }
+}
+
+.input__label {
+  @include text-style('body');
+  font-weight: $font-weight-medium;
+  color: $text-primary;
+  margin-bottom: $spacing-1;
+}
+
+.input__field-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input__icon {
+  position: absolute;
+  z-index: 1;
+  color: $text-muted;
+  pointer-events: none;
+  transition: $transition-colors;
+  
+  &--left {
+    left: $spacing-3;
+  }
+  
+  &--right {
+    right: $spacing-3;
+  }
+}
+
+.input__helper-text {
+  @include text-style('caption');
+  color: $text-muted;
+}
+
+.input__error-text {
+  @include text-style('caption');
+  color: $error-500;
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  
+  &::before {
+    content: '⚠';
+    font-size: $font-size-sm;
+  }
+}
+
+// State variants
+.input-wrapper {
+  &--error {
+        
+    .input__icon {
+      color: $error-500;
+    }
+  }
+  
+  &--success {
+    .input {
+      &:focus {
+        box-shadow: 0 0 0 3px rgba($success-500, 0.1);
+      }
+    }
+    
+    .input__icon {
+      color: $success-500;
+    }
+  }
+}
+
+// Variant styles
+.input-wrapper {
+  &--filled {
+    .input {
+      background: $bg-secondary;
+      
+      &:focus {
+        background: $bg-primary;
+      }
+    }
+  }
+  
+  &--outlined {
+    .input {
+      &:focus {
+        border-color: $primary-500;
+      }
+    }
+  }
+}
+
+// Focus states
+.input:focus + .input__icon {
+  color: $primary-500;
+}
+
+// Responsive adjustments
+@include mobile-only {
+  .input-wrapper {
+    gap: $spacing-1;
+    
+    &--sm .input {
+      font-size: $font-size-base;
+    }
+  }
+}

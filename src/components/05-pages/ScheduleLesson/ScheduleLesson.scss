@@ -1,0 +1,160 @@
+@use '../../../styles/themes/mixins' as *;
+
+.schedule-lesson {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-md;
+
+  &__section-title {
+    margin-bottom: $spacing-md;
+    color: $color-primary;
+  }
+
+  &__date-section {
+    padding: $spacing-lg;
+  }
+
+  &__date-input {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  &__time-section {
+    padding: $spacing-lg;
+  }
+
+  &__time-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: $spacing-sm;
+    margin-top: $spacing-md;
+  }
+
+  &__time-slot {
+    min-height: 40px;
+  }
+
+  &__teacher-section {
+    padding: $spacing-lg;
+  }
+
+  &__teachers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $spacing-md;
+    margin-top: $spacing-md;
+  }
+
+  &__teacher-card {
+    display: flex;
+    gap: $spacing-md;
+    padding: $spacing-md;
+    cursor: pointer;
+    transition: all $duration-fast ease;
+    border: 2px solid transparent;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: $shadow-lg;
+    }
+
+    &--selected {
+      border-color: $color-primary;
+      background: rgba($color-primary, 0.05);
+    }
+  }
+
+  &__teacher-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: $radius-full;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  &__teacher-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+
+  &__teacher-name {
+    margin: 0;
+  }
+
+  &__teacher-specialty {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+    margin: 0;
+  }
+
+  &__teacher-details {
+    display: flex;
+    gap: $spacing-md;
+    margin-top: auto;
+  }
+
+  &__teacher-rating {
+    color: $color-warning;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__teacher-price {
+    color: $color-primary;
+    font-weight: $font-weight-bold;
+  }
+
+  &__summary {
+    padding: $spacing-lg;
+    background: rgba($color-success, 0.05);
+    border: 2px solid $color-success;
+  }
+
+  &__summary-content {
+    margin: $spacing-md 0;
+    
+    p {
+      margin: $spacing-xs 0;
+      font-size: $font-size-base;
+    }
+  }
+
+  &__confirm-btn {
+    width: 100%;
+    margin-top: $spacing-md;
+  }
+
+  @include mobile-only {
+    padding: $spacing-sm;
+    gap: $spacing-md;
+
+    &__teachers {
+      grid-template-columns: 1fr;
+    }
+
+    &__teacher-card {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    &__teacher-avatar {
+      align-self: center;
+    }
+
+    &__time-slots {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @include tablet-and-up {
+    padding: $spacing-lg;
+
+    &__time-slots {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}

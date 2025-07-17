@@ -1,0 +1,372 @@
+{
+  "home": {
+    "title": "Bienvenue sur LearnALanguage",
+    "subtitle": "Maîtrisez de nouvelles langues avec notre plateforme interactive",
+    "description": "Sélectionnez ce que vous souhaitez faire aujourd'hui",
+    "reviews": {
+      "title": "Avis des Étudiants",
+      "description": "Découvrez ce que nos étudiants pensent de leur expérience d'apprentissage"
+    }
+  },
+  "profile": {
+    "title": "Mon Profil",
+    "subtitle": "Gérez vos informations personnelles",
+    "personalInfo": "Informations Personnelles",
+    "recentLessons": "Leçons Récentes",
+    "statistics": "Mes Statistiques",
+    "achievementsTitle": "Accomplissements",
+    "noRecentLessons": "Aucune leçon récente. Commencez une nouvelle leçon pour la voir ici !",
+    "fields": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "name": "Nom Complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "nativeLanguage": "Langue Maternelle",
+      "currentLevel": "Niveau Actuel",
+      "bio": "Bio"
+    },
+    "stats": {
+      "lessonsCompleted": "Leçons Terminées",
+      "hoursStudied": "Heures d'Étude",
+      "streak": "Jours Consécutifs",
+      "favoriteLanguage": "Langue Favorite"
+    },
+    "achievements": {
+      "firstLesson": "Première leçon",
+      "weekStreak": "Série de 7 jours",
+      "tenLessons": "10 leçons complétées",
+      "regularStudent": "Étudiant régulier"
+    }
+  },
+  "calendar": {
+    "title": "Calendrier",
+    "subtitle": "Planifiez vos leçons",
+    "selectedDate": "Date sélectionnée",
+    "scheduleLesson": "Planifier une leçon",
+    "noLessons": "Aucune leçon programmée pour ce jour",
+    "previousMonth": "Mois précédent",
+    "nextMonth": "Mois suivant",
+    "months": [
+      "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+      "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+    ],
+    "weekdays": [
+      "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"
+    ]
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Gérez vos préférences et votre compte",
+    "sections": {
+      "notifications": "Notifications",
+      "privacy": "Confidentialité", 
+      "preferences": "Préférences",
+      "security": "Sécurité",
+      "dangerZone": "Zone de danger"
+    },
+    "notifications": {
+      "emailNotifications": "Notifications par email",
+      "emailNotificationsDesc": "Recevoir des notifications importantes par email",
+      "pushNotifications": "Notifications push",
+      "pushNotificationsDesc": "Recevoir des notifications sur votre navigateur",
+      "lessonReminders": "Rappels de leçons",
+      "lessonRemindersDesc": "Recevoir des rappels avant vos leçons programmées",
+      "marketingEmails": "Emails marketing",
+      "marketingEmailsDesc": "Recevoir des offres promotionnelles et nouveautés"
+    },
+    "privacy": {
+      "profileVisibility": "Visibilité du profil",
+      "profileVisibilityDesc": "Qui peut voir votre profil",
+      "showProgress": "Afficher les progrès",
+      "showProgressDesc": "Permettre aux autres de voir vos progrès d'apprentissage",
+      "dataCollection": "Collecte de données analytiques",
+      "dataCollectionDesc": "Aider à améliorer l'application en partageant des données anonymes",
+      "visibilityOptions": {
+        "public": "Public",
+        "friends": "Amis uniquement",
+        "private": "Privé"
+      }
+    },
+    "preferences": {
+      "language": "Langue de l'interface",
+      "languageDesc": "Langue d'affichage de l'application",
+      "theme": "Thème",
+      "themeDesc": "Apparence de l'interface",
+      "autoplay": "Lecture automatique",
+      "autoplayDesc": "Lancer automatiquement les contenus audio",
+      "soundEffects": "Effets sonores",
+      "soundEffectsDesc": "Activer les sons d'interface",
+      "themeOptions": {
+        "light": "Clair",
+        "dark": "Sombre",
+        "auto": "Automatique"
+      }
+    },
+    "security": {
+      "twoFactorAuth": "Authentification à deux facteurs",
+      "twoFactorAuthDesc": "Ajouter une couche de sécurité supplémentaire",
+      "loginAlerts": "Alertes de connexion",
+      "loginAlertsDesc": "Recevoir une notification lors de nouvelles connexions",
+      "changePassword": "Changer le mot de passe",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le nouveau mot de passe",
+      "changePasswordButton": "Changer le mot de passe"
+    },
+    "actions": {
+      "saveSettings": "Sauvegarder les paramètres",
+      "deleteAccount": "Supprimer mon compte",
+      "deleteAccountDesc": "La suppression de votre compte est irréversible. Toutes vos données seront perdues."
+    },
+    "messages": {
+      "passwordMismatch": "Les mots de passe ne correspondent pas !",
+      "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères !",
+      "passwordChanged": "Mot de passe modifié avec succès !",
+      "confirmDeleteAccount": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.",
+      "accountDeleted": "Compte supprimé. Redirection vers la page d'accueil..."
+    }
+  },
+  "lessons": {
+    "title": "Mes Leçons",
+    "subtitle": "Suivez votre progression d'apprentissage",
+    "upcoming": "Leçons à Venir",
+    "completedLessons": "Leçons Terminées",
+    "inProgress": "En Cours",
+    "difficulty": {
+      "beginner": "Débutant",
+      "intermediate": "Intermédiaire",
+      "advanced": "Avancé"
+    },
+    "currentLessons": "Leçons Actuelles",
+    "learningStatistics": "Statistiques d'Apprentissage",
+    "progress": "Progression",
+    "finalScore": "Score Final",
+    "nextSession": "Prochaine session",
+    "started": "Commencé",
+    "completedDate": "Terminé",
+    "with": "avec",
+    "noOngoingLessons": "Vous n'avez aucune leçon en cours. Commencez une nouvelle leçon pour la voir ici !",
+    "noCompletedLessons": "Vous n'avez pas encore terminé de leçons. Commencez votre première leçon dès maintenant !",
+    "ongoingLessons": "Leçons en Cours",
+    "stats": {
+      "title": "Statistiques d'Apprentissage",
+      "lessonsCompleted": "Leçons Terminées",
+      "ongoingLessons": "Leçons en Cours",
+      "lessonsInProgress": "Leçons en Progression",
+      "languagesStudied": "Langues Étudiées",
+      "averageScore": "Score Moyen"
+    },
+    "categories": {
+      "easy": "Facile",
+      "medium": "Moyen",
+      "hard": "Difficile"
+    }
+  },
+  "scheduleLesson": {
+    "title": "Planifier une leçon",
+    "subtitle": "Choisissez votre professeur, date et heure",
+    "selectDate": "Sélectionnez une date",
+    "availableSlots": "Créneaux disponibles",
+    "chooseTeacher": "Choisissez votre professeur",
+    "bookingSummary": "Résumé de votre réservation",
+    "teacher": "Professeur",
+    "date": "Date",
+    "time": "Heure", 
+    "price": "Prix",
+    "confirmBooking": "Confirmer la réservation",
+    "lessonScheduled": "Leçon planifiée avec {{teacher}} le {{date}} à {{time}}"
+  },
+  "lessonSelection": {
+    "title": "Sélectionnez votre leçon",
+    "chooseLanguage": "Choisir la langue",
+    "chooseLevel": "Choisir le niveau",
+    "chooseCategory": "Choisir la catégorie",
+    "availableLessons": "Leçons disponibles",
+    "backButton": "Retour",
+    "noLessonsAvailable": "Aucune leçon disponible pour cette sélection.",
+    "languages": {
+      "english": "Anglais",
+      "french": "Français", 
+      "chinese": "Chinois",
+      "spanish": "Espagnol",
+      "german": "Allemand",
+      "italian": "Italien"
+    },
+    "levels": {
+      "beginnerDesc": "Parfait pour commencer votre apprentissage",
+      "intermediateDesc": "Développez vos connaissances existantes",
+      "advancedDesc": "Maîtrisez des compétences linguistiques complexes"
+    },
+    "categories": {
+      "easyDesc": "Parfait pour les débutants",
+      "mediumDesc": "Pour les apprenants intermédiaires", 
+      "hardDesc": "Défis de niveau avancé"
+    }
+  },
+  "customerReviews": {
+    "title": "Avis des Étudiants",
+    "shareExperience": "Partagez Votre Expérience",
+    "shareDescription": "Aidez les autres étudiants en partageant votre expérience avec les leçons terminées.",
+    "teacher": "Professeur",
+    "completed": "Terminé",
+    "writeReview": "Écrire un Avis",
+    "allReviewsCompleted": "Excellent travail ! Vous avez évalué toutes vos leçons terminées.",
+    "yourReviews": "Vos Avis",
+    "noReviews": "Vous n'avez encore écrit aucun avis. Terminez quelques leçons et partagez votre expérience !",
+    "modal": {
+      "rateLesson": "Évaluez cette leçon",
+      "shareThoughts": "Partagez vos pensées",
+      "finalDetails": "Détails finaux",
+      "next": "Suivant",
+      "back": "Retour",
+      "submitAnonymously": "Soumettre anonymement",
+      "submitReview": "Soumettre l'Avis",
+      "submitting": "Envoi en cours...",
+      "commentPlaceholder": "Parlez-nous de votre expérience avec cette leçon...",
+      "stepIndicator": {
+        "step1": "Note",
+        "step2": "Commentaire",
+        "step3": "Détails"
+      }
+    }
+  },
+  "admin": {
+    "title": "Administration",
+    "subtitle": "Gérez votre plateforme d'apprentissage",
+    "accessDenied": {
+      "title": "Accès refusé",
+      "message": "Vous n'avez pas les permissions nécessaires pour accéder à cette page.",
+      "goBack": "Retour"
+    },
+    "tabs": {
+      "dashboard": "Tableau de bord",
+      "users": "Utilisateurs",
+      "lessons": "Leçons",
+      "bookings": "Réservations"
+    },
+    "stats": {
+      "totalUsers": "Utilisateurs totaux",
+      "totalLessons": "Leçons disponibles",
+      "totalTeachers": "Professeurs actifs",
+      "totalBookings": "Réservations",
+      "monthlyRevenue": "Revenus mensuels",
+      "activeUsers": "Utilisateurs actifs",
+      "completionRate": "Taux de completion",
+      "averageRating": "Note moyenne"
+    },
+    "actions": {
+      "add": "Ajouter",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "view": "Voir",
+      "export": "Exporter",
+      "filter": "Filtrer",
+      "search": "Rechercher",
+      "confirm": "Confirmer",
+      "complete": "Terminer"
+    },
+    "users": {
+      "title": "Gestion des Utilisateurs",
+      "addUser": "Ajouter utilisateur",
+      "searchPlaceholder": "Rechercher un utilisateur..."
+    },
+    "lessons": {
+      "title": "Gestion des Leçons",
+      "addLesson": "Ajouter leçon",
+      "searchPlaceholder": "Rechercher une leçon..."
+    },
+    "bookings": {
+      "title": "Gestion des Réservations",
+      "searchPlaceholder": "Rechercher une réservation...",
+      "details": "Détails de la réservation",
+      "notes": "Notes",
+      "student": "Étudiant",
+      "lesson": "Leçon"
+    },
+    "thisMonth": "Ce mois",
+    "recentActivity": "Activité récente",
+    "newUserRegistered": "Nouvel utilisateur inscrit",
+    "lessonBooked": "Leçon réservée",
+    "newReview": "Nouvelle évaluation",
+    "timeAgo": {
+      "twoMinutes": "Il y a 2 min",
+      "fiveMinutes": "Il y a 5 min",
+      "twelveMinutes": "Il y a 12 min"
+    },
+    "table": {
+      "name": "Nom",
+      "email": "Email",
+      "role": "Rôle",
+      "joinDate": "Date d'inscription",
+      "status": "Statut",
+      "actions": "Actions",
+      "title": "Titre",
+      "language": "Langue",
+      "level": "Niveau",
+      "price": "Prix",
+      "teacher": "Professeur",
+      "bookings": "Réservations",
+      "student": "Étudiant",
+      "lesson": "Leçon",
+      "date": "Date",
+      "time": "Heure",
+      "payment": "Paiement"
+    },
+    "modal": {
+      "user": "utilisateur",
+      "lesson": "leçon",
+      "booking": "réservation",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cet élément ?",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "formPlaceholder": "Formulaire {{type}} sera implémenté ici..."
+    },
+    "form": {
+      "saving": "Sauvegarde...",
+      "deleting": "Suppression...",
+      "create": "Créer",
+      "update": "Mettre à jour",
+      "duration": "Durée",
+      "minutes": "minutes",
+      "category": "Catégorie",
+      "description": "Description",
+      "roles": {
+        "student": "Étudiant",
+        "teacher": "Professeur",
+        "admin": "Administrateur"
+      },
+      "status": {
+        "active": "Actif",
+        "inactive": "Inactif",
+        "pending": "En attente",
+        "draft": "Brouillon"
+      },
+      "placeholders": {
+        "lessonTitle": "Ex: Conversation anglaise pour débutants",
+        "teacherName": "Ex: Sarah Wilson",
+        "lessonDescription": "Décrivez les objectifs et le contenu de cette leçon..."
+      },
+      "validation": {
+        "priceInvalid": "Le prix doit être un nombre positif"
+      }
+    }
+  },
+  "login": {
+    "title": "Connexion",
+    "subtitle": "Connectez-vous à votre compte",
+    "loginButton": "Se connecter",
+    "noAccount": "Pas de compte ? Inscrivez-vous",
+    "forgotPassword": "Mot de passe oublié ?",
+    "demoAccounts": "Comptes de démonstration",
+    "adminDemo": "Administrateur",
+    "teacherDemo": "Professeur",
+    "studentDemo": "Étudiant"
+  },
+  "register": {
+    "title": "Inscription",
+    "subtitle": "Créez votre compte gratuit",
+    "registerButton": "S'inscrire",
+    "hasAccount": "Déjà un compte ? Connectez-vous"
+  }
+}

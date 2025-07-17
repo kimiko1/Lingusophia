@@ -1,0 +1,175 @@
+{
+  "app": {
+    "name": "LearnALanguage",
+    "tagline": "Maîtrisez les langues avec confiance"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "lessons": "Leçons",
+    "bookings": "Réservations",
+    "calendar": "Calendrier",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "myLessons": "Mes Leçons",
+    "myBookings": "Mes réservations",
+    "scheduleLesson": "Planifier une Leçon",
+    "lessonSelection": "Sélection de Leçons",
+    "customerReviews": "Avis Clients",
+    "contactTeacher": "Contacter un Professeur"
+  },
+  "user": {
+    "greeting": "Salut",
+    "welcomeBack": "Bon retour",
+    "profile": "Profil",
+    "account": "Mon compte",
+    "learningHistory": "Historique d'apprentissage"
+  },
+  "buttons": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "submit": "Soumettre",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "viewAll": "Voir Tout",
+    "learnMore": "En Savoir Plus",
+    "getStarted": "Commencer"
+  },
+  "forms": {
+    "required": "Ce champ est requis",
+    "email": "Veuillez entrer un email valide",
+    "password": "Le mot de passe doit contenir au moins 8 caractères",
+    "confirmPassword": "Les mots de passe ne correspondent pas",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "phone": "Numéro de téléphone",
+    "language": "Langue",
+    "level": "Niveau"
+  },
+  "form": {
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "role": "Rôle"
+  },
+  "roles": {
+    "student": "Étudiant",
+    "teacher": "Professeur",
+    "admin": "Administrateur",
+    "Student": "Étudiant",
+    "Teacher": "Professeur",
+    "Admin": "Administrateur"
+  },
+  "validation": {
+    "required": "Ce champ est requis",
+    "invalidEmail": "Email invalide",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
+    "passwordMismatch": "Les mots de passe ne correspondent pas"
+  },
+  "messages": {
+    "success": "Opération terminée avec succès",
+    "error": "Une erreur s'est produite",
+    "loading": "Chargement...",
+    "noData": "Aucune donnée disponible",
+    "welcome": "Bon retour !",
+    "goodbye": "À bientôt !"
+  },
+  "aria": {
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "openProfile": "Ouvrir le menu profil",
+    "closeProfile": "Fermer le menu profil",
+    "selectLanguage": "Sélectionner la langue",
+    "currentLanguage": "Langue actuelle"
+  },
+  "languages": {
+    "en": "Anglais",
+    "fr": "Français",
+    "zh": "Chinois"
+  },
+  "components": {
+    "lessonDetailsModal": {
+      "title": "Détails de la leçon",
+      "goalOfCourse": "Objectif de ce cours :",
+      "whatYouWillLearn": "Ce que vous allez apprendre :",
+      "duration": "Durée :",
+      "level": "Niveau :",
+      "price": "Prix :",
+      "yourTeacher": "Votre Professeur",
+      "speciality": "Spécialité :",
+      "experience": "Expérience :",
+      "cancel": "Annuler",
+      "bookLesson": "Réserver cette leçon"
+    },
+    "reviewSlider": {
+      "title": "Ce que disent nos étudiants",
+      "previousReview": "Avis précédent",
+      "nextReview": "Avis suivant",
+      "goToReview": "Aller à l'avis",
+      "with": "avec",
+      "anonymous": "Anonyme"
+    }
+  },
+  "noDataFound": "Aucune donnée trouvée",
+  "itemsSelected": "{{count}} élément(s) sélectionné(s)",
+  "resultsCount": "{{current}} résultat(s) sur {{total}} total",
+  "comparedToLastMonth": "par rapport au mois dernier",
+  "locale": "fr-FR",
+  "notSpecified": "Non spécifié",
+  "notAvailable": "Non disponible",
+  "saving": "Sauvegarde...",
+  "errors": {
+    "loadProfile": "Erreur lors du chargement du profil",
+    "saveProfile": "Erreur lors de la sauvegarde du profil"
+  },
+  "profile": {
+    "tabs": {
+      "profile": "Profil",
+      "preferences": "Préférences",
+      "security": "Sécurité",
+      "stats": "Statistiques"
+    },
+    "edit": "Modifier",
+    "personalInfo": "Informations personnelles",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "phone": "Téléphone",
+    "dateOfBirth": "Date de naissance",
+    "bio": "Biographie",
+    "bioPlaceholder": "Parlez-nous de vous...",
+    "noBio": "Aucune biographie ajoutée",
+    "learningPreferences": "Préférences d'apprentissage",
+    "nativeLanguage": "Langue native",
+    "selectLanguage": "Sélectionner une langue",
+    "currentLevel": "Niveau actuel",
+    "selectTimezone": "Sélectionner un fuseau horaire",
+    "timezone": "Fuseau horaire",
+    "accountSecurity": "Sécurité du compte",
+    "password": "Mot de passe",
+    "passwordDescription": "Modifier votre mot de passe",
+    "changePassword": "Changer le mot de passe",
+    "emailVerification": "Vérification email",
+    "emailVerified": "Email vérifié",
+    "emailNotVerified": "Email non vérifié",
+    "verifyEmail": "Vérifier l'email",
+    "twoFactorAuth": "Authentification à deux facteurs",
+    "twoFactorDescription": "Sécurisez votre compte avec 2FA",
+    "enable2FA": "Activer 2FA",
+    "totalLessons": "Leçons totales",
+    "completedLessons": "Leçons terminées",
+    "streak": "Série",
+    "totalHours": "Heures totales"
+  },
+  "levels": {
+    "beginner": "Débutant",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé"
+  }
+}

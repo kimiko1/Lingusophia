@@ -1,0 +1,145 @@
+@use '../../../styles/themes/mixins' as *;
+
+.nav-item {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+
+  // Size variants
+  &--small {
+    padding: $spacing-xs 0;
+  }
+
+  &--medium {
+    padding: $spacing-sm 0;
+  }
+
+  &--large {
+    padding: $spacing-md 0;
+  }
+
+  // Style variants
+  &--primary {
+    &::before {
+      content: '';
+      position: absolute;
+      left: -$spacing-sm;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 0;
+      background: $color-primary;
+      transition: $transition-base;
+      border-radius: 0 2px 2px 0;
+    }
+
+    &.nav-item--active::before {
+      height: 60%;
+    }
+  }
+
+  &--secondary {
+    background: rgba($color-secondary, 0.05);
+    border-radius: $border-radius-md;
+    margin: $spacing-xs 0;
+    padding: $spacing-xs;
+
+    &.nav-item--active {
+      background: rgba($color-secondary, 0.1);
+    }
+  }
+
+  &--minimal {
+    // Minimal styling
+    padding: $spacing-xs 0;
+  }
+
+  // Active state
+  &--active {
+    .nav-link-wrapper {
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -$spacing-xs;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 4px;
+        background: $color-primary;
+        border-radius: 50%;
+      }
+    }
+
+    &.nav-item--primary::before {
+      height: 60%;
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  // Hover effects
+  &:not(&--disabled) {
+    &.nav-item--primary:hover::before {
+      height: 30%;
+    }
+
+    &.nav-item--secondary:hover {
+      background: rgba($color-secondary, 0.08);
+    }
+  }
+
+  // Focus management
+  &:focus-within {
+    outline: none;
+  }
+}
+
+// Responsive design
+@include mobile-only {
+  .nav-item {
+    &--large {
+      padding: $spacing-sm 0;
+    }
+
+    &--medium {
+      padding: $spacing-xs 0;
+    }
+
+    &--primary::before {
+      left: -$spacing-xs;
+      width: 2px;
+    }
+
+    &--secondary {
+      margin: 2px 0;
+      padding: $spacing-xs;
+    }
+  }
+}
+
+// Animation for variants
+@media (prefers-reduced-motion: no-preference) {
+  .nav-item--primary::before {
+    transition: height $transition-base;
+  }
+
+  .nav-item--secondary {
+    transition: background-color $transition-base;
+  }
+}
+
+// Focus styles for better accessibility
+.nav-item {
+  &:focus-within {
+    .nav-link-wrapper {
+      border-radius: $border-radius-sm;
+    }
+  }
+}

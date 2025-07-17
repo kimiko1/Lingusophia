@@ -1,0 +1,222 @@
+@use '../../../styles/themes/mixins' as *;
+
+.oval-card {
+  background: $color-surface;
+  border: 2px solid $color-border;
+  border-radius: 50px; // Very rounded for oval effect
+  padding: $spacing-md;
+  transition: $transition-base;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+
+  // Size variants
+  &--small {
+    padding: $spacing-sm $spacing-md;
+    border-radius: 30px;
+  }
+
+  &--medium {
+    padding: $spacing-md $spacing-lg;
+    border-radius: 40px;
+  }
+
+  &--large {
+    padding: $spacing-lg $spacing-xl;
+    border-radius: 60px;
+  }
+
+  // Style variants
+  &--default {
+    background: $color-surface;
+    border-color: $color-border;
+  }
+
+  &--primary {
+    background: rgba($color-primary, 0.05);
+    border-color: $color-primary;
+  }
+
+  &--secondary {
+    background: rgba($color-secondary, 0.05);
+    border-color: $color-secondary;
+  }
+
+  &--success {
+    background: rgba($color-success, 0.05);
+    border-color: $color-success;
+  }
+
+  &--warning {
+    background: rgba($color-warning, 0.05);
+    border-color: $color-warning;
+  }
+
+  &--danger {
+    background: rgba($color-danger, 0.05);
+    border-color: $color-danger;
+  }
+
+  // Interactive state
+  &--interactive {
+    cursor: pointer;
+
+    &:hover:not(&--disabled) {
+      transform: translateY(-2px);
+      box-shadow: $shadow-md;
+      border-color: $color-primary;
+    }
+
+    &:active:not(&--disabled) {
+      transform: translateY(0);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba($color-primary, 0.2);
+    }
+  }
+
+  // Selected state
+  &--selected {
+    border-color: $color-primary;
+    background: rgba($color-primary, 0.1);
+    box-shadow: $shadow-sm;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: $spacing-xs;
+      right: $spacing-xs;
+      width: 20px;
+      height: 20px;
+      background: $color-primary;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &::before {
+      content: '✓';
+      position: absolute;
+      top: $spacing-xs + 2px;
+      right: $spacing-xs + 6px;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      z-index: 1;
+    }
+
+    &.oval-card--primary {
+      background: rgba($color-primary, 0.15);
+      border-color: $color-primary-dark;
+    }
+
+    &.oval-card--secondary {
+      background: rgba($color-secondary, 0.15);
+      border-color: $color-secondary-dark;
+      
+      &::after {
+        background: $color-secondary;
+      }
+    }
+
+    &.oval-card--success {
+      background: rgba($color-success, 0.15);
+      border-color: $color-success-dark;
+      
+      &::after {
+        background: $color-success;
+      }
+    }
+
+    &.oval-card--warning {
+      background: rgba($color-warning, 0.15);
+      border-color: $color-warning-dark;
+      
+      &::after {
+        background: $color-warning;
+      }
+    }
+
+    &.oval-card--danger {
+      background: rgba($color-danger, 0.15);
+      border-color: $color-danger-dark;
+      
+      &::after {
+        background: $color-danger;
+      }
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  // Hover effects for variants
+  &--interactive:hover:not(&--disabled):not(&--selected) {
+    &.oval-card--primary {
+      border-color: $color-primary-dark;
+      background: rgba($color-primary, 0.1);
+    }
+
+    &.oval-card--secondary {
+      border-color: $color-secondary-dark;
+      background: rgba($color-secondary, 0.1);
+    }
+
+    &.oval-card--success {
+      border-color: $color-success-dark;
+      background: rgba($color-success, 0.1);
+    }
+
+    &.oval-card--warning {
+      border-color: $color-warning-dark;
+      background: rgba($color-warning, 0.1);
+    }
+
+    &.oval-card--danger {
+      border-color: $color-danger-dark;
+      background: rgba($color-danger, 0.1);
+    }
+  }
+}
+
+// Responsive design
+@include mobile-only {
+  .oval-card {
+    &--large {
+      padding: $spacing-md $spacing-lg;
+      border-radius: 50px;
+    }
+
+    &--medium {
+      padding: $spacing-sm $spacing-md;
+      border-radius: 35px;
+    }
+
+    &--small {
+      padding: $spacing-xs $spacing-sm;
+      border-radius: 25px;
+    }
+  }
+}
+
+// Reduce motion for accessibility
+@media (prefers-reduced-motion: reduce) {
+  .oval-card {
+    transition: none;
+
+    &--interactive:hover:not(&--disabled) {
+      transform: none;
+    }
+
+    &--interactive:active:not(&--disabled) {
+      transform: none;
+    }
+  }
+}

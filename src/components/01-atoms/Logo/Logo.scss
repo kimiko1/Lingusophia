@@ -1,0 +1,94 @@
+@use '../../../styles/themes/mixins' as *;
+
+.logo {
+  font-family: $font-family-heading;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  cursor: default;
+  display: inline-block;
+  user-select: none;
+
+  // Size variants
+  &--small {
+    font-size: $font-size-lg;
+    line-height: $line-height-tight;
+  }
+
+  &--medium {
+    font-size: $font-size-xl;
+    line-height: $line-height-tight;
+  }
+
+  &--large {
+    font-size: $font-size-2xl;
+    line-height: $line-height-tight;
+  }
+
+  // Style variants
+  &--default {
+    color: $color-primary;
+  }
+
+  &--primary {
+    color: $color-primary;
+    text-shadow: 0 2px 4px rgba($color-primary, 0.2);
+  }
+
+  &--secondary {
+    color: $color-secondary;
+  }
+
+  &--gradient {
+    background: linear-gradient(135deg, $color-primary, $color-secondary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease-in-out infinite;
+  }
+
+  // Interactive states
+  &--clickable {
+    cursor: pointer;
+    transition: $transition-fast;
+
+    &:hover {
+      transform: translateY(-1px);
+      color: $color-primary-dark;
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:focus {
+      outline: 2px solid $color-focus;
+      outline-offset: 2px;
+      border-radius: $border-radius-sm;
+    }
+  }
+
+  // Responsive design
+  @include mobile-only {
+    &--large {
+      font-size: $font-size-xl;
+    }
+
+    &--medium {
+      font-size: $font-size-lg;
+    }
+
+    &--small {
+      font-size: $font-size-base;
+    }
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
