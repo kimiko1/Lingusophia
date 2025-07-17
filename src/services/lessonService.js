@@ -190,18 +190,6 @@ async getCategories() {
   },
 
   /**
-   * Book a lesson for a user
-   */
-  async bookLesson(lessonId, userId) {
-    try {
-      const response = await api.post('api/lessons/bookings', { lessonId, userId });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  },
-
-  /**
    * Récupérer les leçons complétées par l'utilisateur
    */
   async getCompletedLessons(userId) {
