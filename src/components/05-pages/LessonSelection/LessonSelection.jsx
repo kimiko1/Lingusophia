@@ -7,7 +7,7 @@ import { faPlay, faGraduationCap, faCrown } from '@fortawesome/free-solid-svg-ic
 import { Title, Button } from '../../01-atoms';
 import { LanguageCard, LevelCard, CategoryCard, LessonDetailsModal } from '../../02-molecules';
 import LessonCard from '../../02-molecules/LessonCard';
-import { lessonService } from '../../../services';
+import { lessonService, bookingService } from '../../../services';
 import './LessonSelection.scss';
 import { useAuth } from '../../../contexts/AuthContext';
 
@@ -164,8 +164,6 @@ const LessonSelection = ({
       icon: faCrown
     }
   };
-  // No more 'levels' array: use 'difficulties' directly for rendering
-
   // Default flags for languages
   const defaultFlags = {
     'english': enFlag,
@@ -253,7 +251,7 @@ const LessonSelection = ({
         setError("Utilisateur non connecté");
         return;
       }
-      await lessonService.bookLesson(lesson.id, userId);
+      await bookingService.createBooking(lesson.id, userId);
       setIsModalOpen(false);
       navigate('/calendar');
     } catch (err) {
@@ -477,7 +475,7 @@ const LessonSelection = ({
                         key={lesson.id}
                         title={lesson.title}
                         description={lesson.description}
-                        duration={durationStr}
+                        duration={lesson.duration}
                         level={lesson.level}
                         price={lesson.price || 'Gratuit'}
                         isSelected={selectedLesson === lesson.id}

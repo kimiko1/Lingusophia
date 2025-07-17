@@ -49,17 +49,16 @@ export const bookingService = {
   },
 
   /**
-   * Créer une nouvelle réservation
+   * Book a lesson for a user
    */
-  async createBooking(bookingData) {
+  async createBooking(lessonId, userId) {
     try {
-      const response = await api.post('/create', bookingData);
+      const response = await api.post('api/bookings/create', { lessonId, userId });
       return response.data;
     } catch (error) {
       throw error;
     }
   },
-
   /**
    * Mettre à jour une réservation
    */
