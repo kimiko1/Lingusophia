@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '../config/constants';
 
-class AuthService {
+class authService {
   constructor() {
     this.baseURL = API_BASE_URL;
   }
@@ -122,4 +122,4 @@ class AuthService {
   }
 }
 
-export default new AuthService();
+export default new authService();

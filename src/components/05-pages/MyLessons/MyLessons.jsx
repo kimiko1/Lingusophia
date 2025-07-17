@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
-import { lessonService } from '../../../services';
+import { lessonService } from '../../../services/';
 import { Title, Button } from '../../01-atoms';
 import LessonCard from '../../02-molecules/LessonCard';
 
@@ -17,8 +17,6 @@ const MyLessons = () => {
     setError(null);
     try {
       const res = await lessonService.getLessonsByUser(user.id);
-      console.log('Fetched lessons:', res?.data?.data?.lessons); // Debugging line
-      // Correction ici :
       setMyLessons(res?.data?.data?.lessons || []);
     } catch (err) {
       setError('Erreur lors du chargement de vos leçons');

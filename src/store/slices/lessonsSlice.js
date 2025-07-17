@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { lessonsService } from '../../services';
+import { lessonService } from '../../services';
 
 // Actions asynchrones
 export const fetchLessons = createAsyncThunk(
   'lessons/fetchLessons',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await lessonsService.getAllLessons();
+      const response = await lessonService.getAllLessons();
       return response;
     } catch (error) {
       return rejectWithValue(error);
@@ -18,7 +18,7 @@ export const fetchLessonById = createAsyncThunk(
   'lessons/fetchLessonById',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await lessonsService.getLessonById(id);
+      const response = await lessonService.getLessonById(id);
       return response;
     } catch (error) {
       return rejectWithValue(error);
@@ -30,7 +30,7 @@ export const createLesson = createAsyncThunk(
   'lessons/createLesson',
   async (lessonData, { rejectWithValue }) => {
     try {
-      const response = await lessonsService.createLesson(lessonData);
+      const response = await lessonService.createLesson(lessonData);
       return response;
     } catch (error) {
       return rejectWithValue(error);
@@ -42,7 +42,7 @@ export const updateLesson = createAsyncThunk(
   'lessons/updateLesson',
   async ({ id, lessonData }, { rejectWithValue }) => {
     try {
-      const response = await lessonsService.updateLesson(id, lessonData);
+      const response = await lessonService.updateLesson(id, lessonData);
       return response;
     } catch (error) {
       return rejectWithValue(error);
@@ -54,7 +54,7 @@ export const deleteLesson = createAsyncThunk(
   'lessons/deleteLesson',
   async (id, { rejectWithValue }) => {
     try {
-      await lessonsService.deleteLesson(id);
+      await lessonService.deleteLesson(id);
       return id;
     } catch (error) {
       return rejectWithValue(error);
