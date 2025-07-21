@@ -145,35 +145,6 @@ const Login = () => {
                 </Link>
               </div>
             </form>
-
-            <div className="demo-accounts">
-              <Title level={3} className="demo-title">
-                {t('pages:login.demoAccounts')}
-              </Title>
-              <div className="demo-buttons">
-                <Button
-                  variant="outline"
-                  onClick={() => setFormData({ email: 'admin@learnalanguage.com', password: 'password123' })}
-                  className="demo-button"
-                >
-                  {t('pages:login.adminDemo')}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setFormData({ email: 'teacher@learnalanguage.com', password: 'password123' })}
-                  className="demo-button"
-                >
-                  {t('pages:login.teacherDemo')}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setFormData({ email: 'student@learnalanguage.com', password: 'password123' })}
-                  className="demo-button"
-                >
-                  {t('pages:login.studentDemo')}
-                </Button>
-              </div>
-            </div>
           </Card>
         </div>
       </div>
