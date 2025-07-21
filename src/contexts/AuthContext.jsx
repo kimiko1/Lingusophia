@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authService } from '../services';
+import {createContext, useEffect, useState} from 'react';
+import {authService} from '../services';
 
 const AuthContext = createContext();
 
@@ -15,27 +15,17 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
 
   // Vérifier l'authentification au démarrage
   useEffect(() => {
-    if (!authChecked) {
-      checkAuth();
-    }
-  }, [authChecked]);
+    checkAuth();
+     
+  }, []);
 
   const checkAuth = async () => {
-    // Éviter les appels multiples
-    if (authChecked) {
-      return;
-    }
-    
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      setAuthChecked(true);
-      
       const userData = await authService.me();
-      
       if (userData) {
         setUser(userData);
         setIsAuthenticated(true);
@@ -55,14 +45,11 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await authService.login(email, password);
-      
       if (response.success && response.user) {
         setUser(response.user);
         setIsAuthenticated(true);
-        setAuthChecked(true);
         return response;
       }
-      
       throw new Error(response.message || 'Erreur de connexion');
     } catch (error) {
       console.error('Erreur login:', error);
@@ -105,18 +92,14 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      // Envoie le cookie au backend pour suppression
       await authService.logout({ credentials: 'include' });
       setUser(null);
       setIsAuthenticated(false);
-      setAuthChecked(false); // Permettre une nouvelle vérification après déconnexion
       window.location.href = '/login';
     } catch (error) {
       console.error('Erreur logout:', error);
-      // Déconnexion forcée même en cas d'erreur
       setUser(null);
       setIsAuthenticated(false);
-      setAuthChecked(false);
       window.location.href = '/login';
     }
   };

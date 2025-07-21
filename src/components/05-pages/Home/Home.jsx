@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Navigations } from '../../03-organisms';
@@ -26,6 +25,8 @@ const Home = ({
     `home-page--${variant}`,
     className
   ].filter(Boolean).join(' ');
+
+  console.log('[Home] variant:', variant, 'user:', user);
 
   return (
     <div className={homeClasses} {...props}>
