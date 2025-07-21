@@ -18,3 +18,4 @@ export { default as Success } from './Success';
 export { default as Cancel } from './Cancel';
 export { default as Register } from './Register';
 export { default as Logout } from './Logout';
+export { default as NotFound } from './NotFound';

@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Navbar } from '../../03-organisms';
-import './HeaderTemplate.scss';
+import { AdminNavbar } from '../../03-organisms';
+import './AdminHeaderTemplate.scss';
 
 /**
- * HeaderTemplate component - Template with header/navbar
+ * AdminHeaderTemplate component - Template with admin header/navbar
  * @param {Object} props - Component props
  * @param {React.Node} props.children - Content to display below header
  * @param {Object} props.navbarProps - Props to pass to Navbar component
@@ -12,7 +12,7 @@ import './HeaderTemplate.scss';
  * @param {string} props.className - Additional CSS classes
  * @param {boolean} props.fixed - Whether header should be fixed position
  */
-const HeaderTemplate = ({ 
+const AdminHeaderTemplate = ({ 
   children,
   navbarProps = {},
   variant = 'default',
@@ -30,7 +30,7 @@ const HeaderTemplate = ({
   return (
     <div className={templateClasses} {...props}>
       <div className="header-template__header">
-        <Navbar {...navbarProps} />
+        <AdminNavbar />
       </div>
       <main className="header-template__content">
         {children}
@@ -40,7 +40,7 @@ const HeaderTemplate = ({
   );
 };
 
-HeaderTemplate.propTypes = {
+AdminHeaderTemplate.propTypes = {
   children: PropTypes.node,
   navbarProps: PropTypes.object,
   variant: PropTypes.oneOf(['default', 'compact', 'transparent']),
@@ -48,4 +48,4 @@ HeaderTemplate.propTypes = {
   fixed: PropTypes.bool
 };
 
-export default HeaderTemplate;
+export default AdminHeaderTemplate;
