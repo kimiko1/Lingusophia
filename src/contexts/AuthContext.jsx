@@ -1,12 +1,12 @@
-import {createContext, useEffect, useState} from 'react';
-import {authService} from '../services';
+import { createContext, useEffect, useContext, useState } from "react";
+import { authService } from "../services";
 
 const AuthContext = createContext();
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
   // Vérifier l'authentification au démarrage
   useEffect(() => {
     checkAuth();
-     
   }, []);
 
   const checkAuth = async () => {
@@ -34,7 +33,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(false);
       }
     } catch (error) {
-      console.error('[AUTH] Erreur vérification auth:', error);
+      console.error("[AUTH] Erreur vérification auth:", error);
       setUser(null);
       setIsAuthenticated(false);
     } finally {
@@ -50,9 +49,9 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         return response;
       }
-      throw new Error(response.message || 'Erreur de connexion');
+      throw new Error(response.message || "Erreur de connexion");
     } catch (error) {
-      console.error('Erreur login:', error);
+      console.error("Erreur login:", error);
       throw error;
     }
   };
@@ -60,16 +59,16 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await authService.register(userData);
-      
+
       if (response.success && response.user) {
         setUser(response.user);
         setIsAuthenticated(true);
         return response;
       }
-      
-      throw new Error(response.message || 'Erreur d\'inscription');
+
+      throw new Error(response.message || "Erreur d'inscription");
     } catch (error) {
-      console.error('Erreur register:', error);
+      console.error("Erreur register:", error);
       throw error;
     }
   };
@@ -78,29 +77,32 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await authService.updateProfile(profileData);
       // Accepte le succès si success true OU message de succès
-      if ((response.success && response.user) || response.message === 'Profil mis à jour avec succès') {
+      if (
+        (response.success && response.user) ||
+        response.message === "Profil mis à jour avec succès"
+      ) {
         // Recharge le profil utilisateur après update si possible
         await checkAuth();
         return response;
       }
-      throw new Error(response.message || 'Erreur de mise à jour du profil');
+      throw new Error(response.message || "Erreur de mise à jour du profil");
     } catch (error) {
-      console.error('Erreur update profile:', error);
+      console.error("Erreur update profile:", error);
       throw error;
     }
   };
 
   const logout = async () => {
     try {
-      await authService.logout({ credentials: 'include' });
+      await authService.logout({ credentials: "include" });
       setUser(null);
       setIsAuthenticated(false);
-      window.location.href = '/login';
+      window.location.href = "/login";
     } catch (error) {
-      console.error('Erreur logout:', error);
+      console.error("Erreur logout:", error);
       setUser(null);
       setIsAuthenticated(false);
-      window.location.href = '/login';
+      window.location.href = "/login";
     }
   };
 
@@ -115,11 +117,7 @@ export const AuthProvider = ({ children }) => {
     updateProfile,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthContext;
