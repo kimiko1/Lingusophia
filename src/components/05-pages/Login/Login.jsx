@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../contexts/AuthContext';
 import { Button, Input, Card, Title } from '../../01-atoms';
-import { PageLayout } from '../../04-templates';
 import './Login.scss';
 
 /**
@@ -74,7 +73,6 @@ const Login = () => {
   };
 
   return (
-    <PageLayout>
       <div className="login-page">
         <div className="login-container">
           <Card className="login-card">
@@ -148,7 +146,6 @@ const Login = () => {
           </Card>
         </div>
       </div>
-    </PageLayout>
   );
 };
 
