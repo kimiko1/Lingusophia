@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Card, Title } from '../../01-atoms';
+import { Card, Title } from '@atoms';
 import './LevelCard.scss';
 
 /**

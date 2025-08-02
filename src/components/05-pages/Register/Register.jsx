@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { register, clearError } from "../../../store/slices/authSlice";
-import { Button, Input, Card, Title } from "../../01-atoms";
+import { register, clearError } from "@store/slices/authSlice";
+import { Button, Input, Card, Title } from "@atoms";
 import "./Register.scss";
 
 /**

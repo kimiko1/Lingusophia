@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Navbar } from '../../03-organisms';
+import { Navbar } from '@organisms';
 import './HeaderTemplate.scss';
+import React from 'react';
 
 /**
  * HeaderTemplate component - Template with header/navbar
@@ -12,7 +13,7 @@ import './HeaderTemplate.scss';
  * @param {string} props.className - Additional CSS classes
  * @param {boolean} props.fixed - Whether header should be fixed position
  */
-const HeaderTemplate = ({ 
+const HeaderTemplate = React.memo(({ 
   children,
   navbarProps = {},
   variant = 'default',
@@ -38,7 +39,7 @@ const HeaderTemplate = ({
       </main>
     </div>
   );
-};
+});
 
 HeaderTemplate.propTypes = {
   children: PropTypes.node,

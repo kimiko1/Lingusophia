@@ -15,7 +15,7 @@ import './TeacherInfo.scss';
  * @param {function} props.onClick - Click handler
  * @param {string} props.layout - Layout direction
  */
-const TeacherInfo = ({ 
+const TeacherInfo = React.memo(({ 
   name,
   image,
   title,
@@ -63,6 +63,7 @@ const TeacherInfo = ({
           src={image} 
           alt={`${name} profile`}
           className="teacher-info__avatar"
+          loading="lazy"
         />
       </div>
       <div className="teacher-info__content">
@@ -73,7 +74,7 @@ const TeacherInfo = ({
       </div>
     </div>
   );
-};
+});
 
 TeacherInfo.propTypes = {
   name: PropTypes.string.isRequired,

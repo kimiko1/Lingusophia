@@ -1,4 +1,5 @@
 import React from 'react';
+import SvgReact from '@assets/react-components/React.jsx';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import './Logo.scss';
@@ -13,7 +14,7 @@ import './Logo.scss';
  * @param {function} props.onClick - Click handler for clickable logos
  * @param {boolean} props.clickable - Whether the logo is clickable
  */
-const Logo = ({ 
+const Logo = React.memo(function Logo({ 
   text,
   size = 'medium',
   variant = 'default',
@@ -21,7 +22,7 @@ const Logo = ({
   onClick,
   clickable = false,
   ...props 
-}) => {
+}) {
   const { t } = useTranslation('common');
   const logoText = text || t('app.name');
   
@@ -53,10 +54,11 @@ const Logo = ({
       } : undefined}
       {...props}
     >
-      {logoText}
+      <SvgReact width={32} height={32} style={{ verticalAlign: 'middle', marginRight: '0.5em' }} />
+      <span className="logo__text">{logoText}</span>
     </div>
   );
-};
+});
 
 Logo.propTypes = {
   text: PropTypes.string,

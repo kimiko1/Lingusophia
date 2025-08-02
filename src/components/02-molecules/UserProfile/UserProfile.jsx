@@ -1,6 +1,5 @@
-import { useAuth } from '../../../hooks';
-import { UserGreeting, Button } from '../../01-atoms';
-import { Card } from '../../01-atoms';
+import { useAuth } from '@hooks';
+import { UserGreeting, Button, Card } from '@atoms';
 import './UserProfile.scss';
 
 const UserProfile = () => {

@@ -17,7 +17,7 @@ import './NavLink.scss';
  * @param {function} props.onClick - Click handler
  * @param {boolean} props.disabled - Whether the link is disabled
  */
-const NavLink = ({ 
+const NavLink = React.memo(({ 
   icon,
   href,
   label,
@@ -94,7 +94,7 @@ const NavLink = ({
       )}
     </div>
   );
-};
+});
 
 NavLink.propTypes = {
   icon: PropTypes.object.isRequired,

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Navigations } from '../../03-organisms';
-import { ReviewSlider } from '../../02-molecules';
-import { Title } from '../../01-atoms';
+import { Navigations } from '@organisms';
+import { ReviewSlider } from '@molecules';
+import { Title } from '@atoms';
 import './Home.scss';
 
 /**

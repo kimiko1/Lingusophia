@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { changeLanguage, getAvailableLanguages } from '../../../i18n';
+import { changeLanguage, getAvailableLanguages } from '@i18n';
 import './LanguageSelector.scss';
 
 /**

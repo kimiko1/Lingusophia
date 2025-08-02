@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuth } from '@contexts/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faThLarge, 
@@ -22,10 +22,9 @@ import {
   faUserShield
 } from '@fortawesome/free-solid-svg-icons';
 
-import { NavItem } from '../../02-molecules';
-import { Logo, UserGreeting } from '../../01-atoms';
-import LanguageSelector from '../../01-atoms/LanguageSelector/LanguageSelector';
-import testSvg from '../../../assets/test.svg';
+import { NavItem } from '@molecules';
+import { Logo, UserGreeting, LanguageSelector } from '@atoms';
+import testSvg from '@assets/test.svg';
 import './Navbar.scss';
 
 /**
@@ -213,7 +212,7 @@ const Navbar = ({
               />
             </div>
             <div className="navbar__profile">
-              <img src={testSvg} alt={t('user.profile')} className="navbar__avatar" />
+              <img src={testSvg} alt={t('user.profile')} className="navbar__avatar" loading="lazy" />
               <button 
                 className="navbar__profile-toggle"
                 onClick={toggleProfile}

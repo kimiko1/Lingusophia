@@ -1,12 +1,10 @@
+import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-
-import { useAuth } from '../../../contexts/AuthContext';
-
+import { useAuth } from '@contexts/AuthContext';
 /**
  * ProtectedRoute - Composant pour protéger les routes nécessitant une authentification
  */
-
-const ProtectedRoute = ({ children, requiredRole = null }) => {
+const ProtectedRoute = React.memo(({ children, requiredRole = null }) => {
   const { isAuthenticated, user, isLoading } = useAuth();
   console.log('[ProtectedRoute] isAuthenticated:', isAuthenticated, 'user:', user);
   const location = useLocation();
@@ -45,6 +43,6 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
 
   console.log('[ProtectedRoute] rendu des children');
   return children;
-};
+});
 
 export default ProtectedRoute;
