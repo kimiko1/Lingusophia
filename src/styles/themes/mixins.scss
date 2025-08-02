@@ -48,10 +48,6 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
-
-  &:focus {
-    @include focus-ring;
-  }
 }
 
 @mixin btn-size($size: 'base') {

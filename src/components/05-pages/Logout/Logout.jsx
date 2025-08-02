@@ -118,7 +118,7 @@ const Logout = () => {
         </div>
 
         <div className="logout-footer">
-          <p>Merci d'avoir utilisé Lingusophia !</p>
+          <p>Merci d'avoir utilisé Yourpersonaltutor !</p>
         </div>
       </div>
     </div>
