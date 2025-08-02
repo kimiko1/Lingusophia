@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../../contexts/AuthContext';
-import { lessonService } from '../../../services/';
-import { Title, Button } from '../../01-atoms';
-import LessonCard from '../../02-molecules/LessonCard';
+import { useAuth } from '@contexts/AuthContext';
+import { lessonService } from '@services/lessonService';
+import { Title, Button } from '@atoms';
+import LessonCard from '@molecules/LessonCard';
 
 const MyLessons = () => {
   const { user } = useAuth();

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card } from '../../01-atoms';
+import { Card } from '@atoms';
 import './LanguageCard.scss';
 
 /**
@@ -62,6 +62,7 @@ const LanguageCard = ({
               src={flag} 
               alt={`${language} flag`} 
               className="language-card__flag-img"
+              loading="lazy"
             />
           )}
         </div>

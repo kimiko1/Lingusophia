@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { Button, Card, Title, Input } from '../../01-atoms';
-import { PageLayout } from '../../04-templates';
-import { userService } from '../../../services';
+import { Button, Card, Title, Input } from '@atoms';
+import { PageLayout } from '@templates';
+import { userService } from '@services';
 import './Settings.scss';
 
 /**

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title, Button } from '../../01-atoms';
+import { Title, Button } from '@atoms';
 import { useNavigate } from 'react-router-dom';
 import './Success.scss';
 
@@ -12,6 +12,7 @@ const Success = () => {
           src="https://cdn-icons-png.flaticon.com/512/845/845646.png"
           alt="Succès"
           className="success-illustration"
+          loading="lazy"
         />
         <Title level={1}>Paiement réussi !</Title>
         <p className="success-message">Merci pour votre paiement. Votre réservation est confirmée.</p>

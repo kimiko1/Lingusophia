@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useAuth } from '../../../hooks';
-import { Button, Input, Card, Title } from '../../01-atoms';
+import { useAuth } from '@hooks';
+import { Button, Input, Card, Title } from '@atoms';
 import './AuthForm.scss';
 
 const AuthForm = ({ mode = 'login' }) => {

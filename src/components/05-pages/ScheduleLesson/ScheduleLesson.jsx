@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { Button, Card, Title, Input } from '../../01-atoms';
-import { CategoryCard } from '../../02-molecules';
-import LessonCard from '../../02-molecules/LessonCard';
-import { PageLayout } from '../../04-templates';
-import { teacherService, bookingService } from '../../../services';
+import { Button, Card, Title, Input } from '@atoms';
+import { PageLayout } from '@templates';
+import { teacherService, bookingService } from '@services';
 import './ScheduleLesson.scss';
 
 /**

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Modal, TeacherInfo, Title, Button } from '../../01-atoms';
+import { Modal, TeacherInfo, Title, Button } from '@atoms';
 import './LessonDetailsModal.scss';
 
 /**

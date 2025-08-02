@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { AdminNavbar } from '../../03-organisms';
+import { AdminNavbar } from '@organisms';
 import './AdminHeaderTemplate.scss';
+import React from 'react';
 
 /**
  * AdminHeaderTemplate component - Template with admin header/navbar
@@ -12,7 +13,7 @@ import './AdminHeaderTemplate.scss';
  * @param {string} props.className - Additional CSS classes
  * @param {boolean} props.fixed - Whether header should be fixed position
  */
-const AdminHeaderTemplate = ({ 
+const AdminHeaderTemplate = React.memo(({ 
   children,
   navbarProps = {},
   variant = 'default',
@@ -38,7 +39,7 @@ const AdminHeaderTemplate = ({
       </main>
     </div>
   );
-};
+});
 
 AdminHeaderTemplate.propTypes = {
   children: PropTypes.node,

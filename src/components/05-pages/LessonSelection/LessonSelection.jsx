@@ -4,17 +4,16 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faGraduationCap, faCrown } from '@fortawesome/free-solid-svg-icons';
-import { Title, Button } from '../../01-atoms';
-import { LanguageCard, LevelCard, CategoryCard, LessonDetailsModal } from '../../02-molecules';
-import LessonCard from '../../02-molecules/LessonCard';
-import { lessonService, bookingService } from '../../../services';
+import { Title, Button } from '@atoms';
+import { LanguageCard, LevelCard, CategoryCard, LessonDetailsModal, LessonCard } from '@molecules';
+import { lessonService, bookingService } from '@services';
 import './LessonSelection.scss';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuth } from '@contexts/AuthContext';
 
 // Import flag SVGs
-import enFlag from '../../../assets/flags/en.svg';
-import frFlag from '../../../assets/flags/fr.svg';
-import cnFlag from '../../../assets/flags/cn.svg';
+import enFlag from '@assets/flags/en.svg';
+import frFlag from '@assets/flags/fr.svg';
+import cnFlag from '@assets/flags/cn.svg';
 
 /**
  * LessonSelection component - Page for selecting lessons by language, level, category and difficulty
@@ -164,15 +163,19 @@ const LessonSelection = ({
       icon: faCrown
     }
   };
-  // Default flags for languages
-  const defaultFlags = {
-    'english': enFlag,
-    'french': frFlag,
-    'chinese': cnFlag,
-    'anglais': enFlag,
-    'francais': frFlag,
-    'chinois': cnFlag
-  };
+
+// Map language codes to imported flag assets
+const flagAssets = {
+  en: enFlag,
+  fr: frFlag,
+  cn: cnFlag,
+  english: enFlag,
+  french: frFlag,
+  chinese: cnFlag,
+  anglais: enFlag,
+  francais: frFlag,
+  chinois: cnFlag
+};
 
   // Get lessons for selected combination
   const getFilteredLessons = () => {
@@ -361,7 +364,7 @@ const LessonSelection = ({
                   <LanguageCard
                     key={language.id}
                     language={language.name}
-                    flag={language.flag_svg ? (`../../../src/${language.flag_svg}`) : (defaultFlags[language.code?.toLowerCase()] || enFlag)}
+                    flag={flagAssets[language.code?.toLowerCase()] || enFlag}
                     isSelected={selectedLanguage === language.id}
                     onClick={() => handleLanguageSelect(language.id)}
                     variant="default"
