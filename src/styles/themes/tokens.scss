@@ -1,5 +1,5 @@
 // =============================================
-// DESIGN TOKENS - Lingusophia
+// DESIGN TOKENS - Yourpersonaltutor
 // Système centralisé de variables pour l'Atomic Design
 // =============================================
 
@@ -192,12 +192,6 @@ $container-2xl: 1536px;
 
 // ==================== UTILITIES ====================
 // Common component styles as mixins
-@mixin focus-ring {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
-  box-shadow: 0 0 0 3px rgba($primary-500, 0.1);
-}
-
 @mixin sr-only {
   position: absolute;
   width: 1px;

@@ -187,20 +187,6 @@ const Register = () => {
             </div>
 
             <div className="form-group">
-              <label className="form-label">{t("common:form.role")}</label>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleInputChange}
-                className="register-select"
-              >
-                <option value="student">{t("common:roles.student")}</option>
-                <option value="teacher">{t("common:roles.teacher")}</option>
-                <option value="admin">{t("common:roles.admin")}</option>
-              </select>
-            </div>
-
-            <div className="form-group">
               <div className="password-input-wrapper">
                 <Input
                   type={showPassword ? "text" : "password"}

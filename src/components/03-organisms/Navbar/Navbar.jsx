@@ -169,36 +169,118 @@ const Navbar = ({
 
   return (
     <header className={navbarClasses} {...props}>
-      {/* Mobile Logo & Menu Toggle */}
-      <div className="navbar__mobile-header">
-        <Logo 
-          size="medium" 
-          clickable 
-          onClick={() => window.location.href = '/'}
-          className="navbar__logo-mobile"
-        />
-        
+      <div className="navbar__left">
         <button 
-          className="navbar__menu-toggle"
+          className={`navbar__menu-toggle${isMenuOpen ? ' navbar__menu-toggle--open' : ''}`}
           onClick={toggleMenu}
           aria-label={isMenuOpen ? t('aria.closeMenu') : t('aria.openMenu')}
           aria-expanded={isMenuOpen}
         >
-          <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
+          <span className="navbar__menu-icon">
+            <span className="bar"></span>
+            <span className="bar"></span>
+            <span className="bar"></span>
+          </span>
         </button>
       </div>
 
-      {/* Desktop Logo */}
-      <div className="navbar__logo-desktop">
+      <div className="navbar__center">
+      <Link to="/" className="navbar__center">
         <Logo 
           size="large" 
           variant="gradient"
-          clickable 
-          onClick={() => window.location.href = '/'}
+          clickable
         />
+      </Link>
       </div>
 
-      {/* Main Navigation */}
+      <div className="navbar__right">
+        {isAuthenticated ? (
+          <div className="navbar__user">
+            <div className="navbar__language-selector">
+              <LanguageSelector 
+                variant="dropdown"
+                size="sm"
+                showFlag={true}
+                showNativeName={false}
+              />
+            </div>
+            <div className="navbar__greeting">
+              <UserGreeting 
+                name={user?.firstName || 'User'} 
+                variant="primary"
+                animated
+              />
+            </div>
+            <div className="navbar__profile">
+              <img src={testSvg} alt={t('user.profile')} className="navbar__avatar" />
+              <button 
+                className="navbar__profile-toggle"
+                onClick={toggleProfile}
+                aria-label={t('aria.openProfile')}
+                aria-expanded={isProfileOpen}
+              >
+                <FontAwesomeIcon 
+                  icon={faChevronDown} 
+                  className={`navbar__profile-chevron ${isProfileOpen ? 'navbar__profile-chevron--open' : ''}`}
+                />
+              </button>
+              <div className={`navbar__profile-dropdown ${isProfileOpen ? 'navbar__profile-dropdown--open' : ''}`}>
+                <div className="navbar__profile-header">
+                  <div className="navbar__profile-info">
+                    <div className="navbar__profile-name">{user?.firstName} {user?.lastName}</div>
+                    <div className="navbar__profile-email">{user?.email}</div>
+                    <div className="navbar__profile-role">{t(`common:roles.${user?.role?.toLowerCase()}`)}</div>
+                  </div>
+                </div>
+                <ul className="navbar__profile-menu">
+                  {profileItems.map((item) => (
+                    <li key={item.href}>
+                      <Link to={item.href} className="navbar__profile-link">
+                        <FontAwesomeIcon icon={item.icon} />
+                        <span>{item.label}</span>
+                      </Link>
+                    </li>
+                  ))}
+                  <li className="navbar__profile-divider"></li>
+                  <li>
+                    <button 
+                      className="navbar__profile-link navbar__profile-link--logout"
+                      onClick={handleLogout}
+                    >
+                      <FontAwesomeIcon icon={faSignOutAlt} />
+                      <span>{t('navigation.logout')}</span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="navbar__auth">
+            <div className="navbar__language-selector">
+              <LanguageSelector 
+                variant="dropdown"
+                size="sm"
+                showFlag={true}
+                showNativeName={false}
+              />
+            </div>
+            <div className="navbar__auth-buttons">
+              <Link to="/login" className="navbar__auth-button navbar__auth-button--login">
+                <FontAwesomeIcon icon={faSignInAlt} />
+                <span>Login</span>
+              </Link>
+              <Link to="/register" className="navbar__auth-button navbar__auth-button--register">
+                <FontAwesomeIcon icon={faUserPlus} />
+                <span>Register</span>
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Hamburger Menu Overlay */}
       <nav className={`navbar__nav ${isMenuOpen ? 'navbar__nav--open' : ''}`}>
         <ul className="navbar__nav-list">
           {(isAuthenticated ? authenticatedNavItems : publicNavItems).map((item) => (
@@ -215,104 +297,7 @@ const Navbar = ({
         </ul>
       </nav>
 
-      {/* User Section */}
-      {isAuthenticated ? (
-        <div className="navbar__user">
-          {/* Language Selector */}
-          <div className="navbar__language-selector">
-            <LanguageSelector 
-              variant="dropdown"
-              size="sm"
-              showFlag={true}
-              showNativeName={false}
-            />
-          </div>
-
-          {/* User Greeting - Desktop */}
-          <div className="navbar__greeting">
-            <UserGreeting 
-              name={user?.firstName || 'User'} 
-              variant="primary"
-              animated
-            />
-          </div>
-
-          {/* Profile Avatar */}
-          <div className="navbar__profile">
-            <img src={testSvg} alt={t('user.profile')} className="navbar__avatar" />
-            
-            <button 
-              className="navbar__profile-toggle"
-              onClick={toggleProfile}
-              aria-label={t('aria.openProfile')}
-              aria-expanded={isProfileOpen}
-            >
-              <FontAwesomeIcon 
-                icon={faChevronDown} 
-                className={`navbar__profile-chevron ${isProfileOpen ? 'navbar__profile-chevron--open' : ''}`}
-              />
-            </button>
-
-            {/* Profile Dropdown */}
-            <div className={`navbar__profile-dropdown ${isProfileOpen ? 'navbar__profile-dropdown--open' : ''}`}>
-              <div className="navbar__profile-header">
-                <div className="navbar__profile-info">
-                  <div className="navbar__profile-name">{user?.firstName} {user?.lastName}</div>
-                  <div className="navbar__profile-email">{user?.email}</div>
-                  <div className="navbar__profile-role">{t(`common:roles.${user?.role?.toLowerCase()}`)}</div>
-                </div>
-              </div>
-              
-              <ul className="navbar__profile-menu">
-                {profileItems.map((item) => (
-                  <li key={item.href}>
-                    <Link to={item.href} className="navbar__profile-link">
-                      <FontAwesomeIcon icon={item.icon} />
-                      <span>{item.label}</span>
-                    </Link>
-                  </li>
-                ))}
-                <li className="navbar__profile-divider"></li>
-                <li>
-                  <button 
-                    className="navbar__profile-link navbar__profile-link--logout"
-                    onClick={handleLogout}
-                  >
-                    <FontAwesomeIcon icon={faSignOutAlt} />
-                    <span>{t('navigation.logout')}</span>
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="navbar__auth">
-          {/* Language Selector */}
-          <div className="navbar__language-selector">
-            <LanguageSelector 
-              variant="dropdown"
-              size="sm"
-              showFlag={true}
-              showNativeName={false}
-            />
-          </div>
-          
-          {/* Auth Buttons */}
-          <div className="navbar__auth-buttons">
-            <Link to="/login" className="navbar__auth-button navbar__auth-button--login">
-              <FontAwesomeIcon icon={faSignInAlt} />
-              <span>Login</span>
-            </Link>
-            <Link to="/register" className="navbar__auth-button navbar__auth-button--register">
-              <FontAwesomeIcon icon={faUserPlus} />
-              <span>Register</span>
-            </Link>
-          </div>
-        </div>
-      )}
-
-      {/* Overlay for mobile menu */}
+      {/* Overlay for menu/profile */}
       {(isMenuOpen || isProfileOpen) && (
         <div className="navbar__overlay" onClick={closeAll}></div>
       )}

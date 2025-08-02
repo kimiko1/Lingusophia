@@ -224,10 +224,6 @@
     }
   }
   
-  &:focus-visible {
-    @include focus-ring;
-  }
-  
   &:active {
     transform: scale(0.98);
   }

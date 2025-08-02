@@ -65,27 +65,27 @@
     font-size: 0.9rem;
   }
 
+  .input-wrapper,
+  .input-wrapper--base,
+  .input-wrapper--default,
   .register-input {
-    width: 100%;
-    padding: 1rem;
-    border: 2px solid $border-color;
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: white;
+    border: 2px solid $border-color !important;
+    box-shadow: none !important;
+    border-radius: 12px !important;
+    background: white !important;
+    padding: 1rem !important;
+  }
 
-    &:focus {
-      outline: none;
-    }
+  .register-form input:focus,
+  .register-form .register-input:focus {
+    border-color: $primary-color !important;
+    box-shadow: 0 0 0 3px rgba($primary-color, 0.1) !important;
+    outline: none !important;
+  }
 
-    &::placeholder {
-      color: $text-muted;
-    }
-
-    &.error {
-      border-color: $error-color;
-      box-shadow: 0 0 0 3px rgba($error-color, 0.1);
-    }
+  .register-form .register-input.error {
+    border-color: $error-color !important;
+    box-shadow: 0 0 0 3px rgba($error-color, 0.1) !important;
   }
 
   .register-select {
