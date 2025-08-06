@@ -269,10 +269,6 @@ const LessonSelection = ({ variant = "default", className = "", ...props }) => {
       // Utilise directement le teacher_id présent dans l'objet lesson
       const teacherId = lesson.teacherId || lesson.teacher?.id;
 
-      // Log pour debug
-      console.log("Lesson data:", lesson);
-      console.log("Teacher ID from lesson:", teacherId);
-
       if (!teacherId) {
         setError("Aucun professeur associé à cette leçon");
         return;
