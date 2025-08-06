@@ -6,7 +6,6 @@ import { useAuth } from '@contexts/AuthContext';
  */
 const ProtectedRoute = React.memo(({ children, requiredRole = null }) => {
   const { isAuthenticated, user, isLoading } = useAuth();
-  console.log('[ProtectedRoute] isAuthenticated:', isAuthenticated, 'user:', user);
   const location = useLocation();
 
   // Afficher le loader uniquement pendant le chargement
@@ -41,7 +40,6 @@ const ProtectedRoute = React.memo(({ children, requiredRole = null }) => {
     }
   }
 
-  console.log('[ProtectedRoute] rendu des children');
   return children;
 });
 

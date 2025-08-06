@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -8,10 +8,7 @@ import {
   faThLarge, 
   faGraduationCap, 
   faUser, 
-  faBars, 
-  faTimes, 
   faCalendarAlt,
-  faHistory,
   faBookmark,
   faStar,
   faChevronDown,
@@ -63,7 +60,6 @@ const Navbar = ({
 
   const profileItems = [
     { icon: faUser, label: t('navigation.profile'), href: "/profile" },
-    { icon: faHistory, label: t('user.learningHistory'), href: "/history" },
     { icon: faCog, label: t('navigation.settings'), href: "/settings" }
   ];
 

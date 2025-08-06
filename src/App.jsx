@@ -1,35 +1,36 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Provider } from 'react-redux';
-import { store } from './store';
-import React, { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 
-const Home = React.lazy(() => import('./components/05-pages/Home'));
-const LessonSelection = React.lazy(() => import('./components/05-pages/LessonSelection'));
-const Calendar = React.lazy(() => import('./components/05-pages/Calendar'));
-const ScheduleLesson = React.lazy(() => import('./components/05-pages/ScheduleLesson'));
-const MyLessons = React.lazy(() => import('./components/05-pages/MyLessons'));
-const CustomerReviews = React.lazy(() => import('./components/05-pages/CustomerReviews'));
-const Profile = React.lazy(() => import('./components/05-pages/Profile'));
-const Settings = React.lazy(() => import('./components/05-pages/Settings'));
-const Bookings = React.lazy(() => import('./components/05-pages/Bookings'));
-const Success = React.lazy(() => import('./components/05-pages/Success'));
-const Cancel = React.lazy(() => import('./components/05-pages/Cancel'));
-const Admin = React.lazy(() => import('./components/05-pages/Admin'));
-const Login = React.lazy(() => import('./components/05-pages/Login'));
-const Register = React.lazy(() => import('./components/05-pages/Register'));
-const Logout = React.lazy(() => import('./components/05-pages/Logout'));
-const NotFound = React.lazy(() => import('./components/05-pages/NotFound'));
+const Home = lazy(() => import('./components/05-pages/Home'));
+const LessonSelection = lazy(() => import('./components/05-pages/LessonSelection'));
+const Calendar = lazy(() => import('./components/05-pages/Calendar'));
+const ScheduleLesson = lazy(() => import('./components/05-pages/ScheduleLesson'));
+const MyLessons = lazy(() => import('./components/05-pages/MyLessons'));
+const CustomerReviews = lazy(() => import('./components/05-pages/CustomerReviews'));
+const Profile = lazy(() => import('./components/05-pages/Profile'));
+const Settings = lazy(() => import('./components/05-pages/Settings'));
+const Bookings = lazy(() => import('./components/05-pages/Bookings'));
+const Success = lazy(() => import('./components/05-pages/Success'));
+const Cancel = lazy(() => import('./components/05-pages/Cancel'));
+const Admin = lazy(() => import('./components/05-pages/Admin'));
+const Login = lazy(() => import('./components/05-pages/Login'));
+const Register = lazy(() => import('./components/05-pages/Register'));
+const Logout = lazy(() => import('./components/05-pages/Logout'));
+const NotFound = lazy(() => import('./components/05-pages/NotFound'));
 
 import { AdminHeaderTemplate, HeaderTemplate, ProtectedRoute } from './components/04-templates';
+import { LessonsProvider } from './contexts/LessonsContext';
+import { BookingProvider } from './contexts/BookingContext';
 import './styles/main-new.scss';
 
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <Router basename="/">
-        <Suspense fallback={<div>Chargement...</div>}>
-          <Routes>
+    <LessonsProvider>
+      <BookingProvider>
+        <Router basename="/">
+          <Suspense fallback={<div>Chargement...</div>}>
+            <Routes>
             {/* Public routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -67,7 +68,8 @@ const App = () => {
           </Routes>
         </Suspense>
       </Router>
-    </Provider>
+      </BookingProvider>
+    </LessonsProvider>
   );
 };
 
