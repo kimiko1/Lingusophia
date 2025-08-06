@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@contexts/AuthContext';
@@ -14,15 +14,13 @@ import {
   faEye,
   faSearch,
   faFilter,
-  faDownload
 } from '@fortawesome/free-solid-svg-icons';
 import { Title, Button, Input, Card, Modal } from '../../01-atoms';
 
-import { StatsCard, DataTable } from '../../02-molecules';
+import { DataTable } from '../../02-molecules';
 import { UserForm, LessonForm } from '../../03-organisms';
-import { userService, lessonService, bookingService, statsService } from '../../../services';
+import { userService, lessonService, bookingService } from '../../../services';
 import './Admin.scss';
-import { b } from 'framer-motion/client';
 
 /**
  * Admin component - Dashboard d'administration moderne
@@ -36,7 +34,7 @@ const Admin = ({
   const { t } = useTranslation(['pages', 'common']);
   
   // Récupérer l'utilisateur authentifié via le context Auth
-  const { user, isAuthenticated } = useAuth();
+  const { user } = useAuth();
   
   // Définir l'onglet par défaut selon le rôle
   const [activeTab, setActiveTab] = useState(() => {
@@ -62,37 +60,9 @@ const Admin = ({
   const canAccessUsers = isAdmin;
   const canAccessLessons = isAdmin || isTeacher;
   const canAccessBookings = isAdmin || isTeacher;
-
-
-  // Garde d'accès admin :
-  if (!user) {
-    // User pas encore chargé (ex: au refresh), on affiche un loader
-    return (
-      <div className="admin__access-denied">
-        <div className="admin__access-denied-content">
-          <h1>{t('pages:admin.accessDenied.loading', 'Chargement...')}</h1>
-        </div>
-      </div>
-    );
-  }
-
-  if (user && user.role !== 'Admin' && user.role !== 'Teacher') {
-    // Accès refusé si pas admin/teacher
-    return (
-      <div className="admin__access-denied">
-        <div className="admin__access-denied-content">
-          <h1>{t('pages:admin.accessDenied.title')}</h1>
-          <p>{t('pages:admin.accessDenied.message')}</p>
-          <Button variant="primary" onClick={() => window.history.back()}>
-            {t('pages:admin.accessDenied.goBack')}
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
+  
   // Données API
-  const [dashboardStats, setDashboardStats] = useState({});
+  // TODO: const [dashboardStats, setDashboardStats] = useState({});
   const [users, setUsers] = useState([]);
   const [lessons, setLessons] = useState([]);
   const [bookings, setBookings] = useState([]);
@@ -116,6 +86,42 @@ const Admin = ({
     };
     fetchData();
   }, []);
+
+  // Définir l'onglet par défaut selon le rôle
+  useEffect(() => {
+    if (isAdmin && activeTab === 'lessons') {
+      setActiveTab('dashboard');
+    } else if (isTeacher && !canAccessLessons) {
+      setActiveTab('lessons');
+    }
+  }, [isAdmin, isTeacher, canAccessLessons, activeTab]);
+
+  // Garde d'accès admin :
+  if (!user) {
+    // User pas encore chargé (ex: au refresh), on affiche un loader
+    return (
+      <div className="admin__access-denied">
+        <div className="admin__access-denied-content">
+          <h1>{t('pages:admin.accessDenied.loading', 'Chargement...')}</h1>
+        </div>
+      </div>
+    );
+  }
+  
+  if (user && user.role !== 'Admin' && user.role !== 'Teacher') {
+    // Accès refusé si pas admin/teacher
+    return (
+      <div className="admin__access-denied">
+        <div className="admin__access-denied-content">
+          <h1>{t('pages:admin.accessDenied.title')}</h1>
+          <p>{t('pages:admin.accessDenied.message')}</p>
+          <Button variant="primary" onClick={() => window.history.back()}>
+            {t('pages:admin.accessDenied.goBack')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   // Colonnes pour la table des utilisateurs
   const userColumns = [
@@ -147,45 +153,26 @@ const Admin = ({
     { key: 'actions', label: t('pages:admin.table.actions'), sortable: false }
   ];
 
-  // Simulation de requêtes API
-  useEffect(() => {
-    // Simule le chargement des données
-    const loadData = async () => {
-      // Simulation d'une requête API
-      setTimeout(() => {
-      }, 1000);
-    };
-    loadData();
-  }, []);
-
-  // Définir l'onglet par défaut selon le rôle
-  useEffect(() => {
-    if (isAdmin && activeTab === 'lessons') {
-      setActiveTab('dashboard');
-    } else if (isTeacher && !canAccessLessons) {
-      setActiveTab('lessons');
-    }
-  }, [isAdmin, isTeacher, canAccessLessons, activeTab]);
 
   // Filtrer les données selon les rôles
-  const getFilteredLessons = () => {
-  let lessonsArray = [];
-  if (Array.isArray(lessons)) {
-    lessonsArray = lessons;
-  } else if (lessons && typeof lessons === 'object') {
-    if (Array.isArray(lessons.lessons)) {
-      lessonsArray = lessons.lessons;
-    } else if (lessons.data && Array.isArray(lessons.data.lessons)) {
-      lessonsArray = lessons.data.lessons;
-    }
-  }
-  if (isAdmin) {
-    return lessonsArray;
-  } else if (isTeacher) {
-    return lessonsArray.filter(lesson => lesson.teacher === currentUser?.firstName + ' ' + currentUser?.lastName);
-  }
-  return [];
-};
+//   const getFilteredLessons = () => {
+//   let lessonsArray = [];
+//   if (Array.isArray(lessons)) {
+//     lessonsArray = lessons;
+//   } else if (lessons && typeof lessons === 'object') {
+//     if (Array.isArray(lessons.lessons)) {
+//       lessonsArray = lessons.lessons;
+//     } else if (lessons.data && Array.isArray(lessons.data.lessons)) {
+//       lessonsArray = lessons.data.lessons;
+//     }
+//   }
+//   if (isAdmin) {
+//     return lessonsArray;
+//   } else if (isTeacher) {
+//     return lessonsArray.filter(lesson => lesson.teacher === currentUser?.firstName + ' ' + currentUser?.lastName);
+//   }
+//   return [];
+// };
 
   const getFilteredBookings = () => {
     // bookings peut être un tableau ou un objet avec .data
@@ -574,7 +561,7 @@ const bookingsWithActions = getFilteredBookings().map(booking => ({
                   <Title level={3}>{t('pages:admin.stats.monthlyRevenue')}</Title>
                   <div className="admin__chart-placeholder">
                     <div className="admin__revenue-display">
-                      <span className="admin__revenue-amount">€{(dashboardStats.monthlyRevenue ?? 0).toLocaleString()}</span>
+                      {/* <span className="admin__revenue-amount">€{(dashboardStats.monthlyRevenue ?? 0).toLocaleString()}</span> */}
                       <span className="admin__revenue-period">{t('pages:admin.thisMonth')}</span>
                     </div>
                   </div>

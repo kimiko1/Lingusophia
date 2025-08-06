@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useAuth } from '@hooks';
+import { useAuth } from '@contexts/AuthContext';
 import { AuthForm } from '@molecules';
 
 const AuthProvider = ({ children }) => {

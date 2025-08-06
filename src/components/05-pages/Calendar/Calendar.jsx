@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Title } from '@atoms';
+import { useBooking } from '@contexts/BookingContext';
 import './Calendar.scss';
 
 /**
@@ -13,8 +14,10 @@ import './Calendar.scss';
 const Calendar = () => {
   const { t } = useTranslation('pages');
   const { t: tCommon } = useTranslation('common');
+  const navigate = useNavigate();
+  const { selectedDate: bookingDate, setSelectedDate: setBookingDate } = useBooking();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(bookingDate);
 
   // Jours de la semaine traduits
   const daysOfWeek = t('calendar.weekdays', { returnObjects: true });
@@ -51,6 +54,7 @@ const Calendar = () => {
     
     const selected = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
     setSelectedDate(selected);
+    setBookingDate(selected);
   };
 
   // Vérifier si c'est aujourd'hui

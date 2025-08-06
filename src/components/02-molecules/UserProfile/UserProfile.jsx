@@ -1,4 +1,4 @@
-import { useAuth } from '@hooks';
+import { useAuth } from '@contexts/AuthContext';
 import { UserGreeting, Button, Card } from '@atoms';
 import './UserProfile.scss';
 

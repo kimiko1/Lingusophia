@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { register, clearError } from "@store/slices/authSlice";
+import { useAuth } from "@contexts/AuthContext";
 import { Button, Input, Card, Title } from "@atoms";
 import "./Register.scss";
 
@@ -12,11 +11,7 @@ import "./Register.scss";
 const Register = () => {
   const { t } = useTranslation(["common", "pages"]);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const { isLoading, error, isAuthenticated, user } = useSelector(
-    (state) => state.auth
-  );
+  const { register, isLoading, error, isAuthenticated, user, clearError } = useAuth();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -90,13 +85,13 @@ const Register = () => {
 
     // Effacer l'erreur globale
     if (error) {
-      dispatch(clearError());
+      clearError();
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(clearError());
+    clearError();
 
     if (!validateForm()) {
       return;
@@ -104,10 +99,8 @@ const Register = () => {
 
     try {
       const { confirmPassword, ...registrationData } = formData;
-      const result = await dispatch(register(registrationData));
-
-      if (result.type === "auth/register/fulfilled") {
-      }
+      await register(registrationData);
+      // Registration successful, user will be redirected by useEffect
     } catch (err) {
       console.error("Erreur d'inscription:", err);
     }

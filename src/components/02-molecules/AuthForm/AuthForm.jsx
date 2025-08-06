@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '@hooks';
+import { useAuth } from '@contexts/AuthContext';
 import { Button, Input, Card, Title } from '@atoms';
 import './AuthForm.scss';
 

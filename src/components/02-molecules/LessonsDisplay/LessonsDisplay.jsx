@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLessons } from '@hooks';
+import { useLessons } from '@contexts/LessonsContext';
 import { Card, Button } from '@atoms';
 import LessonCard from '../LessonCard';
 import './LessonsDisplay.scss';
