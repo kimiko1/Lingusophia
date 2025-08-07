@@ -316,6 +316,11 @@ $border-radius-md: $radius-md;
 $border-radius-lg: $radius-lg;
 $border-radius-xl: $radius-xl;
 $border-radius-2xl: $radius-2xl;
+$border-radius-full: $radius-full;
 
 // Transition aliases
 $transition-all: $transition-base;
+$transition-duration-fast: 0.15s;
+$transition-duration-medium: 0.3s;
+$transition-duration-slow: 0.5s;
+$transition-timing: ease-out;
