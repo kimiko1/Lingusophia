@@ -1,657 +1,46 @@
 @use '../../../styles/themes/mixins' as *;
+@use '../../../styles/themes/tokens' as *;
 
+// Variables locales pour la cohérence
+$admin-primary: #667eea;
+$admin-secondary: #764ba2;
+$admin-surface: rgba(255, 255, 255, 0.97);
+$admin-surface-glass: rgba(255, 255, 255, 0.1);
+$admin-border: rgba(255, 255, 255, 0.22);
+$admin-shadow: rgba(102, 126, 234, 0.12);
 
+// Base du composant admin
 .admin {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, $admin-primary 0%, $admin-secondary 100%);
   position: relative;
-  box-shadow: 0 0 60px 0 rgba(102,126,234,0.15);
-  animation: fadeInBg 1.2s ease-in;
+  overflow-x: hidden;
+  animation: fadeInBg 1.2s ease-in-out;
 
+  // Effet de verre sur toute la page
   &::before {
     content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(120deg, rgba(255,255,255,0.08) 0%, rgba(118,75,162,0.08) 100%);
+    inset: 0;
+    background: linear-gradient(
+      120deg, 
+      rgba(255, 255, 255, 0.08) 0%, 
+      rgba(118, 75, 162, 0.08) 100%
+    );
     backdrop-filter: blur(12px);
     z-index: 0;
     pointer-events: none;
   }
 }
 
-@keyframes fadeInBg {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-
-.admin__container {
-  position: relative;
-  z-index: 1;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: $spacing-xl $spacing-lg;
-  box-shadow: 0 8px 32px rgba(102,126,234,0.08);
-  border-radius: $border-radius-xl;
-  background: rgba(255,255,255,0.03);
-}
-
-// Header
-
-.admin__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: $spacing-2xl;
-  padding: $spacing-xl;
-  background: linear-gradient(120deg, rgba(255,255,255,0.18) 0%, rgba(102,126,234,0.12) 100%);
-  backdrop-filter: blur(24px);
-  border-radius: $border-radius-xl;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 12px 40px rgba(102,126,234,0.12);
-  transition: box-shadow 0.3s;
-}
-
-.admin__header-content {
-  flex: 1;
-}
-
-
-.admin__title {
-  margin: 0 0 $spacing-sm;
-  color: #fff;
-  font-size: clamp($font-size-2xl, 5vw, $font-size-4xl);
-  font-weight: $font-weight-bold;
-  text-shadow: 0 2px 8px rgba(102,126,234,0.18);
-  letter-spacing: 1px;
-  filter: drop-shadow(0 2px 8px rgba(118,75,162,0.12));
-}
-
-
-.admin__subtitle {
-  margin: 0;
-  color: rgba(255,255,255,0.85);
-  font-size: $font-size-lg;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-}
-
-.admin__header-actions {
-  display: flex;
-  gap: $spacing-md;
-}
-
-.admin__export-btn {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  transition: $transition-all;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translateY(-2px);
-  }
-}
-
-// Tabs
-.admin__tabs {
-  display: flex;
-  gap: $spacing-xs;
-  margin-bottom: $spacing-2xl;
-  background: rgba(255, 255, 255, 0.1);
-  padding: $spacing-sm;
-  border-radius: $border-radius-xl;
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-
-.admin__tab {
-  display: flex;
-  align-items: center;
-  gap: $spacing-sm;
-  padding: $spacing-md $spacing-lg;
-  background: transparent;
-  border: none;
-  color: rgba(255,255,255,0.75);
-  font-size: $font-size-base;
-  font-weight: $font-weight-medium;
-  border-radius: $border-radius-lg;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-  position: relative;
-  box-shadow: 0 2px 8px rgba(102,126,234,0.08);
-
-  &:hover {
-    color: #fff;
-    background: rgba(102,126,234,0.18);
-    box-shadow: 0 4px 16px rgba(118,75,162,0.12);
-    transform: translateY(-2px) scale(1.03);
-  }
-
-  &--active {
-    color: #fff;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    box-shadow: 0 8px 24px rgba(102,126,234,0.18);
-
-    &::before {
-      content: '';
-      position: absolute;
-      bottom: -$spacing-sm;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 36px;
-      height: 4px;
-      background: $color-primary;
-      border-radius: $border-radius-full;
-      box-shadow: 0 2px 8px rgba(102,126,234,0.18);
-    }
-  }
-}
-
-// Content
-
-.admin__content {
-  background: rgba(255,255,255,0.97);
-  border-radius: $border-radius-xl;
-  backdrop-filter: blur(24px);
-  border: 1px solid rgba(255,255,255,0.22);
-  box-shadow: 0 20px 48px rgba(102,126,234,0.12);
-  overflow: hidden;
-  transition: box-shadow 0.3s;
-}
-
-// Dashboard
-.admin__dashboard {
-  padding: $spacing-2xl;
-}
-
-.admin__stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: $spacing-xl;
-  margin-bottom: $spacing-2xl;
-}
-
-.admin__charts-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: $spacing-xl;
-}
-
-.admin__chart-card {
-  padding: $spacing-xl;
-  border: 1px solid $color-border-light;
-  border-radius: $border-radius-lg;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-}
-
-.admin__chart-placeholder {
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, $color-primary-light, $color-primary);
-  border-radius: $border-radius-lg;
-  margin-top: $spacing-lg;
-}
-
-.admin__revenue-display {
-  text-align: center;
-  color: white;
-}
-
-.admin__revenue-amount {
-  display: block;
-  font-size: $font-size-3xl;
-  font-weight: $font-weight-bold;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.admin__revenue-period {
-  font-size: $font-size-sm;
-  opacity: 0.9;
-}
-
-// Activity
-.admin__activity-list {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-md;
-  margin-top: $spacing-lg;
-}
-
-.admin__activity-item {
-  display: flex;
-  align-items: center;
-  gap: $spacing-md;
-  padding: $spacing-md;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: $border-radius-md;
-  transition: $transition-all;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.8);
-    transform: translateX(4px);
-  }
-}
-
-.admin__activity-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-
-  &--green { background: $color-success; }
-  &--blue { background: $color-primary; }
-  &--orange { background: $color-warning; }
-}
-
-.admin__activity-time {
-  margin-left: auto;
-  font-size: $font-size-sm;
-  color: $color-text-secondary;
-}
-
-// Section Header
-.admin__section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: $spacing-xl $spacing-xl $spacing-lg;
-  border-bottom: 1px solid $color-border-light;
-}
-
-.admin__search-filter {
-  display: flex;
-  gap: $spacing-md;
-  align-items: center;
-}
-
-.admin__search-input {
-  min-width: 300px;
-}
-
-.admin__filter-btn {
-  display: flex;
-  align-items: center;
-  gap: $spacing-sm;
-}
-
-.admin__add-btn {
-  display: flex;
-  align-items: center;
-  gap: $spacing-sm;
-  background: linear-gradient(135deg, $color-primary, $color-primary-dark);
-  border: none;
-  color: white;
-  transition: $transition-all;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba($color-primary, 0.3);
-  }
-}
-
-// Table
-.admin__table-card {
-  margin: 0;
-  border-radius: 0 0 $border-radius-xl $border-radius-xl;
-  border: none;
-  background: rgba(255, 255, 255, 0.9);
-}
-
-.admin__data-table {
-  background: transparent;
-}
-
-// Actions
-
-.admin__actions {
-  display: flex;
-  gap: $spacing-xs;
-  justify-content: center;
-  padding: $spacing-xs 0;
-}
-
-
-.admin__action-btn {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border-radius: $border-radius-full;
-  transition: box-shadow 0.2s, background 0.2s, color 0.2s;
-  box-shadow: 0 2px 8px rgba(102,126,234,0.08);
-  background: rgba(255,255,255,0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    box-shadow: 0 4px 16px rgba(118,75,162,0.12);
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-    transform: scale(1.08);
-  }
-
-  &--view {
-    color: $color-info;
-    &:hover { background: rgba($color-info, 0.18); }
-  }
-
-  &--edit {
-    color: $color-warning;
-    &:hover { background: rgba($color-warning, 0.18); }
-  }
-
-  &--delete {
-    color: $color-danger;
-    &:hover { background: rgba($color-danger, 0.18); }
-  }
-
-  &--confirm {
-    color: var(--color-success);
-    &:hover {
-      background: var(--color-success-bg);
-      color: var(--color-success);
-    }
-  }
-
-  &--complete {
-    color: var(--color-info);
-    &:hover {
-      background: var(--color-info-bg);
-      color: var(--color-info);
-    }
-  }
-}
-
-// Modal
-.admin__modal-content {
-  padding: $spacing-lg;
-}
-
-.admin__delete-confirmation {
-  text-align: center;
-
-  p {
-    margin-bottom: $spacing-xl;
-    color: $color-text-secondary;
-  }
-}
-
-.admin__modal-actions {
-  display: flex;
-  gap: $spacing-md;
-  justify-content: center;
-}
-
-.admin__form-placeholder {
-  text-align: center;
-  padding: $spacing-2xl;
-  color: $color-text-secondary;
-}
-
-// Coming Soon
-.admin__coming-soon {
-  text-align: center;
-  padding: $spacing-4xl;
-  color: $color-text-secondary;
-
-  h2 {
-    margin-bottom: $spacing-lg;
-    color: $color-text-primary;
-  }
-}
-
-// Booking details modal
-.admin__booking-details {
-  padding: $spacing-xl;
-}
-
-.admin__booking-info {
-  h3 {
-    margin-bottom: $spacing-lg;
-    color: var(--color-text-primary);
-    font-size: $font-size-xl;
-  }
-}
-
-.admin__booking-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: $spacing-lg;
-  margin-bottom: $spacing-xl;
-}
-
-.admin__booking-field {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-xs;
-
-  &--full {
-    grid-column: 1 / -1;
-  }
-
-  label {
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    font-size: $font-size-sm;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  span, p {
-    color: var(--color-text-primary);
-    font-size: $font-size-base;
-  }
-
-  p {
-    margin: 0;
-    padding: $spacing-sm;
-    background: var(--color-surface);
-    border-radius: $border-radius-md;
-    border: 1px solid var(--color-border);
-  }
-}
-
-.admin__status {
-  display: inline-flex;
-  align-items: center;
-  padding: $spacing-xs $spacing-sm;
-  border-radius: $border-radius-full;
-  font-size: $font-size-sm;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-
-  &--confirmed {
-    background: var(--color-success-bg);
-    color: var(--color-success);
-  }
-
-  &--pending {
-    background: var(--color-warning-bg);
-    color: var(--color-warning);
-  }
-
-  &--completed {
-    background: var(--color-info-bg);
-    color: var(--color-info);
-  }
-
-  &--cancelled {
-    background: var(--color-danger-bg);
-    color: var(--color-danger);
-  }
-}
-
-.admin__payment {
-  display: inline-flex;
-  align-items: center;
-  padding: $spacing-xs $spacing-sm;
-  border-radius: $border-radius-full;
-  font-size: $font-size-sm;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-
-  &--paid {
-    background: var(--color-success-bg);
-    color: var(--color-success);
-  }
-
-  &--pending {
-    background: var(--color-warning-bg);
-    color: var(--color-warning);
-  }
-
-  &--failed {
-    background: var(--color-danger-bg);
-    color: var(--color-danger);
-  }
-}
-
-.admin__booking-actions {
-  display: flex;
-  justify-content: center;
-  gap: $spacing-lg;
-  padding-top: $spacing-lg;
-  border-top: 1px solid var(--color-border);
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
-}
-
-// Access denied page
-.admin__access-denied {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: $spacing-xl;
-}
-
-.admin__access-denied-content {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: $border-radius-xl;
-  padding: $spacing-3xl;
-  text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  max-width: 500px;
-  width: 100%;
-
-  h1 {
-    color: var(--color-danger);
-    margin-bottom: $spacing-lg;
-    font-size: $font-size-2xl;
-  }
-
-  p {
-    color: var(--color-text-secondary);
-    margin-bottom: $spacing-xl;
-    font-size: $font-size-lg;
-    line-height: 1.6;
-  }
-}
-
-
-// Responsive
-@media (max-width: 1200px) {
-  .admin__container {
-    max-width: 100vw;
-    padding: $spacing-lg $spacing-md;
-  }
-}
-
-@media (max-width: 900px) {
-  .admin__header {
-    flex-direction: column;
-    gap: $spacing-lg;
-    text-align: center;
-    padding: $spacing-lg;
-  }
-  .admin__tabs {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    &::-webkit-scrollbar { display: none; }
-    gap: $spacing-xs;
-  }
-  .admin__charts-grid {
-    grid-template-columns: 1fr;
-    gap: $spacing-lg;
-  }
-  .admin__stats-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: $spacing-md;
-  }
-  .admin__section-header {
-    flex-direction: column;
-    gap: $spacing-lg;
-    align-items: stretch;
-    padding: $spacing-lg $spacing-md $spacing-md;
-  }
-  .admin__search-filter {
-    flex-direction: column;
-    gap: $spacing-sm;
-  }
-  .admin__search-input {
-    min-width: 180px;
-    width: 100%;
-  }
-}
-
-@media (max-width: 600px) {
-  .admin__container {
-    padding: $spacing-md $spacing-xs;
-  }
-  .admin__header {
-    padding: $spacing-md;
-  }
-  .admin__title {
-    font-size: $font-size-xl;
-  }
-  .admin__dashboard {
-    padding: $spacing-md;
-  }
-  .admin__stats-grid {
-    grid-template-columns: 1fr;
-    gap: $spacing-xs;
-  }
-  .admin__charts-grid {
-    gap: $spacing-xs;
-  }
-  .admin__section-header {
-    padding: $spacing-md $spacing-xs $spacing-xs;
-  }
-  .admin__booking-grid {
-    grid-template-columns: 1fr;
-    gap: $spacing-md;
-  }
-}
-
 // Animations
-.admin__dashboard {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.admin__stats-grid > * {
-  animation: fadeInUp 0.6s ease-out;
-  animation-fill-mode: both;
-  
-  @for $i from 1 through 4 {
-    &:nth-child(#{$i}) {
-      animation-delay: #{$i * 0.1}s;
-    }
+@keyframes fadeInBg {
+  from { 
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -666,7 +55,489 @@
   }
 }
 
-// Modal styles
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Container principal
+.admin__container {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp($spacing-lg, 3vw, $spacing-xl);
+  
+  @include glass-effect($admin-surface-glass, $admin-border);
+  border-radius: $border-radius-xl;
+  animation: slideInLeft 0.8s ease-out;
+}
+
+// ========================================
+// HEADER SECTION
+// ========================================
+
+.admin__header {
+  @include flex-between;
+  align-items: flex-start;
+  margin-bottom: $spacing-2xl;
+  padding: $spacing-xl;
+  
+  @include glass-effect(
+    rgba(255, 255, 255, 0.18), 
+    rgba(255, 255, 255, 0.22)
+  );
+  border-radius: $border-radius-xl;
+  transition: all $transition-duration-medium $transition-timing;
+  
+  &:hover {
+    @include glass-effect(
+      rgba(255, 255, 255, 0.25), 
+      rgba(255, 255, 255, 0.3)
+    );
+    transform: translateY(-2px);
+  }
+}
+
+.admin__header-content {
+  flex: 1;
+}
+
+.admin__title {
+  margin: 0 0 $spacing-sm;
+  color: $color-white;
+  font-size: clamp($font-size-2xl, 5vw, $font-size-4xl);
+  font-weight: $font-weight-bold;
+  text-shadow: 0 2px 8px rgba($admin-primary, 0.3);
+  letter-spacing: 1px;
+  
+  @include text-gradient($color-white, rgba(255, 255, 255, 0.8));
+}
+
+.admin__subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: $font-size-lg;
+  font-weight: $font-weight-medium;
+  letter-spacing: 0.5px;
+}
+
+.admin__header-actions {
+  @include flex-center;
+  gap: $spacing-md;
+}
+
+.admin__export-btn {
+  @include glass-button;
+  @include hover-lift;
+  
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: $color-white;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+// ========================================
+// TABS NAVIGATION
+// ========================================
+
+.admin__tabs {
+  @include flex-center;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-2xl;
+  
+  @include glass-effect(
+    rgba(255, 255, 255, 0.1), 
+    rgba(255, 255, 255, 0.2)
+  );
+  padding: $spacing-sm;
+  border-radius: $border-radius-xl;
+  
+  // Smooth scrolling sur mobile
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.admin__tab {
+  @include flex-center;
+  gap: $spacing-sm;
+  padding: $spacing-md $spacing-lg;
+  
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  border-radius: $border-radius-lg;
+  cursor: pointer;
+  
+  position: relative;
+  white-space: nowrap;
+  
+  @include smooth-transition;
+  @include hover-lift(2px, 1.03);
+  
+  // État initial
+  box-shadow: 0 2px 8px rgba($admin-primary, 0.08);
+  
+  &:hover {
+    color: $color-white;
+    background: rgba($admin-primary, 0.18);
+    box-shadow: 0 4px 16px rgba($admin-secondary, 0.12);
+  }
+  
+  &--active {
+    color: $color-white;
+    background: linear-gradient(90deg, $admin-primary 0%, $admin-secondary 100%);
+    box-shadow: 0 8px 24px rgba($admin-primary, 0.18);
+    
+    // Indicateur actif
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -$spacing-sm;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 36px;
+      height: 4px;
+      background: $color-white;
+      border-radius: $border-radius-full;
+      box-shadow: 0 2px 8px rgba($admin-primary, 0.3);
+    }
+  }
+}
+
+// ========================================
+// CONTENT AREAS
+// ========================================
+
+.admin__content {
+  @include glass-effect($admin-surface, $admin-border);
+  border-radius: $border-radius-xl;
+  overflow: hidden;
+  
+  @include smooth-transition;
+  
+  &:hover {
+    box-shadow: 0 25px 50px rgba($admin-primary, 0.15);
+  }
+}
+
+// ========================================
+// DASHBOARD COMPONENTS
+// ========================================
+
+.admin__dashboard {
+  padding: clamp($spacing-lg, 4vw, $spacing-2xl);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.admin__stats-grid {
+  @include grid-responsive(250px, $spacing-xl);
+  margin-bottom: $spacing-2xl;
+  
+  // Animation en cascade pour les enfants
+  > * {
+    animation: fadeInUp 0.6s ease-out both;
+    
+    @for $i from 1 through 6 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{$i * 0.1}s;
+      }
+    }
+  }
+}
+
+.admin__charts-grid {
+  @include grid-auto-fit(400px, $spacing-xl);
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin__chart-card {
+  padding: $spacing-xl;
+  border: 1px solid $color-border-light;
+  border-radius: $border-radius-lg;
+  
+  @include glass-effect(
+    rgba(255, 255, 255, 0.8), 
+    rgba(255, 255, 255, 0.2)
+  );
+  
+  @include hover-lift;
+}
+
+.admin__chart-placeholder {
+  height: 200px;
+  @include flex-center;
+  
+  background: linear-gradient(135deg, $color-primary-light, $color-primary);
+  border-radius: $border-radius-lg;
+  margin-top: $spacing-lg;
+  
+  @include smooth-transition;
+  
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.admin__revenue-display {
+  text-align: center;
+  color: $color-white;
+}
+
+.admin__revenue-amount {
+  display: block;
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.admin__revenue-period {
+  font-size: $font-size-sm;
+  opacity: 0.9;
+}
+
+// ========================================
+// ACTIVITY & INTERACTIONS
+// ========================================
+
+.admin__activity-list {
+  @include flex-column;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+
+.admin__activity-item {
+  @include flex-center;
+  gap: $spacing-md;
+  padding: $spacing-md;
+  
+  @include glass-effect(
+    rgba(255, 255, 255, 0.5), 
+    rgba(255, 255, 255, 0.2)
+  );
+  border-radius: $border-radius-md;
+  
+  @include smooth-transition;
+  
+  &:hover {
+    @include glass-effect(
+      rgba(255, 255, 255, 0.8), 
+      rgba(255, 255, 255, 0.3)
+    );
+    transform: translateX(4px);
+  }
+}
+
+.admin__activity-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  
+  // Variants avec animations
+  &--green { 
+    background: $color-success;
+    box-shadow: 0 0 8px rgba($color-success, 0.4);
+  }
+  
+  &--blue { 
+    background: $color-primary;
+    box-shadow: 0 0 8px rgba($color-primary, 0.4);
+  }
+  
+  &--orange { 
+    background: $color-warning;
+    box-shadow: 0 0 8px rgba($color-warning, 0.4);
+  }
+}
+
+.admin__activity-time {
+  margin-left: auto;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+// ========================================
+// SECTION HEADERS & CONTROLS
+// ========================================
+
+.admin__section-header {
+  @include flex-between;
+  padding: $spacing-xl $spacing-xl $spacing-lg;
+  border-bottom: 1px solid $color-border-light;
+  
+  @include tablet {
+    flex-direction: column;
+    gap: $spacing-lg;
+    align-items: stretch;
+  }
+}
+
+.admin__search-filter {
+  @include flex-center;
+  gap: $spacing-md;
+  
+  @include tablet {
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+}
+
+.admin__search-input {
+  min-width: 300px;
+  
+  @include tablet {
+    min-width: 180px;
+    width: 100%;
+  }
+}
+
+.admin__filter-btn {
+  @include flex-center;
+  gap: $spacing-sm;
+}
+
+.admin__add-btn {
+  @include flex-center;
+  gap: $spacing-sm;
+  
+  background: linear-gradient(135deg, $color-primary, $color-primary-dark);
+  border: none;
+  color: $color-white;
+  
+  @include smooth-transition;
+  @include hover-lift;
+  
+  &:hover {
+    box-shadow: 0 8px 25px rgba($color-primary, 0.3);
+  }
+}
+
+// ========================================
+// TABLES & DATA DISPLAY
+// ========================================
+
+.admin__table-card {
+  margin: 0;
+  border-radius: 0 0 $border-radius-xl $border-radius-xl;
+  border: none;
+  @include glass-effect(
+    rgba(255, 255, 255, 0.9), 
+    rgba(255, 255, 255, 0.1)
+  );
+}
+
+.admin__data-table {
+  background: transparent;
+}
+
+// ========================================
+// ACTION BUTTONS
+// ========================================
+
+.admin__actions {
+  @include flex-center;
+  gap: $spacing-xs;
+  justify-content: center;
+  padding: $spacing-xs 0;
+}
+
+.admin__action-btn {
+  @include button-reset;
+  @include flex-center;
+  
+  width: 36px;
+  height: 36px;
+  border-radius: $border-radius-full;
+  
+  @include glass-effect(
+    rgba(255, 255, 255, 0.7), 
+    rgba(255, 255, 255, 0.2)
+  );
+  
+  @include smooth-transition;
+  
+  // Animation de scale au hover
+  &:hover {
+    @include glass-effect(
+      linear-gradient(90deg, $admin-primary 0%, $admin-secondary 100%), 
+      rgba(255, 255, 255, 0.3)
+    );
+    color: $color-white;
+    transform: scale(1.08);
+    box-shadow: 0 4px 16px rgba($admin-secondary, 0.2);
+  }
+  
+  // Variants avec couleurs spécifiques
+  &--view {
+    color: $color-info;
+    
+    &:hover { 
+      background: rgba($color-info, 0.18);
+      color: $color-info;
+    }
+  }
+  
+  &--edit {
+    color: $color-warning;
+    
+    &:hover { 
+      background: rgba($color-warning, 0.18);
+      color: $color-warning;
+    }
+  }
+  
+  &--delete {
+    color: $color-danger;
+    
+    &:hover { 
+      background: rgba($color-danger, 0.18);
+      color: $color-danger;
+    }
+  }
+  
+  &--confirm {
+    color: var(--color-success);
+    
+    &:hover {
+      background: var(--color-success-bg);
+      color: var(--color-success);
+    }
+  }
+  
+  &--complete {
+    color: var(--color-info);
+    
+    &:hover {
+      background: var(--color-info-bg);
+      color: var(--color-info);
+    }
+  }
+}
+
+// ========================================
+// MODALS & OVERLAYS
+// ========================================
+
 .admin__modal {
   .modal__content {
     max-width: 800px;
@@ -682,20 +553,21 @@
 .admin__delete-confirmation {
   padding: $spacing-xl;
   text-align: center;
-
+  
   p {
     margin-bottom: $spacing-xl;
     font-size: $font-size-lg;
     color: var(--color-text-primary);
+    line-height: 1.6;
   }
 }
 
 .admin__modal-actions {
-  display: flex;
+  @include flex-center;
   justify-content: center;
   gap: $spacing-lg;
-
-  @media (max-width: 768px) {
+  
+  @include mobile {
     flex-direction: column;
   }
 }
@@ -707,5 +579,399 @@
   p {
     margin-bottom: $spacing-lg;
     color: var(--color-text-secondary);
+    font-size: $font-size-base;
+    line-height: 1.5;
+  }
+}
+
+// ========================================
+// COMING SOON & PLACEHOLDERS
+// ========================================
+
+.admin__coming-soon {
+  text-align: center;
+  padding: $spacing-4xl;
+  color: $color-text-secondary;
+  
+  h2 {
+    margin-bottom: $spacing-lg;
+    color: $color-text-primary;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-semibold;
+  }
+  
+  p {
+    font-size: $font-size-lg;
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+
+// ========================================
+// BOOKING DETAILS
+// ========================================
+
+.admin__booking-details {
+  padding: $spacing-xl;
+}
+
+.admin__booking-info {
+  h3 {
+    margin-bottom: $spacing-lg;
+    color: var(--color-text-primary);
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.admin__booking-grid {
+  @include grid-responsive(250px, $spacing-lg);
+  margin-bottom: $spacing-xl;
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin__booking-field {
+  @include flex-column;
+  gap: $spacing-xs;
+  
+  &--full {
+    grid-column: 1 / -1;
+  }
+  
+  label {
+    font-weight: $font-weight-semibold;
+    color: var(--color-text-secondary);
+    font-size: $font-size-sm;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  span, p {
+    color: var(--color-text-primary);
+    font-size: $font-size-base;
+    line-height: 1.4;
+  }
+  
+  p {
+    margin: 0;
+    padding: $spacing-sm;
+    background: var(--color-surface);
+    border-radius: $border-radius-md;
+    border: 1px solid var(--color-border);
+    
+    @include smooth-transition;
+    
+    &:hover {
+      border-color: var(--color-primary);
+      box-shadow: 0 2px 8px rgba(var(--color-primary-rgb), 0.1);
+    }
+  }
+}
+
+// ========================================
+// STATUS & PAYMENT BADGES
+// ========================================
+
+// Mixin pour les badges de statut
+@mixin status-badge($bg-color, $text-color) {
+  background: var(--color-#{$bg-color}-bg);
+  color: var(--color-#{$text-color});
+  
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    margin-right: $spacing-xs;
+  }
+}
+
+.admin__status {
+  @include flex-center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-full;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  &--confirmed {
+    @include status-badge(success, success);
+  }
+  
+  &--pending {
+    @include status-badge(warning, warning);
+  }
+  
+  &--completed {
+    @include status-badge(info, info);
+  }
+  
+  &--cancelled {
+    @include status-badge(danger, danger);
+  }
+}
+
+.admin__payment {
+  @include flex-center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-full;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  &--paid {
+    @include status-badge(success, success);
+  }
+  
+  &--pending {
+    @include status-badge(warning, warning);
+  }
+  
+  &--failed {
+    @include status-badge(danger, danger);
+  }
+}
+
+.admin__booking-actions {
+  @include flex-center;
+  justify-content: center;
+  gap: $spacing-lg;
+  padding-top: $spacing-lg;
+  border-top: 1px solid var(--color-border);
+  
+  @include mobile {
+    flex-direction: column;
+  }
+}
+
+// ========================================
+// ACCESS DENIED PAGE
+// ========================================
+
+.admin__access-denied {
+  min-height: 100vh;
+  background: linear-gradient(135deg, $admin-primary 0%, $admin-secondary 100%);
+  @include flex-center;
+  padding: $spacing-xl;
+}
+
+.admin__access-denied-content {
+  @include glass-effect(
+    rgba(255, 255, 255, 0.95), 
+    rgba(255, 255, 255, 0.2)
+  );
+  border-radius: $border-radius-xl;
+  padding: clamp($spacing-2xl, 6vw, $spacing-3xl);
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  
+  animation: fadeInUp 0.6s ease-out;
+  
+  h1 {
+    color: var(--color-danger);
+    margin-bottom: $spacing-lg;
+    font-size: clamp($font-size-xl, 4vw, $font-size-2xl);
+    font-weight: $font-weight-bold;
+  }
+  
+  p {
+    color: var(--color-text-secondary);
+    margin-bottom: $spacing-xl;
+    font-size: $font-size-lg;
+    line-height: 1.6;
+  }
+}
+
+// ========================================
+// RESPONSIVE BREAKPOINTS
+// ========================================
+
+// Large screens
+@include desktop-large {
+  .admin__container {
+    max-width: 100vw;
+    padding: $spacing-lg $spacing-md;
+  }
+}
+
+// Medium screens  
+@include tablet {
+  .admin__header {
+    flex-direction: column;
+    gap: $spacing-lg;
+    text-align: center;
+    padding: $spacing-lg;
+  }
+  
+  .admin__tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: $spacing-xs;
+    
+    // Hide scrollbar
+    scrollbar-width: none;
+    &::-webkit-scrollbar { 
+      display: none; 
+    }
+  }
+  
+  .admin__charts-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .admin__stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-md;
+  }
+  
+  .admin__section-header {
+    padding: $spacing-lg $spacing-md $spacing-md;
+  }
+  
+  .admin__search-filter {
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+  
+  .admin__search-input {
+    min-width: 180px;
+    width: 100%;
+  }
+}
+
+// Small screens
+@include mobile {
+  .admin__container {
+    padding: $spacing-md $spacing-xs;
+  }
+  
+  .admin__header {
+    padding: $spacing-md;
+  }
+  
+  .admin__title {
+    font-size: clamp($font-size-lg, 6vw, $font-size-xl);
+  }
+  
+  .admin__dashboard {
+    padding: $spacing-md;
+  }
+  
+  .admin__stats-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-xs;
+  }
+  
+  .admin__charts-grid {
+    gap: $spacing-xs;
+  }
+  
+  .admin__section-header {
+    padding: $spacing-md $spacing-xs $spacing-xs;
+  }
+  
+  .admin__booking-grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+}
+
+// ========================================
+// ANIMATIONS & INTERACTIONS
+// ========================================
+
+// Animation pour le dashboard principal
+.admin__dashboard {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+// Animation en cascade pour les cartes de statistiques
+.admin__stats-grid > * {
+  animation: fadeInUp 0.6s ease-out both;
+  
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.1}s;
+    }
+  }
+}
+
+// Animations pour les modales
+.admin__modal {
+  .modal__content {
+    animation: modalSlideIn 0.3s ease-out;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Animation pour les éléments d'activité
+.admin__activity-item {
+  animation: slideInLeft 0.4s ease-out both;
+  
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.05}s;
+    }
+  }
+}
+
+// ========================================
+// UTILITY CLASSES
+// ========================================
+
+// Classes utilitaires pour l'admin
+.admin {
+  // État de chargement
+  &--loading {
+    .admin__content {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+  }
+  
+  // Mode sombre (pour future implémentation)
+  &--dark {
+    .admin__container {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    
+    .admin__content {
+      background: rgba(0, 0, 0, 0.8);
+      color: $color-white;
+    }
+  }
+  
+  // Mode haute densité
+  &--compact {
+    .admin__dashboard {
+      padding: $spacing-lg;
+    }
+    
+    .admin__stats-grid {
+      gap: $spacing-md;
+    }
+    
+    .admin__charts-grid {
+      gap: $spacing-md;
+    }
   }
 }

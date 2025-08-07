@@ -1,8 +1,8 @@
-import { Outlet } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { AdminNavbar } from '@organisms';
-import './AdminHeaderTemplate.scss';
-import React from 'react';
+import { Outlet } from "react-router-dom";
+import PropTypes from "prop-types";
+import { AdminNavbar } from "@organisms";
+import "./AdminHeaderTemplate.scss";
+import React from "react";
 
 /**
  * AdminHeaderTemplate component - Template with admin header/navbar
@@ -13,40 +13,44 @@ import React from 'react';
  * @param {string} props.className - Additional CSS classes
  * @param {boolean} props.fixed - Whether header should be fixed position
  */
-const AdminHeaderTemplate = React.memo(({ 
-  children,
-  navbarProps = {},
-  variant = 'default',
-  className = '',
-  fixed = false,
-  ...props
-}) => {
-  const templateClasses = [
-    'header-template',
-    `header-template--${variant}`,
-    fixed && 'header-template--fixed',
-    className
-  ].filter(Boolean).join(' ');
+const AdminHeaderTemplate = React.memo(
+  ({
+    children,
+    navbarProps = {},
+    variant = "default",
+    className = "",
+    fixed = false,
+    ...props
+  }) => {
+    const templateClasses = [
+      "header-template",
+      `header-template--${variant}`,
+      fixed && "header-template--fixed",
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
 
-  return (
-    <div className={templateClasses} {...props}>
-      <div className="header-template__header">
-        <AdminNavbar />
+    return (
+      <div className={templateClasses} {...props}>
+        <div className="header-template__header">
+          <AdminNavbar />
+        </div>
+        <main className="admin_content">
+          {children}
+          <Outlet />
+        </main>
       </div>
-      <main className="header-template__content">
-        {children}
-        <Outlet />
-      </main>
-    </div>
-  );
-});
+    );
+  }
+);
 
 AdminHeaderTemplate.propTypes = {
   children: PropTypes.node,
   navbarProps: PropTypes.object,
-  variant: PropTypes.oneOf(['default', 'compact', 'transparent']),
+  variant: PropTypes.oneOf(["default", "compact", "transparent"]),
   className: PropTypes.string,
-  fixed: PropTypes.bool
+  fixed: PropTypes.bool,
 };
 
 export default AdminHeaderTemplate;
