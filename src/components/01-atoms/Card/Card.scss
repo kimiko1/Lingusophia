@@ -67,10 +67,6 @@
       transform: translateY(0);
       box-shadow: $shadow-md;
     }
-    
-    &:focus-visible {
-      @include focus-ring;
-    }
   }
   
   // Selected state

@@ -1,0 +1,50 @@
+// Style pour la page 404
+.notfound-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+}
+
+.notfound-content {
+  text-align: center;
+  background: #fff;
+  padding: 3rem 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(60, 72, 88, 0.12);
+  max-width: 400px;
+}
+
+.notfound-img {
+  width: 80px;
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+}
+
+.notfound-content h1 {
+  font-size: 2.2rem;
+  color: #3b3b3b;
+  margin-bottom: 1rem;
+}
+
+.notfound-content p {
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+.notfound-btn {
+  background: linear-gradient(90deg, #6366f1 0%, #60a5fa 100%);
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
+  transition: background 0.2s;
+}
+
+.notfound-btn:hover {
+  background: linear-gradient(90deg, #60a5fa 0%, #6366f1 100%);
+}

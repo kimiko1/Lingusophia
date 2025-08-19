@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title, Button } from '../../01-atoms';
+import { Title, Button } from '@atoms';
 import { useNavigate } from 'react-router-dom';
 import './Cancel.scss';
 
@@ -12,6 +12,7 @@ const Cancel = () => {
           src="https://cdn-icons-png.flaticon.com/512/463/463612.png"
           alt="Annulé"
           className="cancel-illustration"
+          loading="lazy"
         />
         <Title level={1}>Paiement annulé</Title>
         <p className="cancel-message">Votre paiement a été annulé. Vous pouvez réessayer à tout moment depuis vos réservations.</p>

@@ -9,7 +9,7 @@ import {
   faGraduationCap,
   faComments,
 } from '@fortawesome/free-solid-svg-icons';
-import { Card } from '../../01-atoms';
+import { Card } from '@atoms';
 import './Navigations.scss';
 
 /**

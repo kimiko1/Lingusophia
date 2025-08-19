@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Title } from '../../01-atoms';
+import { Title } from '@atoms';
 import './PageLayout.scss';
 
 /**
@@ -12,7 +12,7 @@ import './PageLayout.scss';
  * @param {string} props.variant - Layout style variant
  * @param {string} props.className - Additional CSS classes
  */
-const PageLayout = ({ 
+const PageLayout = React.memo(({ 
   children,
   title,
   subtitle,
@@ -45,7 +45,7 @@ const PageLayout = ({
       </div>
     </div>
   );
-};
+});
 
 PageLayout.propTypes = {
   children: PropTypes.node.isRequired,

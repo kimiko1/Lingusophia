@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 /**
  * Service pour la gestion des réservations
@@ -8,128 +8,91 @@ export const bookingService = {
    * Récupérer toutes les réservations
    */
   async getAllBookings(filters = {}) {
-    try {
-      const params = new URLSearchParams();
-      
-      if (filters.status) params.append('status', filters.status);
-      if (filters.userId) params.append('userId', filters.userId);
-      if (filters.teacherId) params.append('teacherId', filters.teacherId);
-      if (filters.startDate) params.append('startDate', filters.startDate);
-      if (filters.endDate) params.append('endDate', filters.endDate);
-      
-      const response = await api.get(`/bookings?${params.toString()}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const params = new URLSearchParams();
+
+    if (filters.status) params.append("status", filters.status);
+    if (filters.userId) params.append("userId", filters.userId);
+    if (filters.teacherId) params.append("teacherId", filters.teacherId);
+    if (filters.startDate) params.append("startDate", filters.startDate);
+    if (filters.endDate) params.append("endDate", filters.endDate);
+
+    const response = await api.get(`/bookings?${params.toString()}`);
+    return response.data;
   },
 
   /**
    * Récupérer les réservations de l'utilisateur
    */
   async getUserBookings(userId) {
-    try {
-      const response = await api.get(`/users/${userId}/bookings`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.get(`/users/${userId}/bookings`);
+    return response.data;
   },
 
   /**
    * Récupérer une réservation par ID
    */
   async getBookingById(bookingId) {
-    try {
-      const response = await api.get(`/bookings/${bookingId}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.get(`/bookings/${bookingId}`);
+    return response.data;
   },
 
   /**
-   * Book a lesson for a user
+   * Créer une nouvelle réservation
    */
-  async createBooking(lessonId, userId) {
-    try {
-      const response = await api.post('api/bookings/create', { lessonId, userId });
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+  async createBooking(bookingData) {
+    const response = await api.post("/api/bookings/create", bookingData);
+    return response.data;
   },
+
   /**
    * Mettre à jour une réservation
    */
   async updateBooking(bookingId, bookingData) {
-    try {
-      const response = await api.put(`/bookings/${bookingId}`, bookingData);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.put(`/bookings/${bookingId}`, bookingData);
+    return response.data;
   },
 
   /**
    * Annuler une réservation
    */
   async cancelBooking(bookingId) {
-    try {
-      const response = await api.put(`/bookings/${bookingId}/cancel`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.put(`/bookings/${bookingId}/cancel`);
+    return response.data;
   },
 
   /**
    * Confirmer une réservation
    */
   async confirmBooking(bookingId) {
-    try {
-      const response = await api.put(`/bookings/${bookingId}/confirm`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.put(`/bookings/${bookingId}/confirm`);
+    return response.data;
   },
 
   /**
    * Marquer une réservation comme terminée
    */
   async completeBooking(bookingId) {
-    try {
-      const response = await api.put(`/bookings/${bookingId}/complete`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.put(`/bookings/${bookingId}/complete`);
+    return response.data;
   },
 
   /**
    * Récupérer les créneaux disponibles pour un professeur
    */
   async getAvailableSlots(teacherId, date) {
-    try {
-      const response = await api.get(`/teachers/${teacherId}/available-slots?date=${date}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
+    const response = await api.get(
+      `/teachers/${teacherId}/available-slots?date=${date}`
+    );
+    return response.data;
   },
 
   /**
    * Supprimer une réservation
    */
   async deleteBooking(bookingId) {
-    try {
-      const response = await api.delete(`/bookings/${bookingId}`);
-      return response.data;
-    } catch (error) {
-      throw error;
-    }
-  }
+    const response = await api.delete(`/bookings/${bookingId}`);
+    return response.data;
+  },
 };
 
 export default bookingService;

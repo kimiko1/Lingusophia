@@ -1,5 +1,5 @@
 {
-  "name": "learnalanguageweb",
+  "name": "Yourpersonaltutor",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,13 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview --port 5173"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
-    "@reduxjs/toolkit": "^2.5.0",
     "@stripe/stripe-js": "^7.4.0",
     "axios": "^1.7.9",
     "framer-motion": "^12.23.3",
@@ -25,12 +24,12 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-i18next": "^15.6.0",
-    "react-redux": "^9.2.0",
     "react-router-dom": "^7.0.2",
     "sass": "^1.86.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@svgr/cli": "^8.1.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
@@ -40,6 +39,8 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "gh-pages": "^6.2.0",
     "globals": "^15.12.0",
-    "vite": "^6.0.1"
+    "rollup-plugin-visualizer": "^6.0.3",
+    "vite": "^6.0.1",
+    "vite-plugin-compression": "^0.5.1"
   }
 }

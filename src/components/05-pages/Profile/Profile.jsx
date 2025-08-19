@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../../contexts/AuthContext';
-import { userService } from '../../../services';
+import { useAuth } from '@contexts/AuthContext';
+import { userService } from '@services';
 import { 
   User, 
   Settings, 
@@ -159,6 +159,7 @@ const Profile = () => {
                 src={formData.avatarUrl || formData.avatar_url || '/default-avatar.png'} 
                 alt={formData.firstName || formData.first_name || 'User'}
                 className="profile-avatar"
+                loading="lazy"
               />
               <label htmlFor="avatar-upload" className="avatar-upload-btn">
                 <Camera size={20} />

@@ -17,10 +17,6 @@
     text-decoration: none;
     cursor: pointer;
     transition: all $duration-fast ease;
-    
-    &:focus-visible {
-      @include focus-ring;
-    }
   }
   
   // Désactiver les styles de lien par défaut pour les boutons-liens
@@ -147,11 +143,6 @@
     stroke-dasharray: 90, 150;
     stroke-dashoffset: -124;
   }
-}
-
-// Focus states
-.btn:focus-visible {
-  @include focus-ring;
 }
 
 // Responsive adjustments

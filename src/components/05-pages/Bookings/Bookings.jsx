@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../../contexts/AuthContext';
-import { lessonService } from '../../../services';
-import { Title, Button } from '../../01-atoms';
-import LessonCard from '../../02-molecules/LessonCard';
+import { useAuth } from '@contexts/AuthContext';
+import { lessonService } from '@services';
+import { Title, Button } from '@atoms';
+import LessonCard from '@molecules/LessonCard';
 import { loadStripe } from '@stripe/stripe-js';
 
 const Bookings = () => {
@@ -39,30 +39,45 @@ const Bookings = () => {
 
   const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
   const handlePay = async (lesson) => {
-    const stripe = await loadStripe(stripePublicKey);
+    try {
+      const stripe = await loadStripe(stripePublicKey);
 
-    const body = {
-      products: [
-        {
-          name: lesson.title,
-          description: lesson.description,
-          price: Number(lesson.price),
-          quantity: 1
-        }
-      ],
-      bookingId: lesson.bookingId,
-    };
-    
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${user.token}`,
-    };
+      const body = {
+        products: [
+          {
+            name: lesson.title,
+            description: lesson.description,
+            price: Number(lesson.price),
+            quantity: 1
+          }
+        ],
+        bookingId: lesson.bookingId,
+      };
+      
+      const headers = {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user.token}`,
+      };
 
-    const session = await lessonService.createPaymentIntent(body, headers);
+      const response = await lessonService.createPaymentIntent(body, headers);
+      
+      const sessionId = response?.id || response?.sessionId || response?.data?.id || response?.data?.sessionId;
+      
+      if (!sessionId) {
+        throw new Error('Session ID manquant dans la réponse');
+      }
 
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.id,
-    });
+      const result = await stripe.redirectToCheckout({
+        sessionId: sessionId,
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+    } catch (error) {
+      console.error('Erreur lors du paiement:', error);
+      setError('Erreur lors de l\'initialisation du paiement: ' + error.message);
+    }
   };
 
   return (
@@ -79,7 +94,7 @@ const Bookings = () => {
             <LessonCard
               title={lesson.title}
               description={lesson.description}
-              duration={String(lesson.duration)}
+              duration={lesson.duration}
               level={lesson.level}
               price={lesson.price}
             />
@@ -100,7 +115,7 @@ const Bookings = () => {
                 <LessonCard
                   title={lesson.title}
                   description={lesson.description}
-                  duration={String(lesson.duration)}
+                  duration={lesson.duration}
                   level={lesson.level}
                   price={lesson.price}
                 />

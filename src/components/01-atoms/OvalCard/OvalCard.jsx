@@ -14,7 +14,7 @@ import './OvalCard.scss';
  * @param {boolean} props.disabled - Whether the card is disabled
  * @param {boolean} props.interactive - Whether the card should show hover effects
  */
-const OvalCard = ({ 
+const OvalCard = React.memo(({ 
   children,
   isSelected = false,
   onClick,
@@ -66,7 +66,7 @@ const OvalCard = ({
       {children}
     </div>
   );
-};
+});
 
 OvalCard.propTypes = {
   children: PropTypes.node.isRequired,

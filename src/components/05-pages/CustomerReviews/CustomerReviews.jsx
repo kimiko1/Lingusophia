@@ -14,7 +14,7 @@ import {
   faMeh,
   faFrown
 } from '@fortawesome/free-solid-svg-icons';
-import { Title, Button, Card, Modal } from '../../01-atoms';
+import { Title, Button, Card, Modal } from '@atoms';
 import './CustomerReviews.scss';
 
 /**

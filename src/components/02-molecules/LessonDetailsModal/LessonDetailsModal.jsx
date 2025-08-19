@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Modal, TeacherInfo, Title, Button } from '../../01-atoms';
+import { Modal, Title, Button } from '@atoms';
+import { useBooking } from '@contexts/BookingContext';
 import './LessonDetailsModal.scss';
 
 /**
@@ -10,7 +11,6 @@ import './LessonDetailsModal.scss';
  * @param {boolean} props.isOpen - Whether the modal is open
  * @param {function} props.onClose - Function to close the modal
  * @param {Object} props.lesson - Lesson data object
- * @param {Object} props.teacher - Teacher data object
  * @param {function} props.onConfirm - Function to confirm lesson booking
  * @param {string} props.variant - Modal style variant
  * @param {string} props.className - Additional CSS classes
@@ -19,13 +19,13 @@ const LessonDetailsModal = ({
   isOpen, 
   onClose, 
   lesson, 
-  teacher, 
   onConfirm,
   variant = 'default',
   className = '',
   ...props
 }) => {
   const { t } = useTranslation('common');
+  const { selectedDate, selectedTime, setSelectedTime } = useBooking();
   
   if (!lesson) return null;
 
@@ -36,8 +36,14 @@ const LessonDetailsModal = ({
   ].filter(Boolean).join(' ');
 
   const handleConfirm = () => {
-    if (onConfirm) {
-      onConfirm(lesson, teacher);
+    if (onConfirm && selectedDate && selectedTime) {
+      // Convertir la date en format YYYY-MM-DD
+      const dateString = selectedDate.toISOString().split('T')[0];
+      onConfirm(lesson, null, dateString, selectedTime);
+    } else if (!selectedDate) {
+      alert('Veuillez sélectionner une date dans le calendrier');
+    } else if (!selectedTime) {
+      alert('Veuillez sélectionner une heure');
     }
   };
 
@@ -102,49 +108,62 @@ const LessonDetailsModal = ({
             )}
           </div>
         </div>
-        
-        {teacher && (
-          <div className="lesson-details-modal__right">
-            <div className="lesson-details-modal__teacher-section">
-              <Title level={4} className="lesson-details-modal__section-title">
-                {t('components.lessonDetailsModal.yourTeacher')}
-              </Title>
-              <TeacherInfo 
-                name={teacher.name} 
-                image={teacher.image}
-                title={teacher.title}
-                size="large"
-                className="lesson-details-modal__teacher"
-              />
-              {(teacher.speciality || teacher.experience || teacher.bio) && (
-                <div className="lesson-details-modal__teacher-details">
-                  {teacher.speciality && (
-                    <p className="lesson-details-modal__teacher-speciality">
-                      <strong>{t('components.lessonDetailsModal.speciality')}</strong> {teacher.speciality}
-                    </p>
-                  )}
-                  {teacher.experience && (
-                    <p className="lesson-details-modal__teacher-experience">
-                      <strong>{t('components.lessonDetailsModal.experience')}</strong> {teacher.experience}
-                    </p>
-                  )}
-                  {teacher.bio && (
-                    <p className="lesson-details-modal__teacher-bio">
-                      {teacher.bio}
-                    </p>
-                  )}
-                </div>
-              )}
+      </div>
+      
+      {/* Date and Time Selection */}
+      <div className="lesson-details-modal__booking-section">
+        <Title level={4} className="lesson-details-modal__section-title">
+          Planifier votre leçon
+        </Title>
+        <div className="lesson-details-modal__datetime">
+          <div className="lesson-details-modal__date-field">
+            <label>Date sélectionnée :</label>
+            <div className="lesson-details-modal__selected-date">
+              {selectedDate ? selectedDate.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              }) : 'Aucune date sélectionnée'}
             </div>
+            {!selectedDate && (
+              <p className="lesson-details-modal__date-warning">
+                Veuillez d&apos;abord sélectionner une date dans le calendrier
+              </p>
+            )}
           </div>
-        )}
+          <div className="lesson-details-modal__time-field">
+            <label htmlFor="lesson-time">Heure :</label>
+            <select
+              id="lesson-time"
+              value={selectedTime}
+              onChange={(e) => setSelectedTime(e.target.value)}
+              className="lesson-details-modal__time-select"
+            >
+              <option value="">Sélectionnez une heure</option>
+              <option value="09:00">09:00</option>
+              <option value="10:00">10:00</option>
+              <option value="11:00">11:00</option>
+              <option value="14:00">14:00</option>
+              <option value="15:00">15:00</option>
+              <option value="16:00">16:00</option>
+              <option value="17:00">17:00</option>
+              <option value="18:00">18:00</option>
+            </select>
+          </div>
+        </div>
       </div>
       
       <div className="lesson-details-modal__actions">
         <Button variant="outline" onClick={onClose} size="lg">
           {t('components.lessonDetailsModal.cancel')}
         </Button>
-        <Button variant="primary" onClick={handleConfirm} size="lg">
+        <Button 
+          variant="primary" 
+          onClick={handleConfirm} 
+          size="lg"
+          disabled={!selectedDate || !selectedTime}
+        >
           {t('components.lessonDetailsModal.bookLesson')}
         </Button>
       </div>
@@ -162,14 +181,6 @@ LessonDetailsModal.propTypes = {
     duration: PropTypes.number,
     level: PropTypes.string,
     price: PropTypes.string
-  }),
-  teacher: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    title: PropTypes.string,
-    speciality: PropTypes.string,
-    experience: PropTypes.string,
-    bio: PropTypes.string
   }),
   onConfirm: PropTypes.func.isRequired,
   variant: PropTypes.oneOf(['default', 'featured']),

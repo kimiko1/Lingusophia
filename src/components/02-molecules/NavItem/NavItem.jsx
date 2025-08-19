@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from '../../01-atoms';
+import { NavLink } from '@atoms';
 import './NavItem.scss';
 
 /**
@@ -16,7 +16,7 @@ import './NavItem.scss';
  * @param {function} props.onClick - Click handler
  * @param {boolean} props.disabled - Whether the item is disabled
  */
-const NavItem = ({ 
+const NavItem = React.memo(function NavItem({ 
   icon,
   label,
   href,
@@ -27,7 +27,7 @@ const NavItem = ({
   onClick,
   disabled = false,
   ...props
-}) => {
+}) {
   const navItemClasses = [
     'nav-item',
     `nav-item--${variant}`,
@@ -51,7 +51,7 @@ const NavItem = ({
       />
     </li>
   );
-};
+});
 
 NavItem.propTypes = {
   icon: PropTypes.object.isRequired,

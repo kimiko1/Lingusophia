@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useAuth } from '../../hooks';
-import { AuthForm } from '../02-molecules';
+import { useAuth } from '@contexts/AuthContext';
+import { AuthForm } from '@molecules';
 
 const AuthProvider = ({ children }) => {
   const { isAuthenticated, checkAuth } = useAuth();

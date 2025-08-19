@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuth } from '@contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './Logout.scss';
 
@@ -118,7 +118,7 @@ const Logout = () => {
         </div>
 
         <div className="logout-footer">
-          <p>Merci d'avoir utilisé Learn A Language !</p>
+          <p>Merci d'avoir utilisé Yourpersonaltutor !</p>
         </div>
       </div>
     </div>
