@@ -41,7 +41,7 @@ const MyLessons = () => {
               <LessonCard
                 title={lesson.title}
                 description={lesson.description}
-                duration={String(lesson.duration)}
+                duration={lesson.duration}
                 level={lesson.level}
                 price={lesson.price}
               />

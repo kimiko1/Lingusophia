@@ -94,7 +94,7 @@ const Bookings = () => {
             <LessonCard
               title={lesson.title}
               description={lesson.description}
-              duration={String(lesson.duration)}
+              duration={lesson.duration}
               level={lesson.level}
               price={lesson.price}
             />
@@ -115,7 +115,7 @@ const Bookings = () => {
                 <LessonCard
                   title={lesson.title}
                   description={lesson.description}
-                  duration={String(lesson.duration)}
+                  duration={lesson.duration}
                   level={lesson.level}
                   price={lesson.price}
                 />
