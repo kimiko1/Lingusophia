@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Title } from '../../01-atoms';
+import { Title } from '@atoms';
 import './CategoryCard.scss';
 
 /**

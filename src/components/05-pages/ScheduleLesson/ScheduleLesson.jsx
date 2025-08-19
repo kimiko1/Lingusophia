@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { Button, Card, Title, Input } from '../../01-atoms';
-import { CategoryCard } from '../../02-molecules';
-import LessonCard from '../../02-molecules/LessonCard';
-import { PageLayout } from '../../04-templates';
-import { teacherService, bookingService } from '../../../services';
+import { useLocation } from 'react-router-dom';
+import { useAuth } from '@contexts/AuthContext';
+import { Button, Card, Title, Input } from '@atoms';
+import { PageLayout } from '@templates';
+import { teacherService, bookingService, lessonService } from '@services';
 import './ScheduleLesson.scss';
 
 /**
@@ -13,62 +12,78 @@ import './ScheduleLesson.scss';
  */
 const ScheduleLesson = () => {
   const { t } = useTranslation('pages');
-  const { user } = useSelector(state => state.auth);
+  const { user } = useAuth();
+  const location = useLocation();
+  
+  // Récupérer les données pré-sélectionnées depuis la navigation
+  const preSelectedLesson = location.state?.selectedLesson;
+  const preSelectedTeacher = location.state?.selectedTeacher;
+  
+  const [selectedLesson, setSelectedLesson] = useState(preSelectedLesson || null);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
-  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [selectedTeacher, setSelectedTeacher] = useState(preSelectedTeacher || null);
+  const [availableLessons, setAvailableLessons] = useState([]);
   const [availableTeachers, setAvailableTeachers] = useState([]);
   const [availableSlots, setAvailableSlots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Charger les professeurs disponibles
-  useEffect(() => {
-    loadAvailableTeachers();
-  }, []);
-
-  // Charger les créneaux disponibles quand la date ou le professeur change
-  useEffect(() => {
-    if (selectedTeacher && selectedDate) {
-      loadAvailableSlots();
-    }
-  }, [selectedTeacher, selectedDate]);
-
-  const loadAvailableTeachers = async () => {
+  const loadAvailableTeachers = useCallback(async () => {
     try {
-      setLoading(true);
       const teachers = await teacherService.getAvailableTeachers();
       setAvailableTeachers(teachers);
     } catch (err) {
       setError('Erreur lors du chargement des professeurs');
       console.error('Erreur lors du chargement des professeurs:', err);
-    } finally {
-      setLoading(false);
     }
-  };
+  }, []);
 
-  const loadAvailableSlots = async () => {
+  const loadAvailableLessons = useCallback(async () => {
     try {
-      setLoading(true);
-      const slots = await bookingService.getAvailableSlots(selectedTeacher.id, selectedDate);
-      setAvailableSlots(slots);
+      const lessons = await lessonService.getLessons();
+      setAvailableLessons(lessons);
     } catch (err) {
-      setError('Erreur lors du chargement des créneaux');
-      console.error('Erreur lors du chargement des créneaux:', err);
-    } finally {
-      setLoading(false);
+      setError('Erreur lors du chargement des leçons');
+      console.error('Erreur lors du chargement des leçons:', err);
     }
-  };
+  }, []);
+
+  const loadAvailableSlots = useCallback(async () => {
+    if (selectedTeacher && selectedDate) {
+      try {
+        const slots = await teacherService.getAvailableSlots(selectedTeacher.id, selectedDate);
+        setAvailableSlots(slots);
+      } catch (err) {
+        setError('Erreur lors du chargement des créneaux');
+        console.error('Erreur lors du chargement des créneaux:', err);
+      }
+    }
+  }, [selectedTeacher, selectedDate]);
+
+  // Charger les leçons et professeurs disponibles
+  useEffect(() => {
+    loadAvailableLessons();
+    loadAvailableTeachers();
+  }, [loadAvailableLessons, loadAvailableTeachers]);
+
+  // Charger les créneaux disponibles quand la date ou le professeur change
+  useEffect(() => {
+    loadAvailableSlots();
+  }, [loadAvailableSlots]);
+
 
   const handleScheduleLesson = async () => {
-    if (!selectedDate || !selectedTime || !selectedTeacher) {
-      alert('Veuillez sélectionner une date, une heure et un professeur');
+    if (!selectedLesson || !selectedDate || !selectedTime || !selectedTeacher) {
+      alert('Veuillez sélectionner une leçon, une date, une heure et un professeur');
       return;
     }
 
     try {
       setLoading(true);
       const bookingData = {
+        userId: user.id,
+        lessonId: selectedLesson.id,
         teacherId: selectedTeacher.id,
         date: selectedDate,
         time: selectedTime,
@@ -79,6 +94,7 @@ const ScheduleLesson = () => {
       alert(t('scheduleLesson.success'));
       
       // Réinitialiser le formulaire
+      setSelectedLesson(null);
       setSelectedDate('');
       setSelectedTime('');
       setSelectedTeacher(null);
@@ -111,25 +127,63 @@ const ScheduleLesson = () => {
           </div>
         )}
 
-        {/* Sélection de la date */}
+        {/* Sélection de la leçon */}
         <Card className="schedule-lesson__section">
           <Title level={2} size="lg" className="schedule-lesson__section-title">
-            {t('scheduleLesson.selectDate')}
+            Sélectionnez une leçon
           </Title>
-          <Input
-            type="date"
-            value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
-            min={new Date().toISOString().split('T')[0]}
-            className="schedule-lesson__date-input"
-          />
+          <div className="schedule-lesson__lessons">
+            {availableLessons.length === 0 ? (
+              <p>Aucune leçon disponible</p>
+            ) : (
+              availableLessons.map((lesson) => (
+                <Card
+                  key={lesson.id}
+                  className={`schedule-lesson__lesson ${
+                    selectedLesson?.id === lesson.id ? 'schedule-lesson__lesson--selected' : ''
+                  }`}
+                  onClick={() => setSelectedLesson(lesson)}
+                >
+                  <div className="schedule-lesson__lesson-info">
+                    <h3 className="schedule-lesson__lesson-title">{lesson.title}</h3>
+                    <p className="schedule-lesson__lesson-description">{lesson.description}</p>
+                    <div className="schedule-lesson__lesson-details">
+                      <span className="schedule-lesson__lesson-level">
+                        Niveau: {lesson.level}
+                      </span>
+                      <span className="schedule-lesson__lesson-duration">
+                        {lesson.duration} min
+                      </span>
+                    </div>
+                  </div>
+                </Card>
+              ))
+            )}
+          </div>
         </Card>
 
+        {/* Sélection de la date */}
+        {selectedLesson && (
+          <Card className="schedule-lesson__section">
+            <Title level={2} size="lg" className="schedule-lesson__section-title">
+              {t('scheduleLesson.selectDate')}
+            </Title>
+            <Input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              min={new Date().toISOString().split('T')[0]}
+              className="schedule-lesson__date-input"
+            />
+          </Card>
+        )}
+
         {/* Sélection du professeur */}
-        <Card className="schedule-lesson__section">
-          <Title level={2} size="lg" className="schedule-lesson__section-title">
-            {t('scheduleLesson.selectTeacher')}
-          </Title>
+        {selectedLesson && selectedDate && (
+          <Card className="schedule-lesson__section">
+            <Title level={2} size="lg" className="schedule-lesson__section-title">
+              {t('scheduleLesson.selectTeacher')}
+            </Title>
           <div className="schedule-lesson__teachers">
             {availableTeachers.length === 0 ? (
               <p>{t('scheduleLesson.noTeachersAvailable')}</p>
@@ -159,9 +213,10 @@ const ScheduleLesson = () => {
             )}
           </div>
         </Card>
+        )}
 
         {/* Sélection de l'heure */}
-        {selectedTeacher && selectedDate && (
+        {selectedTeacher && selectedDate && selectedLesson && (
           <Card className="schedule-lesson__section">
             <Title level={2} size="lg" className="schedule-lesson__section-title">
               {t('scheduleLesson.selectTime')}
@@ -187,12 +242,14 @@ const ScheduleLesson = () => {
         )}
 
         {/* Résumé et confirmation */}
-        {selectedDate && selectedTime && selectedTeacher && (
+        {selectedLesson && selectedDate && selectedTime && selectedTeacher && (
           <Card className="schedule-lesson__summary">
             <Title level={2} size="lg" className="schedule-lesson__section-title">
               {t('scheduleLesson.summary')}
             </Title>
             <div className="schedule-lesson__summary-content">
+              <p><strong>Leçon:</strong> {selectedLesson.title}</p>
+              <p><strong>Durée:</strong> {selectedLesson.duration} min</p>
               <p><strong>{t('scheduleLesson.date')}:</strong> {new Date(selectedDate).toLocaleDateString()}</p>
               <p><strong>{t('scheduleLesson.time')}:</strong> {selectedTime}</p>
               <p><strong>{t('scheduleLesson.teacher')}:</strong> {selectedTeacher.name}</p>

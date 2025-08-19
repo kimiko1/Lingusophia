@@ -9,9 +9,6 @@
 }
 
 .lesson-details-modal__content {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: $spacing-xl;
   margin-bottom: $spacing-xl;
 
   @include tablet-and-up {
@@ -214,10 +211,6 @@
 
 // Responsive design
 @include mobile-only {
-  .lesson-details-modal__content {
-    gap: $spacing-md;
-  }
-
   .lesson-details-modal__left {
     padding-right: 0;
     border-right: none;

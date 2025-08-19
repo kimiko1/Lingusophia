@@ -22,6 +22,71 @@
     max-width: 300px;
   }
 
+  &__lessons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: $spacing-md;
+    margin-top: $spacing-md;
+  }
+
+  &__lesson {
+    cursor: pointer;
+    transition: all $duration-fast ease;
+    border: 2px solid transparent;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: $shadow-lg;
+    }
+
+    &--selected {
+      border-color: $color-primary;
+      background: rgba($color-primary, 0.05);
+    }
+  }
+
+  &__lesson-info {
+    padding: $spacing-md;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+
+  &__lesson-title {
+    margin: 0;
+    color: $color-primary;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__lesson-description {
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+    margin: 0;
+    flex: 1;
+  }
+
+  &__lesson-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: $spacing-sm;
+    padding-top: $spacing-sm;
+    border-top: 1px solid rgba($color-border, 0.3);
+  }
+
+  &__lesson-level {
+    color: $color-info;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-sm;
+  }
+
+  &__lesson-duration {
+    color: $color-warning;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-sm;
+  }
+
   &__time-section {
     padding: $spacing-lg;
   }
@@ -131,6 +196,10 @@
   @include mobile-only {
     padding: $spacing-sm;
     gap: $spacing-md;
+
+    &__lessons {
+      grid-template-columns: 1fr;
+    }
 
     &__teachers {
       grid-template-columns: 1fr;

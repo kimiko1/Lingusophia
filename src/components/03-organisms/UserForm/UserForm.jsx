@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { Button, Input, Card } from '../../01-atoms';
+import { Button, Input, Card } from '@atoms';
 import './UserForm.scss';
 
 /**

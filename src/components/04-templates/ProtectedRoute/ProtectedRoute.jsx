@@ -1,15 +1,14 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../../contexts/AuthContext';
-
+import { useAuth } from '@contexts/AuthContext';
 /**
  * ProtectedRoute - Composant pour protéger les routes nécessitant une authentification
  */
-const ProtectedRoute = ({ children, requiredRole = null }) => {
+const ProtectedRoute = React.memo(({ children, requiredRole = null }) => {
   const { isAuthenticated, user, isLoading } = useAuth();
   const location = useLocation();
 
-  // Afficher un loader pendant la vérification de l'authentification
+  // Afficher le loader uniquement pendant le chargement
   if (isLoading) {
     return (
       <div className="loading-container">
@@ -42,6 +41,6 @@ const ProtectedRoute = ({ children, requiredRole = null }) => {
   }
 
   return children;
-};
+});
 
 export default ProtectedRoute;

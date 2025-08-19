@@ -20,6 +20,7 @@ coverage/
 
 # Local env files
 *.local
+.env
 .env.production
 
 # Editor directories and files

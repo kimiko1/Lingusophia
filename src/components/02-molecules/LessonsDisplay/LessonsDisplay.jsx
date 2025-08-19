@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useLessons } from '../../../hooks';
-import { Card, Button } from '../../01-atoms';
+import { useLessons } from '@contexts/LessonsContext';
+import { Card, Button } from '@atoms';
 import LessonCard from '../LessonCard';
 import './LessonsDisplay.scss';
 

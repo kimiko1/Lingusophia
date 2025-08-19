@@ -1,5 +1,5 @@
 // =============================================
-// MAIN STYLESHEET - LearnALanguage
+// MAIN STYLESHEET - Yourpersonaltutor
 // Point d'entrée principal pour les styles
 // =============================================
 
@@ -58,10 +58,6 @@ a {
   &:hover {
     color: $primary-600;
     text-decoration: underline;
-  }
-  
-  &:focus-visible {
-    @include focus-ring;
   }
 }
 

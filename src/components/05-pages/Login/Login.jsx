@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '../../../contexts/AuthContext';
-import { Button, Input, Card, Title } from '../../01-atoms';
-import { PageLayout } from '../../04-templates';
+import { useAuth } from '@contexts/AuthContext';
+import { Button, Input, Card, Title } from '@atoms';
 import './Login.scss';
 
 /**
@@ -74,7 +73,6 @@ const Login = () => {
   };
 
   return (
-    <PageLayout>
       <div className="login-page">
         <div className="login-container">
           <Card className="login-card">
@@ -145,39 +143,9 @@ const Login = () => {
                 </Link>
               </div>
             </form>
-
-            <div className="demo-accounts">
-              <Title level={3} className="demo-title">
-                {t('pages:login.demoAccounts')}
-              </Title>
-              <div className="demo-buttons">
-                <Button
-                  variant="outline"
-                  onClick={() => setFormData({ email: 'admin@learnalanguage.com', password: 'password123' })}
-                  className="demo-button"
-                >
-                  {t('pages:login.adminDemo')}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setFormData({ email: 'teacher@learnalanguage.com', password: 'password123' })}
-                  className="demo-button"
-                >
-                  {t('pages:login.teacherDemo')}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setFormData({ email: 'student@learnalanguage.com', password: 'password123' })}
-                  className="demo-button"
-                >
-                  {t('pages:login.studentDemo')}
-                </Button>
-              </div>
-            </div>
           </Card>
         </div>
       </div>
-    </PageLayout>
   );
 };
 

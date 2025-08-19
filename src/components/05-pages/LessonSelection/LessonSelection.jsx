@@ -1,20 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faGraduationCap, faCrown } from '@fortawesome/free-solid-svg-icons';
-import { Title, Button } from '../../01-atoms';
-import { LanguageCard, LevelCard, CategoryCard, LessonDetailsModal } from '../../02-molecules';
-import LessonCard from '../../02-molecules/LessonCard';
-import { lessonService, bookingService } from '../../../services';
-import './LessonSelection.scss';
-import { useAuth } from '../../../contexts/AuthContext';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPlay,
+  faGraduationCap,
+  faCrown,
+} from "@fortawesome/free-solid-svg-icons";
+import { Title, Button } from "@atoms";
+import {
+  LanguageCard,
+  LevelCard,
+  CategoryCard,
+  LessonDetailsModal,
+  LessonCard,
+} from "@molecules";
+import { lessonService } from "../../../services";
+import { bookingService } from "../../../services";
+import "./LessonSelection.scss";
+import { useAuth } from "@contexts/AuthContext";
 
 // Import flag SVGs
-import enFlag from '../../../assets/flags/en.svg';
-import frFlag from '../../../assets/flags/fr.svg';
-import cnFlag from '../../../assets/flags/cn.svg';
+import enFlag from "@assets/flags/en.svg";
+import frFlag from "@assets/flags/fr.svg";
+import cnFlag from "@assets/flags/cn.svg";
 
 /**
  * LessonSelection component - Page for selecting lessons by language, level, category and difficulty
@@ -22,12 +32,8 @@ import cnFlag from '../../../assets/flags/cn.svg';
  * @param {string} props.variant - Page style variant
  * @param {string} props.className - Additional CSS classes
  */
-const LessonSelection = ({
-  variant = 'default',
-  className = '',
-  ...props
-}) => {
-  const { t } = useTranslation(['pages', 'common']);
+const LessonSelection = ({ variant = "default", className = "", ...props }) => {
+  const { t } = useTranslation(["pages", "common"]);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -49,9 +55,9 @@ const LessonSelection = ({
   const { user } = useAuth();
 
   // Get initial values from URL params
-  const urlLanguage = searchParams.get('language');
-  const urlCategory = searchParams.get('category');
-  const urlLevel = searchParams.get('level');
+  const urlLanguage = searchParams.get("language");
+  const urlCategory = searchParams.get("category");
+  const urlLevel = searchParams.get("level");
 
   // Initialize from URL params
   useEffect(() => {
@@ -76,27 +82,39 @@ const LessonSelection = ({
   const loadInitialData = async () => {
     try {
       setLoading(true);
-      const [fetchedLanguages, fetchedDifficulty, fetchedCategory] = await Promise.all([
-        lessonService.getLanguages(),
-        lessonService.getAllDifficulty(),
-        lessonService.getCategories()
-      ]);
+      const [fetchedLanguages, fetchedDifficulty, fetchedCategory] =
+        await Promise.all([
+          lessonService.getLanguages(),
+          lessonService.getAllDifficulty(),
+          lessonService.getCategories(),
+        ]);
+
       // Extract languages
-      const langs = Array.isArray(fetchedLanguages?.data) ? fetchedLanguages.data : (Array.isArray(fetchedLanguages) ? fetchedLanguages : []);
+      const langs = Array.isArray(fetchedLanguages?.data)
+        ? fetchedLanguages.data
+        : Array.isArray(fetchedLanguages)
+        ? fetchedLanguages
+        : [];
       setLanguages(langs);
+
       // Extract difficulties from API shape: { data: { difficulties: [ { difficulty: 'easy' }, ... ] } }
       const diffArr = fetchedDifficulty?.data?.difficulties || [];
       // Remove duplicates and normalize
-      const uniqueDiffs = Array.from(new Set(diffArr.map(d => d.difficulty?.toLowerCase())));
+      const uniqueDiffs = Array.from(
+        new Set(diffArr.map((d) => d.difficulty?.toLowerCase()))
+      );
       setDifficulties(uniqueDiffs);
 
       // Extract categories
-      const categories = Array.isArray(fetchedCategory?.data) ? fetchedCategory.data : (Array.isArray(fetchedCategory) ? fetchedCategory : []);
+      const categories = Array.isArray(fetchedCategory?.data)
+        ? fetchedCategory.data
+        : Array.isArray(fetchedCategory)
+        ? fetchedCategory
+        : [];
       setCategories(categories);
-      // Categories and lessons can be loaded later as needed
     } catch (err) {
-      setError('Erreur lors du chargement des données');
-      console.error('Erreur lors du chargement des données:', err);
+      setError("Erreur lors du chargement des données");
+      console.error("Erreur lors du chargement des données:", err);
     } finally {
       setLoading(false);
     }
@@ -106,15 +124,16 @@ const LessonSelection = ({
     if (!selectedLevel) return categories;
     // On suppose que category.difficulty est en minuscule ('easy', 'medium', 'hard')
     return categories.filter(
-      (category) => category.difficulty?.toLowerCase() === selectedLevel.toLowerCase()
+      (category) =>
+        category.difficulty?.toLowerCase() === selectedLevel.toLowerCase()
     );
   };
 
   // Mapping pour les niveaux API <-> DB
   const levelMap = {
-    easy: 'beginner',
-    medium: 'intermediate',
-    hard: 'advanced'
+    easy: "beginner",
+    medium: "intermediate",
+    hard: "advanced",
   };
 
   const loadLessons = async () => {
@@ -123,18 +142,19 @@ const LessonSelection = ({
       const filters = {};
 
       if (selectedLanguage) filters.language = selectedLanguage.toLowerCase();
-      if (selectedLevel) filters.level = levelMap[selectedLevel] || selectedLevel.toLowerCase();
+      if (selectedLevel)
+        filters.level = levelMap[selectedLevel] || selectedLevel.toLowerCase();
       if (selectedCategory) filters.category = selectedCategory.toLowerCase();
 
       const fetchedLessons = await lessonService.getFilteredLessons(filters);
       setLessons(
-  Array.isArray(fetchedLessons?.data?.lessons)
-    ? fetchedLessons.data.lessons
-    : []
-);
+        Array.isArray(fetchedLessons?.data?.lessons)
+          ? fetchedLessons.data.lessons
+          : []
+      );
     } catch (err) {
-      setError('Erreur lors du chargement des leçons');
-      console.error('Erreur lors du chargement des leçons:', err);
+      setError("Erreur lors du chargement des leçons");
+      console.error("Erreur lors du chargement des leçons:", err);
     } finally {
       setLoading(false);
     }
@@ -143,35 +163,39 @@ const LessonSelection = ({
   // Available levels (difficulties from API)
   const difficultyMeta = {
     easy: {
-      id: 'easy',
-      name: t('lessons.difficulty.beginner'),
-      description: t('lessonSelection.levels.beginnerDesc'),
-      color: 'green',
-      icon: faPlay
+      id: "easy",
+      name: t("lessons.difficulty.beginner"),
+      description: t("lessonSelection.levels.beginnerDesc"),
+      color: "green",
+      icon: faPlay,
     },
     medium: {
-      id: 'medium',
-      name: t('lessons.difficulty.intermediate'),
-      description: t('lessonSelection.levels.intermediateDesc'),
-      color: 'orange',
-      icon: faGraduationCap
+      id: "medium",
+      name: t("lessons.difficulty.intermediate"),
+      description: t("lessonSelection.levels.intermediateDesc"),
+      color: "orange",
+      icon: faGraduationCap,
     },
     hard: {
-      id: 'hard',
-      name: t('lessons.difficulty.advanced'),
-      description: t('lessonSelection.levels.advancedDesc'),
-      color: 'red',
-      icon: faCrown
-    }
+      id: "hard",
+      name: t("lessons.difficulty.advanced"),
+      description: t("lessonSelection.levels.advancedDesc"),
+      color: "red",
+      icon: faCrown,
+    },
   };
-  // Default flags for languages
-  const defaultFlags = {
-    'english': enFlag,
-    'french': frFlag,
-    'chinese': cnFlag,
-    'anglais': enFlag,
-    'francais': frFlag,
-    'chinois': cnFlag
+
+  // Map language codes to imported flag assets
+  const flagAssets = {
+    en: enFlag,
+    fr: frFlag,
+    cn: cnFlag,
+    english: enFlag,
+    french: frFlag,
+    chinese: cnFlag,
+    anglais: enFlag,
+    francais: frFlag,
+    chinois: cnFlag,
   };
 
   // Get lessons for selected combination
@@ -180,36 +204,21 @@ const LessonSelection = ({
       return lessons;
     }
 
-    return lessons.filter(lesson => {
-      const matchesLanguage = !selectedLanguage ||
+    return lessons.filter((lesson) => {
+      const matchesLanguage =
+        !selectedLanguage ||
         lesson.language?.id?.toLowerCase() === selectedLanguage.toLowerCase();
-      const matchesLevel = !selectedLevel ||
-        lesson.level?.toLowerCase() === (levelMap[selectedLevel]?.toLowerCase() || selectedLevel.toLowerCase());
-      const matchesCategory = !selectedCategory ||
+      const matchesLevel =
+        !selectedLevel ||
+        lesson.level?.toLowerCase() ===
+          (levelMap[selectedLevel]?.toLowerCase() ||
+            selectedLevel.toLowerCase());
+      const matchesCategory =
+        !selectedCategory ||
         lesson.category?.id?.toLowerCase() === selectedCategory.toLowerCase();
 
       return matchesLanguage && matchesLevel && matchesCategory;
     });
-  };
-
-  // Teachers data
-  const teachers = {
-    'sarah-johnson': {
-      name: 'Sarah Johnson',
-      image: 'https://fireflyphotographysg.com/wp-content/uploads/2024/03/5-steps-to-mastering-the-perfect-linkedin-profile-picture.jpg',
-      title: 'English Language Expert',
-      speciality: 'English Grammar & Conversation',
-      experience: '8 years of teaching experience',
-      bio: 'Passionate about helping students achieve fluency in English through interactive and engaging methods.'
-    },
-    'john-smith': {
-      name: 'John Smith',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
-      title: 'Business English Specialist',
-      speciality: 'Advanced English & Business',
-      experience: '12 years of professional teaching',
-      bio: 'Specialized in business English and professional communication skills.'
-    }
   };
 
   // Get lessons for selected combination
@@ -243,7 +252,12 @@ const LessonSelection = ({
   };
 
   // Handle lesson booking
-  const handleConfirmLesson = async (lesson, teacher) => {
+  const handleConfirmLesson = async (
+    lesson,
+    teacher,
+    selectedDate,
+    selectedTime
+  ) => {
     try {
       // Utilise l'id de l'utilisateur connecté
       const userId = user?.id;
@@ -251,21 +265,32 @@ const LessonSelection = ({
         setError("Utilisateur non connecté");
         return;
       }
-      await bookingService.createBooking(lesson.id, userId);
-      setIsModalOpen(false);
-      navigate('/calendar');
-    } catch (err) {
-      setError('Erreur lors de la réservation de la leçon');
-      console.error('Erreur lors de la réservation de la leçon:', err);
-    }
-  };
 
-  // Reset selections to go back
-  const handleReset = () => {
-    setSelectedLanguage(null);
-    setSelectedLevel(null);
-    setSelectedCategory(null);
-    setSelectedLesson(null);
+      // Utilise directement le teacher_id présent dans l'objet lesson
+      const teacherId = lesson.teacherId || lesson.teacher?.id;
+
+      if (!teacherId) {
+        setError("Aucun professeur associé à cette leçon");
+        return;
+      }
+
+      // Créer l'objet de réservation complet
+      const bookingData = {
+        userId: userId,
+        lessonId: lesson.id,
+        teacherId: teacherId,
+        studentId: userId,
+        date: selectedDate,
+        time: selectedTime,
+      };
+
+      await bookingService.createBooking(bookingData);
+      setIsModalOpen(false);
+      navigate("/calendar");
+    } catch (err) {
+      setError("Erreur lors de la réservation de la leçon");
+      console.error("Erreur lors de la réservation de la leçon:", err);
+    }
   };
 
   // Go back one step
@@ -288,10 +313,12 @@ const LessonSelection = ({
   };
 
   const pageClasses = [
-    'lesson-selection',
+    "lesson-selection",
     `lesson-selection--${variant}`,
-    className
-  ].filter(Boolean).join(' ');
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className={pageClasses} {...props}>
@@ -303,19 +330,17 @@ const LessonSelection = ({
             onClick={handleGoBack}
             className="lesson-selection__back-btn"
           >
-            ← {t('lessonSelection.backButton')}
+            ← {t("lessonSelection.backButton")}
           </Button>
 
           <Title level={1} className="lesson-selection__title">
-            {t('lessonSelection.title')}
+            {t("lessonSelection.title")}
           </Title>
 
           {/* Progress breadcrumb */}
           <div className="lesson-selection__breadcrumb">
             {selectedLanguage && (
-              <span className="breadcrumb-item">
-                {selectedLanguage}
-              </span>
+              <span className="breadcrumb-item">{selectedLanguage}</span>
             )}
             {selectedLevel && (
               <>
@@ -328,10 +353,9 @@ const LessonSelection = ({
             {selectedCategory && (
               <>
                 <span className="breadcrumb-separator">→</span>
-                <span className="breadcrumb-item">
-                  {selectedCategory}
-                </span>
-              </>)}
+                <span className="breadcrumb-item">{selectedCategory}</span>
+              </>
+            )}
           </div>
 
           {/* Error message */}
@@ -349,7 +373,7 @@ const LessonSelection = ({
         {!selectedLanguage && (
           <section className="lesson-selection__step">
             <Title level={2} className="lesson-selection__step-title">
-              {t('lessonSelection.chooseLanguage')}
+              {t("lessonSelection.chooseLanguage")}
             </Title>
             {loading ? (
               <div className="lesson-selection__loading">
@@ -357,18 +381,19 @@ const LessonSelection = ({
               </div>
             ) : (
               <div className="lesson-selection__options-grid lesson-selection__options-grid--languages">
-                {Array.isArray(languages) && languages.map((language) => (
-                  <LanguageCard
-                    key={language.id}
-                    language={language.name}
-                    flag={language.flag_svg ? (`../../../src/${language.flag_svg}`) : (defaultFlags[language.code?.toLowerCase()] || enFlag)}
-                    isSelected={selectedLanguage === language.id}
-                    onClick={() => handleLanguageSelect(language.id)}
-                    variant="default"
-                    size="lg"
-                    className="lesson-selection__language-card"
-                  />
-                ))}
+                {Array.isArray(languages) &&
+                  languages.map((language) => (
+                    <LanguageCard
+                      key={language.id}
+                      language={language.name}
+                      flag={flagAssets[language.code?.toLowerCase()] || enFlag}
+                      isSelected={selectedLanguage === language.id}
+                      onClick={() => handleLanguageSelect(language.id)}
+                      variant="default"
+                      size="lg"
+                      className="lesson-selection__language-card"
+                    />
+                  ))}
               </div>
             )}
           </section>
@@ -378,7 +403,7 @@ const LessonSelection = ({
         {selectedLanguage && !selectedLevel && (
           <section className="lesson-selection__step">
             <Title level={2} className="lesson-selection__step-title">
-              {t('lessonSelection.chooseLevel')}
+              {t("lessonSelection.chooseLevel")}
             </Title>
             <div className="lesson-selection__options-grid lesson-selection__options-grid--levels">
               {difficulties.length === 0 ? (
@@ -386,13 +411,15 @@ const LessonSelection = ({
                   <p>Chargement des niveaux...</p>
                 </div>
               ) : (
-                difficulties.map(diff => {
+                difficulties.map((diff) => {
                   const meta = difficultyMeta[diff] || { id: diff, name: diff };
                   // Use translation for label
-                  let label = '';
-                  if (diff === 'easy') label = t('lessons.difficulty.beginner');
-                  else if (diff === 'medium') label = t('lessons.difficulty.intermediate');
-                  else if (diff === 'hard') label = t('lessons.difficulty.advanced');
+                  let label = "";
+                  if (diff === "easy") label = t("lessons.difficulty.beginner");
+                  else if (diff === "medium")
+                    label = t("lessons.difficulty.intermediate");
+                  else if (diff === "hard")
+                    label = t("lessons.difficulty.advanced");
                   else label = diff;
                   return (
                     <LevelCard
@@ -417,7 +444,7 @@ const LessonSelection = ({
         {selectedLanguage && selectedLevel && !selectedCategory && (
           <section className="lesson-selection__step">
             <Title level={2} className="lesson-selection__step-title">
-              {t('lessonSelection.chooseCategory')}
+              {t("lessonSelection.chooseCategory")}
             </Title>
             {loading ? (
               <div className="lesson-selection__loading">
@@ -429,8 +456,10 @@ const LessonSelection = ({
                   <CategoryCard
                     key={category.id}
                     category={category.name}
-                    description={category.description || `Catégorie ${category.name}`}
-                    color={category.color || 'blue'}
+                    description={
+                      category.description || `Catégorie ${category.name}`
+                    }
+                    color={category.color || "blue"}
                     isSelected={selectedCategory === category.id}
                     onClick={() => handleCategorySelect(category.id)}
                     variant="default"
@@ -447,7 +476,7 @@ const LessonSelection = ({
         {selectedLanguage && selectedLevel && selectedCategory && (
           <section className="lesson-selection__step">
             <Title level={2} className="lesson-selection__step-title">
-              {t('lessonSelection.availableLessons')}
+              {t("lessonSelection.availableLessons")}
             </Title>
             {loading ? (
               <div className="lesson-selection__loading">
@@ -457,19 +486,6 @@ const LessonSelection = ({
               <>
                 <div className="lesson-selection__lessons-grid">
                   {getLessonsForSelection().map((lesson) => {
-                    // Format duration as string (e.g. '1h 15min' or '30 min')
-                    let durationStr = '';
-                    if (typeof lesson.duration === 'number' && !isNaN(lesson.duration)) {
-                      const hours = Math.floor(lesson.duration / 60);
-                      const minutes = lesson.duration % 60;
-                      if (hours > 0) {
-                        durationStr = `${hours}h${minutes > 0 ? ` ${minutes}min` : ''}`;
-                      } else {
-                        durationStr = `${minutes} min`;
-                      }
-                    } else {
-                      durationStr = lesson.duration || '30 min';
-                    }
                     return (
                       <LessonCard
                         key={lesson.id}
@@ -477,7 +493,7 @@ const LessonSelection = ({
                         description={lesson.description}
                         duration={lesson.duration}
                         level={lesson.level}
-                        price={lesson.price || 'Gratuit'}
+                        price={lesson.price || "Gratuit"}
                         isSelected={selectedLesson === lesson.id}
                         onClick={() => handleLessonSelect(lesson)}
                         className="lesson-selection__lesson-card"
@@ -487,7 +503,7 @@ const LessonSelection = ({
                 </div>
                 {getLessonsForSelection().length === 0 && (
                   <div className="lesson-selection__no-lessons">
-                    <p>{t('lessonSelection.noLessonsAvailable')}</p>
+                    <p>{t("lessonSelection.noLessonsAvailable")}</p>
                   </div>
                 )}
               </>
@@ -501,7 +517,6 @@ const LessonSelection = ({
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         lesson={currentLesson}
-        teacher={currentLesson ? teachers[currentLesson.teacher] : null}
         onConfirm={handleConfirmLesson}
       />
     </div>
@@ -509,8 +524,8 @@ const LessonSelection = ({
 };
 
 LessonSelection.propTypes = {
-  variant: PropTypes.oneOf(['default', 'compact']),
-  className: PropTypes.string
+  variant: PropTypes.oneOf(["default", "compact"]),
+  className: PropTypes.string,
 };
 
 export default LessonSelection;

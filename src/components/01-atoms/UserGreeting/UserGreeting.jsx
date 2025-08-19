@@ -14,7 +14,7 @@ import './UserGreeting.scss';
  * @param {string} props.className - Additional CSS classes
  * @param {boolean} props.animated - Whether to show animation
  */
-const UserGreeting = ({ 
+const UserGreeting = React.memo(({ 
   name,
   greeting,
   emoji = '👋',
@@ -49,7 +49,7 @@ const UserGreeting = ({
       </span>
     </div>
   );
-};
+});
 
 UserGreeting.propTypes = {
   name: PropTypes.string.isRequired,

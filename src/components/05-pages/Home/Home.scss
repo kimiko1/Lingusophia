@@ -31,7 +31,7 @@
 .home-page__container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 $spacing-md;
+  padding: 70px $spacing-md 0 $spacing-md;
 }
 
 .home-page__hero {
@@ -48,6 +48,7 @@
 }
 
 .home-page__hero-title {
+  text-align: center;
   font-size: clamp($font-size-2xl, 4vw, $font-size-4xl);
   font-weight: $font-weight-bold;
   margin-bottom: $spacing-lg;
