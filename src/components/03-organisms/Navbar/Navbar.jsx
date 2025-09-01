@@ -60,7 +60,6 @@ const Navbar = ({
 
   const profileItems = [
     { icon: faUser, label: t('navigation.profile'), href: "/profile" },
-    { icon: faCog, label: t('navigation.settings'), href: "/settings" }
   ];
 
   // Add admin item if user is admin

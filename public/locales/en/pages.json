@@ -184,13 +184,11 @@
     "availableLessons": "Available Lessons",
     "backButton": "Back",
     "noLessonsAvailable": "No lessons available for this selection.",
+    "loadingLanguages": "Loading languages...",
     "languages": {
-      "english": "English",
-      "french": "French", 
-      "chinese": "Chinese",
-      "spanish": "Spanish",
-      "german": "German",
-      "italian": "Italian"
+      "fr": "French",
+      "en": "English",
+      "zh": "Chinese"
     },
     "levels": {
       "beginnerDesc": "Perfect for starting your language journey",
@@ -198,6 +196,9 @@
       "advancedDesc": "Master complex language skills"
     },
     "categories": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard",
       "easyDesc": "Perfect for beginners",
       "mediumDesc": "For intermediate learners", 
       "hardDesc": "Advanced level challenges"

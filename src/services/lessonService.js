@@ -115,7 +115,7 @@ export const lessonService = {
    * Récupérer une leçon par ID
    */
   async getLessonById(id) {
-    const response = await api.get(`/lessons/${id}`);
+    const response = await api.get(`api/lessons/${id}`);
     return response.data;
   },
 
@@ -123,7 +123,7 @@ export const lessonService = {
    * Créer une nouvelle leçon
    */
   async createLesson(lessonData) {
-    const response = await api.post("/lessons", lessonData);
+    const response = await api.post("api/lessons", lessonData);
     return response.data;
   },
 
@@ -131,7 +131,7 @@ export const lessonService = {
    * Mettre à jour une leçon
    */
   async updateLesson(id, lessonData) {
-    const response = await api.put(`/lessons/${id}`, lessonData);
+    const response = await api.put(`api/lessons/${id}`, lessonData);
     return response.data;
   },
 
@@ -139,7 +139,7 @@ export const lessonService = {
    * Supprimer une leçon
    */
   async deleteLesson(id) {
-    const response = await api.delete(`/lessons/${id}`);
+    const response = await api.delete(`api/lessons/${id}`);
     return response.data;
   },
 
@@ -147,7 +147,7 @@ export const lessonService = {
    * Récupérer les leçons complétées par l'utilisateur
    */
   async getCompletedLessons(userId) {
-    const response = await api.get(`/users/${userId}/completed-lessons`);
+    const response = await api.get(`api/users/${userId}/completed-lessons`);
     return response.data;
   },
 
@@ -155,7 +155,7 @@ export const lessonService = {
    * Récupérer les leçons en cours par l'utilisateur
    */
   async getOngoingLessons(userId) {
-    const response = await api.get(`/users/${userId}/ongoing-lessons`);
+    const response = await api.get(`api/users/${userId}/ongoing-lessons`);
     return response.data;
   },
 
@@ -164,7 +164,7 @@ export const lessonService = {
    */
   async completeLesson(lessonId, completionData) {
     const response = await api.post(
-      `/lessons/${lessonId}/complete`,
+      `api/lessons/${lessonId}/complete`,
       completionData
     );
     return response.data;

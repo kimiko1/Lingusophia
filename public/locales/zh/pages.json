@@ -179,12 +179,9 @@
     "backButton": "返回",
     "noLessonsAvailable": "此选择暂无可用课程。",
     "languages": {
-      "english": "英语",
-      "french": "法语", 
-      "chinese": "中文",
-      "spanish": "西班牙语",
-      "german": "德语",
-      "italian": "意大利语"
+      "en": "英语",
+      "fr": "法语", 
+      "zh": "中文"
     },
     "levels": {
       "beginnerDesc": "开始您的语言学习之旅的完美选择",
@@ -192,6 +189,9 @@
       "advancedDesc": "掌握复杂的语言技能"
     },
     "categories": {
+      "Easy": "簡單",
+      "Medium": "中型",
+      "Hard": "艱難",
       "easyDesc": "非常适合初学者",
       "mediumDesc": "适合中级学习者", 
       "hardDesc": "高级水平挑战"

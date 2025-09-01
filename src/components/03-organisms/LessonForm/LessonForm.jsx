@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useAuth } from '@contexts/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -24,6 +25,7 @@ const LessonForm = ({
   className = '',
   ...props
 }) => {
+  const { user } = useAuth();
   const { t } = useTranslation('pages');
   const { t: tCommon } = useTranslation('common');
   const [formData, setFormData] = useState({
@@ -39,16 +41,28 @@ const LessonForm = ({
   });
   const [errors, setErrors] = useState({});
 
+  // Mappings pour convertir les valeurs en IDs
+  const languageMapping = {
+    'English': 'english-uuid',
+    'French': 'french-uuid', 
+    'Chinese': 'chinese-uuid',
+    'Spanish': 'spanish-uuid',
+    'German': 'german-uuid',
+    'Italian': 'italian-uuid'
+  };
+
+  const categoryMapping = {
+    'easy': 'easy-category-uuid',
+    'medium': 'medium-category-uuid',
+    'hard': 'hard-category-uuid'
+  };
+
   // Récupérer l'utilisateur connecté (pour le rôle Teacher)
   const getCurrentTeacherName = () => {
-    if (window && window.localStorage) {
+    if (user) {
       try {
-        const userStr = window.localStorage.getItem('user');
-        if (userStr) {
-          const userObj = JSON.parse(userStr);
-          if (userObj && userObj.role === 'Teacher') {
-            return `${userObj.firstName || ''} ${userObj.lastName || ''}`.trim();
-          }
+        if (user.role === 'Teacher') {
+          return `${user.firstName || ''} ${user.lastName || ''}`.trim();
         }
       } catch {}
     }
@@ -73,7 +87,7 @@ const LessonForm = ({
       category: lesson?.category || 'easy',
       status: lesson?.status || 'Active'
     });
-  }, [lesson]);
+  }, [lesson, user]);
 
   // Gérer les changements de formulaire
   const handleChange = (e) => {
@@ -94,6 +108,7 @@ const LessonForm = ({
 
   // Validation du formulaire
   const validateForm = () => {
+    console.log('LessonForm - validateForm appelé avec formData:', formData);
     const newErrors = {};
 
     if (!formData.title.trim()) {
@@ -108,27 +123,47 @@ const LessonForm = ({
       newErrors.price = t('admin.form.validation.priceInvalid');
     }
 
+    console.log('LessonForm - Erreurs de validation:', newErrors);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   // Gérer la soumission du formulaire
   const handleSubmit = (e) => {
+    console.log('LessonForm - handleSubmit appelé');
     e.preventDefault();
     
+    console.log('LessonForm - formData avant validation:', formData);
     if (!validateForm()) {
+      console.log('LessonForm - Validation échouée, erreurs:', errors);
       return;
     }
 
+    // Convertir les données selon le schéma de BDD
     const lessonData = {
-      ...formData,
-      id: lesson?.id || Date.now(), // Simuler un ID pour les nouvelles leçons
-      duration: `${formData.duration} min`,
+      title: formData.title,
+      description: formData.description,
+      language_id: languageMapping[formData.language] || 'english-uuid',
+      category_id: categoryMapping[formData.category] || 'easy-category-uuid',
+      teacher_id: user?.id || 'teacher-uuid', // Utiliser l'ID de l'utilisateur connecté
+      level: formData.level,
+      duration: parseInt(formData.duration), // Convertir en nombre
       price: parseFloat(formData.price),
-      bookings: lesson?.bookings || 0,
-      rating: lesson?.rating || 0
+      status: formData.status,
+      max_students: 1, // Valeur par défaut
+      content: null,
+      prerequisites: null,
+      learning_objectives: null,
+      materials: null
     };
 
+    // Ajouter l'ID seulement en mode édition
+    if (lesson?.id) {
+      lessonData.id = lesson.id;
+    }
+
+    console.log('LessonForm - Données converties pour API:', lessonData);
+    console.log('LessonForm - Appel onSave avec:', lessonData);
     onSave && onSave(lessonData);
   };
 
@@ -145,6 +180,21 @@ const LessonForm = ({
       <form onSubmit={handleSubmit} className="lesson-form__form">
         <div className="lesson-form__fields">
           <div className="lesson-form__field-group">
+            <div className="lesson-form__field">
+              <label className="lesson-form__label">
+                {t('admin.form.teacher')} *
+              </label>
+              <Input
+                name="teacher"
+                value={formData.teacher}
+                onChange={handleChange}
+                placeholder="Nom du professeur"
+                error={errors.teacher}
+                disabled={true}
+                className="lesson-form__input"
+              />
+            </div>
+
             <div className="lesson-form__field">
               <label className="lesson-form__label">
                 {t('admin.table.title')} *

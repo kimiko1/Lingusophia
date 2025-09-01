@@ -49,6 +49,7 @@ const Admin = ({
   const [modalType, setModalType] = useState('');
   const [currentItem, setCurrentItem] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
   
   // Utiliser l'utilisateur authentifié au lieu d'une simulation
   const currentUser = user;
@@ -236,50 +237,53 @@ const Admin = ({
 
 
   // Sauvegarder une leçon (création ou modification) via API
-  const handleSaveLesson = async (lessonData) => {
-    setIsLoading(true);
-    try {
-      let savedLesson;
-      if (modalType === 'add-lesson') {
-        savedLesson = await lessonService.createLesson(lessonData);
-        setLessons(prev => [...prev, savedLesson]);
-      } else if (modalType === 'edit-lesson') {
-        savedLesson = await lessonService.updateLesson(lessonData.id, lessonData);
-        setLessons(prev => prev.map(lesson => lesson.id === savedLesson.id ? savedLesson : lesson));
-      }
-      setIsModalOpen(false);
-      setCurrentItem(null);
-      setModalType('');
-    } catch (error) {
-      console.error('Erreur lors de la sauvegarde:', error);
-    } finally {
-      setIsLoading(false);
+const handleSaveLesson = async (lessonData) => {
+  console.log('handleSaveLesson appelé avec:', lessonData); // ← AJOUTE CECI
+  setIsLoading(true);
+  try {
+    if (modalType === 'add-lesson') {
+      console.log('Appel à createLesson...'); // ← AJOUTE CECI
+      await lessonService.createLesson(lessonData);
+    } else if (modalType === 'edit-lesson') {
+      console.log('Appel à updateLesson...'); // ← AJOUTE CECI
+      await lessonService.updateLesson(lessonData.id, lessonData);
     }
-  };
+    // Recharge toutes les données admin après action
+    const allData = await userService.getAllUsers();
+    setUsers(allData.users || []);
+    setLessons(allData.lessons || []);
+    setBookings(allData.bookings || []);
+    setIsModalOpen(false);
+    setCurrentItem(null);
+    setModalType('');
+  } catch (error) {
+    console.error('Erreur lors de la sauvegarde:', error);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
 
   // Gérer les actions sur les réservations via API
-  const handleBookingAction = async (bookingId, action) => {
-    setIsLoading(true);
-    try {
-      let updatedBooking;
-      if (action === 'confirm' && bookingService.confirmBooking) {
-        updatedBooking = await bookingService.confirmBooking(bookingId);
-      } else if (action === 'cancel' && bookingService.cancelBooking) {
-        updatedBooking = await bookingService.cancelBooking(bookingId);
-      } else if (action === 'complete' && bookingService.completeBooking) {
-        updatedBooking = await bookingService.completeBooking(bookingId);
-      }
-      if (updatedBooking) {
-        setBookings(prev => prev.map(booking => booking.id === updatedBooking.id ? updatedBooking : booking));
-      }
-    } catch (error) {
-      console.error('Erreur lors de l\'action:', error);
-    } finally {
-      setIsLoading(false);
+const handleBookingAction = async (bookingId, action) => {
+  setIsLoading(true);
+  try {
+    if (action === 'confirm' && bookingService.confirmBooking) {
+      await bookingService.confirmBooking(bookingId);
+    } else if (action === 'complete' && bookingService.completeBooking) {
+      await bookingService.completeBooking(bookingId);
     }
-  };
-
+    // Recharge toutes les données admin après action
+    const allData = await userService.getAllUsers();
+    setUsers(allData.users || []);
+    setLessons(allData.lessons || []);
+    setBookings(allData.bookings || []);
+  } catch (error) {
+    console.error('Erreur lors de l\'action:', error);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   // Supprimer un élément via API
   const handleConfirmDelete = async () => {
@@ -291,9 +295,6 @@ const Admin = ({
       } else if (modalType === 'delete-lesson') {
         await lessonService.deleteLesson(currentItem.id);
         setLessons(prev => prev.filter(lesson => lesson.id !== currentItem.id));
-      } else if (modalType === 'delete-booking' && bookingService.deleteBooking) {
-        await bookingService.deleteBooking(currentItem.id);
-        setBookings(prev => prev.filter(booking => booking.id !== currentItem.id));
       }
       setIsModalOpen(false);
       setCurrentItem(null);
@@ -349,14 +350,7 @@ const Admin = ({
               <FontAwesomeIcon icon={faCalendarCheck} />
             </Button>
           )}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => handleDelete(item, type)}
-            className="admin__action-btn admin__action-btn--delete"
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </Button>
+          
         </div>
       );
     }

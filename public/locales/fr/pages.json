@@ -186,12 +186,9 @@
     "backButton": "Retour",
     "noLessonsAvailable": "Aucune leçon disponible pour cette sélection.",
     "languages": {
-      "english": "Anglais",
-      "french": "Français", 
-      "chinese": "Chinois",
-      "spanish": "Espagnol",
-      "german": "Allemand",
-      "italian": "Italien"
+      "fr": "Français",
+      "en": "Anglais",
+      "zh": "Chinois"
     },
     "levels": {
       "beginnerDesc": "Parfait pour commencer votre apprentissage",
@@ -199,6 +196,9 @@
       "advancedDesc": "Maîtrisez des compétences linguistiques complexes"
     },
     "categories": {
+      "Easy": "Facile",
+      "Medium": "Moyen",
+      "Hard": "Difficile",
       "easyDesc": "Parfait pour les débutants",
       "mediumDesc": "Pour les apprenants intermédiaires", 
       "hardDesc": "Défis de niveau avancé"

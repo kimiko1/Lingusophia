@@ -89,11 +89,6 @@
     "selectLanguage": "Sélectionner la langue",
     "currentLanguage": "Langue actuelle"
   },
-  "languages": {
-    "en": "Anglais",
-    "fr": "Français",
-    "zh": "Chinois"
-  },
   "components": {
     "lessonDetailsModal": {
       "title": "Détails de la leçon",
