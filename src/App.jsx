@@ -36,19 +36,19 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
 
-            {/* Routes privées avec layout et protection explicite */}
-            <Route element={<HeaderTemplate />}>
-              <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-              <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
-              <Route path="/schedule-lesson" element={<ProtectedRoute><ScheduleLesson /></ProtectedRoute>} />
-              <Route path="/lesson-selection" element={<ProtectedRoute><LessonSelection /></ProtectedRoute>} />
-              <Route path="/my-lessons" element={<ProtectedRoute><MyLessons /></ProtectedRoute>} />
-              <Route path="/customer-reviews" element={<ProtectedRoute><CustomerReviews /></ProtectedRoute>} />
-              <Route path="/bookings" element={<ProtectedRoute><Bookings /></ProtectedRoute>} />
-              <Route path="/success" element={<ProtectedRoute><Success /></ProtectedRoute>} />
-              <Route path="/cancel" element={<ProtectedRoute><Cancel /></ProtectedRoute>} />
-              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            {/* Routes privées avec protection globale */}
+            <Route element={<ProtectedRoute><HeaderTemplate /></ProtectedRoute>}>
+              <Route path="/" element={<Home />} />
+              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/schedule-lesson" element={<ScheduleLesson />} />
+              <Route path="/lesson-selection" element={<LessonSelection />} />
+              <Route path="/my-lessons" element={<MyLessons />} />
+              <Route path="/customer-reviews" element={<CustomerReviews />} />
+              <Route path="/bookings" element={<Bookings />} />
+              <Route path="/success" element={<Success />} />
+              <Route path="/cancel" element={<Cancel />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/settings" element={<Settings />} />
             </Route>
 
             {/* Admin route, protected and without HeaderTemplate */}
