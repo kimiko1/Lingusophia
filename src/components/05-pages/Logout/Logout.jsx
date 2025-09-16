@@ -6,37 +6,22 @@ import './Logout.scss';
 const Logout = () => {
   const { logout, user, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [logoutMessage, setLogoutMessage] = useState('');
+  const [status, setStatus] = useState('idle'); // idle | loading | success | error
 
   useEffect(() => {
-    // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
     if (!isLoading && !isAuthenticated) {
       navigate('/login');
     }
   }, [isAuthenticated, isLoading, navigate]);
 
   const handleLogout = async () => {
-    setIsLoggingOut(true);
-    setLogoutMessage('Déconnexion en cours...');
-
+    setStatus('loading');
     try {
       await logout();
-      setLogoutMessage('Déconnexion réussie ! Redirection...');
-      
-      // Rediriger vers la page de connexion après un délai
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
-    } catch (error) {
-      console.error('[LOGOUT PAGE] Erreur lors de la déconnexion:', error);
-      setLogoutMessage('Erreur lors de la déconnexion. Veuillez réessayer.');
-      setIsLoggingOut(false);
+      setStatus('success');
+    } catch (e) {
+      setStatus('error');
     }
-  };
-
-  const handleCancel = () => {
-    navigate(-1); // Retour à la page précédente
   };
 
   if (isLoading) {
@@ -44,7 +29,7 @@ const Logout = () => {
       <div className="logout-page">
         <div className="logout-container">
           <div className="loading-spinner"></div>
-          <p>Vérification de l'authentification...</p>
+          <p>Chargement...</p>
         </div>
       </div>
     );
@@ -56,7 +41,7 @@ const Logout = () => {
         <div className="logout-container">
           <div className="logout-message error">
             <h2>Non connecté</h2>
-            <p>Vous n'êtes pas connecté. Redirection vers la page de connexion...</p>
+            <p>Redirection vers la page de connexion...</p>
           </div>
         </div>
       </div>
@@ -66,59 +51,53 @@ const Logout = () => {
   return (
     <div className="logout-page">
       <div className="logout-container">
-        <div className="logout-header">
-          <h1>Déconnexion</h1>
-          <div className="user-info">
-            <div className="user-avatar">
-              {user?.firstName ? user.firstName.charAt(0).toUpperCase() : '👤'}
-            </div>
-            <div className="user-details">
-              <h3>{user?.firstName} {user?.lastName}</h3>
-              <p>{user?.email}</p>
-            </div>
+        <h1>Déconnexion</h1>
+        <div className="user-info">
+          <div className="user-avatar">
+            {user?.firstName ? user.firstName.charAt(0).toUpperCase() : '👤'}
+          </div>
+          <div className="user-details">
+            <strong>{user?.firstName} {user?.lastName}</strong>
+            <div>{user?.email}</div>
           </div>
         </div>
-
-        {logoutMessage && (
-          <div className={`logout-message ${isLoggingOut ? 'info' : 'success'}`}>
-            {isLoggingOut && <div className="loading-spinner small"></div>}
-            <p>{logoutMessage}</p>
-          </div>
-        )}
-
         <div className="logout-content">
-          <div className="logout-confirmation">
-            <h2>Êtes-vous sûr de vouloir vous déconnecter ?</h2>
-            <p>Vous devrez vous reconnecter pour accéder à votre compte.</p>
-          </div>
-
+          <p>Voulez-vous vraiment vous déconnecter ?</p>
           <div className="logout-actions">
-            <button 
-              onClick={handleCancel}
+            <button
               className="btn btn-secondary"
-              disabled={isLoggingOut}
+              onClick={() => navigate(-1)}
+              disabled={status === 'loading' || status === 'success'}
             >
               Annuler
             </button>
-            <button 
-              onClick={handleLogout}
+            <button
               className="btn btn-danger"
-              disabled={isLoggingOut}
+              onClick={handleLogout}
+              disabled={status === 'loading' || status === 'success'}
             >
-              {isLoggingOut ? (
+              {status === 'loading' ? (
                 <>
-                  <div className="loading-spinner small"></div>
-                  Déconnexion...
+                  <span className="loading-spinner small"></span> Déconnexion...
                 </>
               ) : (
                 'Se déconnecter'
               )}
             </button>
           </div>
+          {status === 'success' && (
+            <div className="logout-message success">
+              Déconnexion réussie ! Redirection...
+            </div>
+          )}
+          {status === 'error' && (
+            <div className="logout-message error">
+              Erreur lors de la déconnexion. Veuillez réessayer.
+            </div>
+          )}
         </div>
-
         <div className="logout-footer">
-          <p>Merci d'avoir utilisé Yourpersonaltutor !</p>
+          <small>Merci d'avoir utilisé Yourpersonaltutor !</small>
         </div>
       </div>
     </div>

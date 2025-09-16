@@ -91,14 +91,11 @@ const Navbar = ({
 
   const handleLogout = async () => {
     try {
-      await logout();
-      navigate('/');
-      closeAll();
+      navigate('/logout');
     } catch (error) {
       console.error('Erreur de déconnexion:', error);
       // Forcer la déconnexion côté UI même si l'API échoue
-      navigate('/');
-      closeAll();
+      navigate('/logout');
     }
   };
 

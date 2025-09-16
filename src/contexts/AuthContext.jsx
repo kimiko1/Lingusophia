@@ -97,12 +97,12 @@ export const AuthProvider = ({ children }) => {
       await authService.logout({ credentials: "include" });
       setUser(null);
       setIsAuthenticated(false);
-      window.location.href = "/login";
+      return { success: true };
     } catch (error) {
       console.error("Erreur logout:", error);
       setUser(null);
       setIsAuthenticated(false);
-      window.location.href = "/login";
+      return { success: false, error };
     }
   };
 
