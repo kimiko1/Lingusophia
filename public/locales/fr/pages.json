@@ -179,6 +179,7 @@
   },
   "lessonSelection": {
     "title": "Sélectionnez votre leçon",
+    "select": "Sélectionner une catégorie",
     "chooseLanguage": "Choisir la langue",
     "chooseLevel": "Choisir le niveau",
     "chooseCategory": "Choisir la catégorie",

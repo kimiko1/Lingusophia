@@ -19,7 +19,7 @@ i18n
     supportedLngs: ['en', 'fr', 'zh'],
     
     // Débug en développement
-    debug: process.env.NODE_ENV === 'development',
+    debug: import.meta.env.VITE_NODE_ENV === 'development',
     
     // Configuration du détecteur de langue
     detection: {
@@ -79,9 +79,9 @@ i18n
     },
     
     // Gestion des clés manquantes
-    saveMissing: process.env.NODE_ENV === 'development',
+    saveMissing: import.meta.env.VITE_NODE_ENV === 'development',
     missingKeyHandler: (lng, ns, key, fallbackValue) => {
-      if (process.env.NODE_ENV === 'development') {
+      if (import.meta.env.VITE_NODE_ENV === 'development') {
         console.warn(`Missing translation: ${lng}.${ns}.${key}`);
       }
     },

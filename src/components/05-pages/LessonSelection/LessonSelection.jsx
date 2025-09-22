@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,9 @@ import {
   faPlay,
   faGraduationCap,
   faCrown,
+  faArrowLeft,
+  faSpinner,
+  faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
 import { Title, Button } from "@atoms";
 import {
@@ -16,10 +19,10 @@ import {
   LessonDetailsModal,
   LessonCard,
 } from "@molecules";
-import { lessonService } from "../../../services";
-import { bookingService } from "../../../services";
-import "./LessonSelection.scss";
+import { lessonService, bookingService } from "@services";
 import { useAuth } from "@contexts/AuthContext";
+// Removed react-toastify dependency
+import "./LessonSelection.scss";
 
 // Import flag SVGs
 import enFlag from "@assets/flags/en.svg";
@@ -27,489 +30,691 @@ import frFlag from "@assets/flags/fr.svg";
 import cnFlag from "@assets/flags/cn.svg";
 
 /**
+ * Custom hook for managing notifications
+ */
+const useNotifications = () => {
+  const [notifications, setNotifications] = useState([]);
+
+  const addNotification = useCallback((message, type = 'info') => {
+    const id = Date.now();
+    setNotifications(prev => [...prev, { id, message, type }]);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+      setNotifications(prev => prev.filter(notif => notif.id !== id));
+    }, 5000);
+  }, []);
+
+  const removeNotification = useCallback((id) => {
+    setNotifications(prev => prev.filter(notif => notif.id !== id));
+  }, []);
+
+  return {
+    notifications,
+    addNotification,
+    removeNotification,
+    success: (message) => addNotification(message, 'success'),
+    error: (message) => addNotification(message, 'error'),
+    info: (message) => addNotification(message, 'info'),
+  };
+};
+
+// Constants
+const DIFFICULTY_LEVELS = {
+  easy: {
+    id: "easy",
+    apiLevel: "beginner",
+    color: "green",
+    icon: faPlay,
+  },
+  medium: {
+    id: "medium", 
+    apiLevel: "intermediate",
+    color: "orange",
+    icon: faGraduationCap,
+  },
+  hard: {
+    id: "hard",
+    apiLevel: "advanced", 
+    color: "red",
+    icon: faCrown,
+  },
+};
+
+const FLAG_ASSETS = {
+  en: enFlag,
+  fr: frFlag,
+  cn: cnFlag,
+  english: enFlag,
+  french: frFlag,
+  chinese: cnFlag,
+  anglais: enFlag,
+  francais: frFlag,
+  chinois: cnFlag,
+};
+
+const SELECTION_STEPS = {
+  LANGUAGE: 'language',
+  LEVEL: 'level', 
+  CATEGORY: 'category',
+  LESSON: 'lesson'
+};
+
+/**
+ * Custom hook for managing selection state
+ */
+const useSelectionState = (searchParams) => {
+  const [selectedLanguage, setSelectedLanguage] = useState(searchParams.get("language"));
+  const [selectedLevel, setSelectedLevel] = useState(searchParams.get("level"));
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category"));
+  const [selectedLesson, setSelectedLesson] = useState(null);
+
+  const resetFromStep = useCallback((step) => {
+    switch (step) {
+      case SELECTION_STEPS.LANGUAGE:
+        setSelectedLanguage(null);
+        setSelectedLevel(null);
+        setSelectedCategory(null);
+        setSelectedLesson(null);
+        break;
+      case SELECTION_STEPS.LEVEL:
+        setSelectedLevel(null);
+        setSelectedCategory(null);
+        setSelectedLesson(null);
+        break;
+      case SELECTION_STEPS.CATEGORY:
+        setSelectedCategory(null);
+        setSelectedLesson(null);
+        break;
+      case SELECTION_STEPS.LESSON:
+        setSelectedLesson(null);
+        break;
+      default:
+        break;
+    }
+  }, []);
+
+  const currentStep = useMemo(() => {
+    if (!selectedLanguage) return SELECTION_STEPS.LANGUAGE;
+    if (!selectedLevel) return SELECTION_STEPS.LEVEL;
+    if (!selectedCategory) return SELECTION_STEPS.CATEGORY;
+    return SELECTION_STEPS.LESSON;
+  }, [selectedLanguage, selectedLevel, selectedCategory]);
+
+  return {
+    selectedLanguage,
+    selectedLevel,
+    selectedCategory,
+    selectedLesson,
+    setSelectedLanguage,
+    setSelectedLevel,
+    setSelectedCategory,
+    setSelectedLesson,
+    resetFromStep,
+    currentStep,
+  };
+};
+
+/**
+ * Custom hook for API data management
+ */
+const useApiData = () => {
+  const [data, setData] = useState({
+    languages: [],
+    categories: [],
+    difficulties: [],
+    lessons: [],
+  });
+  const [loading, setLoading] = useState({
+    initial: false,
+    lessons: false,
+  });
+  const [error, setError] = useState(null);
+
+  const loadInitialData = useCallback(async () => {
+    try {
+      setLoading(prev => ({ ...prev, initial: true }));
+      setError(null);
+
+      const [languagesResponse, difficultiesResponse, categoriesResponse] = await Promise.all([
+        lessonService.getLanguages(),
+        lessonService.getAllDifficulty(),
+        lessonService.getCategories(),
+      ]);
+
+      // Process languages
+      const languages = Array.isArray(languagesResponse?.data)
+        ? languagesResponse.data
+        : Array.isArray(languagesResponse)
+        ? languagesResponse
+        : [];
+
+      // Process difficulties
+      const difficultyArray = difficultiesResponse?.data?.difficulties || [];
+      const difficulties = Array.from(
+        new Set(difficultyArray.map(d => d.difficulty?.toLowerCase()).filter(Boolean))
+      );
+
+      // Process categories
+      const categories = Array.isArray(categoriesResponse?.data)
+        ? categoriesResponse.data
+        : Array.isArray(categoriesResponse)
+        ? categoriesResponse
+        : [];
+
+      setData({
+        languages,
+        categories,
+        difficulties,
+        lessons: [],
+      });
+    } catch (err) {
+      console.error("Error loading initial data:", err);
+      setError("Erreur lors du chargement des données initiales");
+      // Show error notification
+      if (addNotification) addNotification("Erreur lors du chargement des données", 'error');
+    } finally {
+      setLoading(prev => ({ ...prev, initial: false }));
+    }
+  }, []);
+
+  const loadLessons = useCallback(async (filters) => {
+    try {
+      setLoading(prev => ({ ...prev, lessons: true }));
+      setError(null);
+
+      const processedFilters = {
+        ...filters,
+        level: filters.level ? (DIFFICULTY_LEVELS[filters.level]?.apiLevel || filters.level) : undefined,
+      };
+
+      // Remove undefined values
+      Object.keys(processedFilters).forEach(key => 
+        processedFilters[key] === undefined && delete processedFilters[key]
+      );
+
+      const lessonsResponse = await lessonService.getFilteredLessons(processedFilters);
+      const lessons = Array.isArray(lessonsResponse?.data?.lessons)
+        ? lessonsResponse.data.lessons
+        : [];
+
+      setData(prev => ({ ...prev, lessons }));
+    } catch (err) {
+      console.error("Error loading lessons:", err);
+      setError("Erreur lors du chargement des leçons");
+      // Show error notification
+      if (addNotification) addNotification("Erreur lors du chargement des leçons", 'error');
+    } finally {
+      setLoading(prev => ({ ...prev, lessons: false }));
+    }
+  }, []);
+
+  return {
+    data,
+    loading,
+    error,
+    loadInitialData,
+    loadLessons,
+    clearError: () => setError(null),
+  };
+};
+
+/**
  * LessonSelection component - Page for selecting lessons by language, level, category and difficulty
- * @param {Object} props - Component props
- * @param {string} props.variant - Page style variant
- * @param {string} props.className - Additional CSS classes
  */
 const LessonSelection = ({ variant = "default", className = "", ...props }) => {
   const { t } = useTranslation(["pages", "common"]);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  
+  // Notification state
+  const [notifications, setNotifications] = useState([]);
 
-  // Selection states
-  const [selectedLanguage, setSelectedLanguage] = useState(null);
-  const [selectedLevel, setSelectedLevel] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedLesson, setSelectedLesson] = useState(null);
+  const addNotification = useCallback((message, type = 'info', action = null) => {
+    const id = Date.now();
+    const newNotification = { id, message, type, action };
+    setNotifications(prev => [...prev, newNotification]);
+    
+    // Auto remove after different durations based on type
+    const duration = type === 'info-action' ? 10000 : 5000; // 10s for action notifications, 5s for others
+    setTimeout(() => {
+      setNotifications(prev => prev.filter(notif => notif.id !== id));
+    }, duration);
+  }, []);
+
+  const removeNotification = useCallback((id) => {
+    setNotifications(prev => prev.filter(notif => notif.id !== id));
+  }, []);
+
+  const showSuccess = useCallback((message) => addNotification(message, 'success'), [addNotification]);
+  const showError = useCallback((message) => addNotification(message, 'error'), [addNotification]);
+  const showInfo = useCallback((message) => addNotification(message, 'info'), [addNotification]);
+
+  // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentLesson, setCurrentLesson] = useState(null);
 
-  // API states
-  const [lessons, setLessons] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [languages, setLanguages] = useState([]);
-  const [difficulties, setDifficulties] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const { user } = useAuth();
+  // Custom hooks
+  const selection = useSelectionState(searchParams);
+  const api = useApiData();
 
-  // Get initial values from URL params
-  const urlLanguage = searchParams.get("language");
-  const urlCategory = searchParams.get("category");
-  const urlLevel = searchParams.get("level");
-
-  // Initialize from URL params
+  // Load initial data on mount
   useEffect(() => {
-    if (urlLanguage) setSelectedLanguage(urlLanguage);
-    if (urlCategory) setSelectedCategory(urlCategory);
-    if (urlLevel) setSelectedLevel(urlLevel);
-  }, [urlLanguage, urlLevel]);
+    api.loadInitialData();
+  }, [api.loadInitialData]);
 
-  // Charger les leçons quand tout est sélectionné
+  // Load lessons when all required selections are made
   useEffect(() => {
-    if (selectedLanguage && selectedLevel && selectedCategory) {
-      loadLessons();
+    if (selection.selectedLanguage && selection.selectedLevel && selection.selectedCategory) {
+      const filters = {
+        language: selection.selectedLanguage.toLowerCase(),
+        level: selection.selectedLevel.toLowerCase(),
+        category: selection.selectedCategory.toLowerCase(),
+      };
+      api.loadLessons(filters);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedLanguage, selectedLevel, selectedCategory]);
+  }, [selection.selectedLanguage, selection.selectedLevel, selection.selectedCategory, api.loadLessons]);
 
-  // Load initial data
+  // Update URL params when selection changes
   useEffect(() => {
-    loadInitialData();
-  }, []);
+    const params = new URLSearchParams();
+    if (selection.selectedLanguage) params.set("language", selection.selectedLanguage);
+    if (selection.selectedLevel) params.set("level", selection.selectedLevel);
+    if (selection.selectedCategory) params.set("category", selection.selectedCategory);
+    
+    setSearchParams(params, { replace: true });
+  }, [selection.selectedLanguage, selection.selectedLevel, selection.selectedCategory, setSearchParams]);
 
-  const loadInitialData = async () => {
-    try {
-      setLoading(true);
-      const [fetchedLanguages, fetchedDifficulty, fetchedCategory] =
-        await Promise.all([
-          lessonService.getLanguages(),
-          lessonService.getAllDifficulty(),
-          lessonService.getCategories(),
-        ]);
+  // Memoized computed values
+  const difficultyMetadata = useMemo(() => {
+    return api.data.difficulties.reduce((acc, difficulty) => {
+      const config = DIFFICULTY_LEVELS[difficulty] || { id: difficulty, color: "blue", icon: faPlay };
+      acc[difficulty] = {
+        ...config,
+        name: t(`lessons.difficulty.${config.apiLevel || difficulty}`, difficulty),
+        description: t(`lessonSelection.levels.${config.apiLevel || difficulty}Desc`, ""),
+      };
+      return acc;
+    }, {});
+  }, [api.data.difficulties, t]);
 
-      // Extract languages
-      const langs = Array.isArray(fetchedLanguages?.data)
-        ? fetchedLanguages.data
-        : Array.isArray(fetchedLanguages)
-        ? fetchedLanguages
-        : [];
-      setLanguages(langs);
-
-      // Extract difficulties from API shape: { data: { difficulties: [ { difficulty: 'easy' }, ... ] } }
-      const diffArr = fetchedDifficulty?.data?.difficulties || [];
-      // Remove duplicates and normalize
-      const uniqueDiffs = Array.from(
-        new Set(diffArr.map((d) => d.difficulty?.toLowerCase()))
-      );
-      setDifficulties(uniqueDiffs);
-
-      // Extract categories
-      const categories = Array.isArray(fetchedCategory?.data)
-        ? fetchedCategory.data
-        : Array.isArray(fetchedCategory)
-        ? fetchedCategory
-        : [];
-      setCategories(categories);
-    } catch (err) {
-      setError("Erreur lors du chargement des données");
-      console.error("Erreur lors du chargement des données:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getCategoriesForLevel = () => {
-    if (!selectedLevel) return categories;
-    // On suppose que category.difficulty est en minuscule ('easy', 'medium', 'hard')
-    return categories.filter(
-      (category) =>
-        category.difficulty?.toLowerCase() === selectedLevel.toLowerCase()
+  const filteredCategories = useMemo(() => {
+    if (!selection.selectedLevel) return api.data.categories;
+    return api.data.categories.filter(
+      category => category.difficulty?.toLowerCase() === selection.selectedLevel.toLowerCase()
     );
-  };
+  }, [api.data.categories, selection.selectedLevel]);
 
-  // Mapping pour les niveaux API <-> DB
-  const levelMap = {
-    easy: "beginner",
-    medium: "intermediate",
-    hard: "advanced",
-  };
-
-  const loadLessons = async () => {
-    try {
-      setLoading(true);
-      const filters = {};
-
-      if (selectedLanguage) filters.language = selectedLanguage.toLowerCase();
-      if (selectedLevel)
-        filters.level = levelMap[selectedLevel] || selectedLevel.toLowerCase();
-      if (selectedCategory) filters.category = selectedCategory.toLowerCase();
-
-      const fetchedLessons = await lessonService.getFilteredLessons(filters);
-      setLessons(
-        Array.isArray(fetchedLessons?.data?.lessons)
-          ? fetchedLessons.data.lessons
-          : []
-      );
-    } catch (err) {
-      setError("Erreur lors du chargement des leçons");
-      console.error("Erreur lors du chargement des leçons:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Available levels (difficulties from API)
-  const difficultyMeta = {
-    easy: {
-      id: "easy",
-      name: t("lessons.difficulty.beginner"),
-      description: t("lessonSelection.levels.beginnerDesc"),
-      color: "green",
-      icon: faPlay,
-    },
-    medium: {
-      id: "medium",
-      name: t("lessons.difficulty.intermediate"),
-      description: t("lessonSelection.levels.intermediateDesc"),
-      color: "orange",
-      icon: faGraduationCap,
-    },
-    hard: {
-      id: "hard",
-      name: t("lessons.difficulty.advanced"),
-      description: t("lessonSelection.levels.advancedDesc"),
-      color: "red",
-      icon: faCrown,
-    },
-  };
-
-  // Map language codes to imported flag assets
-  const flagAssets = {
-    en: enFlag,
-    fr: frFlag,
-    cn: cnFlag,
-    english: enFlag,
-    french: frFlag,
-    chinese: cnFlag,
-    anglais: enFlag,
-    francais: frFlag,
-    chinois: cnFlag,
-  };
-
-  // Get lessons for selected combination
-  const getFilteredLessons = () => {
-    if (!selectedLanguage && !selectedLevel && !selectedCategory) {
-      return lessons;
-    }
-
-    return lessons.filter((lesson) => {
-      const matchesLanguage =
-        !selectedLanguage ||
-        lesson.language?.id?.toLowerCase() === selectedLanguage.toLowerCase();
-      const matchesLevel =
-        !selectedLevel ||
-        lesson.level?.toLowerCase() ===
-          (levelMap[selectedLevel]?.toLowerCase() ||
-            selectedLevel.toLowerCase());
-      const matchesCategory =
-        !selectedCategory ||
-        lesson.category?.id?.toLowerCase() === selectedCategory.toLowerCase();
+  const filteredLessons = useMemo(() => {
+    return api.data.lessons.filter(lesson => {
+      const matchesLanguage = !selection.selectedLanguage ||
+        lesson.language?.id?.toLowerCase() === selection.selectedLanguage.toLowerCase();
+      const matchesLevel = !selection.selectedLevel ||
+        lesson.level?.toLowerCase() === (DIFFICULTY_LEVELS[selection.selectedLevel]?.apiLevel?.toLowerCase() || selection.selectedLevel.toLowerCase());
+      const matchesCategory = !selection.selectedCategory ||
+        lesson.category?.id?.toLowerCase() === selection.selectedCategory.toLowerCase();
 
       return matchesLanguage && matchesLevel && matchesCategory;
     });
-  };
+  }, [api.data.lessons, selection.selectedLanguage, selection.selectedLevel, selection.selectedCategory]);
 
-  // Get lessons for selected combination
-  const getLessonsForSelection = () => {
-    return getFilteredLessons();
-  };
+  // Event handlers
+  const handleLanguageSelect = useCallback((languageId) => {
+    selection.setSelectedLanguage(languageId);
+    selection.resetFromStep(SELECTION_STEPS.LEVEL);
+  }, [selection]);
 
-  // Handle selections
-  const handleLanguageSelect = (languageId) => {
-    setSelectedLanguage(languageId);
-    setSelectedLevel(null);
-    setSelectedCategory(null);
-    setSelectedLesson(null);
-  };
+  const handleLevelSelect = useCallback((levelId) => {
+    selection.setSelectedLevel(levelId);
+    selection.resetFromStep(SELECTION_STEPS.CATEGORY);
+  }, [selection]);
 
-  const handleLevelSelect = (levelId) => {
-    setSelectedLevel(levelId);
-    setSelectedCategory(null);
-    setSelectedLesson(null);
-  };
+  const handleCategorySelect = useCallback((categoryId) => {
+    selection.setSelectedCategory(categoryId);
+    selection.resetFromStep(SELECTION_STEPS.LESSON);
+  }, [selection]);
 
-  const handleCategorySelect = (categoryId) => {
-    setSelectedCategory(categoryId);
-    setSelectedLesson(null);
-  };
-
-  // Handle lesson selection
-  const handleLessonSelect = (lesson) => {
+  const handleLessonSelect = useCallback((lesson) => {
     setCurrentLesson(lesson);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  // Handle lesson booking
-  const handleConfirmLesson = async (
-    lesson,
-    teacher,
-    selectedDate,
-    selectedTime
-  ) => {
+  const handleConfirmLesson = useCallback(async (lesson, teacher, selectedDate, selectedTime) => {
     try {
-      // Utilise l'id de l'utilisateur connecté
-      const userId = user?.id;
-      if (!userId) {
-        setError("Utilisateur non connecté");
+      if (!user?.id) {
+        showError("Vous devez être connecté pour réserver une leçon");
         return;
       }
 
-      // Utilise directement le teacher_id présent dans l'objet lesson
       const teacherId = lesson.teacherId || lesson.teacher?.id;
-
       if (!teacherId) {
-        setError("Aucun professeur associé à cette leçon");
+        showError("Aucun professeur associé à cette leçon");
         return;
       }
 
-      // Créer l'objet de réservation complet
       const bookingData = {
-        userId: userId,
+        userId: user.id,
         lessonId: lesson.id,
-        teacherId: teacherId,
-        studentId: userId,
+        teacherId,
+        studentId: user.id,
         date: selectedDate,
         time: selectedTime,
       };
 
       await bookingService.createBooking(bookingData);
       setIsModalOpen(false);
-      navigate("/calendar");
+      
+      // Show success notification with action options
+      showSuccess("Leçon réservée avec succès !");
+      
+      // Add a notification with navigation option
+      setTimeout(() => {
+        addNotification(
+          "Voulez-vous voir votre calendrier ?", 
+          'info-action',
+          () => navigate("/calendar")
+        );
+      }, 1000);
+
     } catch (err) {
-      setError("Erreur lors de la réservation de la leçon");
-      console.error("Erreur lors de la réservation de la leçon:", err);
+      console.error("Booking error:", err);
+      showError("Erreur lors de la réservation de la leçon");
     }
+  }, [user, showSuccess, showError, addNotification, navigate]);
+
+  // Render notifications component
+  const renderNotifications = () => {
+    if (notifications.length === 0) return null;
+
+    return (
+      <div className="lesson-selection__notifications">
+        {notifications.map((notification) => (
+          <div
+            key={notification.id}
+            className={`lesson-selection__notification lesson-selection__notification--${notification.type}`}
+          >
+            <span>{notification.message}</span>
+            <div className="lesson-selection__notification-actions">
+              {notification.action && (
+                <button 
+                  className="lesson-selection__notification-action"
+                  onClick={() => {
+                    notification.action();
+                    removeNotification(notification.id);
+                  }}
+                  aria-label="Exécuter l'action"
+                >
+                  Oui
+                </button>
+              )}
+              <button 
+                className="lesson-selection__notification-close"
+                onClick={() => removeNotification(notification.id)}
+                aria-label="Fermer la notification"
+              >
+                {notification.action ? 'Non' : '×'}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   };
 
-  // Go back one step
-  const handleGoBack = () => {
-    if (selectedCategory) {
-      setSelectedCategory(null);
-      setSelectedLesson(null);
-    } else if (selectedLevel) {
-      setSelectedLevel(null);
-      setSelectedCategory(null);
-      setSelectedLesson(null);
-    } else if (selectedLanguage) {
-      setSelectedLanguage(null);
-      setSelectedLevel(null);
-      setSelectedCategory(null);
-      setSelectedLesson(null);
-    } else {
-      navigate(-1);
+  const handleGoBack = useCallback(() => {
+    switch (selection.currentStep) {
+      case SELECTION_STEPS.LESSON:
+        selection.resetFromStep(SELECTION_STEPS.CATEGORY);
+        break;
+      case SELECTION_STEPS.CATEGORY:
+        selection.resetFromStep(SELECTION_STEPS.LEVEL);
+        break;
+      case SELECTION_STEPS.LEVEL:
+        selection.resetFromStep(SELECTION_STEPS.LANGUAGE);
+        break;
     }
+  }, [selection.currentStep, selection.resetFromStep, navigate, showInfo, addNotification]);
+
+  // Render helpers
+  const renderError = () => {
+    if (!api.error) return null;
+
+    return (
+      <div className="lesson-selection__error">
+        <FontAwesomeIcon icon={faExclamationTriangle} />
+        <p>{api.error}</p>
+        <Button onClick={api.loadInitialData} variant="primary">
+          {t("common.retry", "Réessayer")}
+        </Button>
+      </div>
+    );
+  };
+
+  const renderLoadingSpinner = (text) => (
+    <div className="lesson-selection__loading">
+      <FontAwesomeIcon icon={faSpinner} spin />
+      <p>{text}</p>
+    </div>
+  );
+
+  const renderBreadcrumb = () => {
+    if (!selection.selectedLanguage) return null;
+
+    const items = [];
+    
+    if (selection.selectedLanguage) {
+      const language = api.data.languages.find(l => l.id === selection.selectedLanguage);
+      items.push(t(`lessonSelection.languages.${language?.code?.toLowerCase()}`, language?.name || selection.selectedLanguage));
+    }
+    
+    if (selection.selectedLevel) {
+      items.push(t(`levels.${selection.selectedLevel}`, difficultyMetadata[selection.selectedLevel]?.name || selection.selectedLevel));
+    }
+    
+    if (selection.selectedCategory) {
+      const category = api.data.categories.find(c => c.id === selection.selectedCategory);
+      items.push(t(`lessons.categories.${category?.name?.toLowerCase()}`, category?.name || selection.selectedCategory));
+    }
+
+    return (
+      <div className="lesson-selection__breadcrumb">
+        {items.map((item, index) => (
+          <React.Fragment key={index}>
+            {index > 0 && <span className="breadcrumb-separator">→</span>}
+            <span className="breadcrumb-item">{item}</span>
+          </React.Fragment>
+        ))}
+      </div>
+    );
   };
 
   const pageClasses = [
     "lesson-selection",
     `lesson-selection--${variant}`,
     className,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  ].filter(Boolean).join(" ");
 
   return (
     <div className={pageClasses} {...props}>
+      {renderNotifications()}
       <div className="lesson-selection__container">
-        {/* Header with back button and progress */}
-        <div className="lesson-selection__header">
+        {/* Header */}
+        <header className="lesson-selection__header">
           <Button
             variant="ghost"
             onClick={handleGoBack}
             className="lesson-selection__back-btn"
+            aria-label={t("lessonSelection.backButton")}
           >
-            ← {t("lessonSelection.backButton")}
+            <FontAwesomeIcon icon={faArrowLeft} />
+            {t("lessonSelection.backButton")}
           </Button>
 
           <Title level={1} className="lesson-selection__title">
             {t("lessonSelection.title")}
           </Title>
 
-          {/* Progress breadcrumb */}
-          <div className="lesson-selection__breadcrumb">
-            {selectedLanguage && (
-              <span className="breadcrumb-item">{selectedLanguage}</span>
-            )}
-            {selectedLevel && (
-              <>
-                <span className="breadcrumb-separator">→</span>
-                <span className="breadcrumb-item">
-                  {difficultyMeta[selectedLevel]?.name || selectedLevel}
-                </span>
-              </>
-            )}
-            {selectedCategory && (
-              <>
-                <span className="breadcrumb-separator">→</span>
-                <span className="breadcrumb-item">{selectedCategory}</span>
-              </>
-            )}
-          </div>
+          {renderBreadcrumb()}
+          {renderError()}
+        </header>
 
-          {/* Error message */}
-          {error && (
-            <div className="lesson-selection__error">
-              <p>{error}</p>
-              <Button onClick={loadInitialData} variant="primary">
-                Réessayer
-              </Button>
-            </div>
-          )}
-        </div>
-
-        {/* Step 1: Language Selection */}
-        {!selectedLanguage && (
-          <section className="lesson-selection__step">
-            <Title level={2} className="lesson-selection__step-title">
-              {t("lessonSelection.chooseLanguage")}
-            </Title>
-            {loading ? (
-              <div className="lesson-selection__loading">
-                <p>Chargement des langues...</p>
-              </div>
-            ) : (
-              <div className="lesson-selection__options-grid lesson-selection__options-grid--languages">
-                {Array.isArray(languages) &&
-                  languages.map((language) => (
+        <main className="lesson-selection__content">
+          {/* Step 1: Language Selection */}
+          {selection.currentStep === SELECTION_STEPS.LANGUAGE && (
+            <section className="lesson-selection__step" aria-labelledby="language-title">
+              <Title level={2} id="language-title" className="lesson-selection__step-title">
+                {t("lessonSelection.chooseLanguage")}
+              </Title>
+              
+              {api.loading.initial ? (
+                renderLoadingSpinner(t("lessonSelection.loadingLanguages", "Chargement des langues..."))
+              ) : (
+                <div 
+                  className="lesson-selection__options-grid lesson-selection__options-grid--languages"
+                  role="radiogroup"
+                  aria-labelledby="language-title"
+                >
+                  {api.data.languages.map((language) => (
                     <LanguageCard
                       key={language.id}
-                      language={language.name}
-                      flag={flagAssets[language.code?.toLowerCase()] || enFlag}
-                      isSelected={selectedLanguage === language.id}
+                      language={t(`lessonSelection.languages.${language.code?.toLowerCase()}`, language.name)}
+                      flag={FLAG_ASSETS[language.code?.toLowerCase()] || enFlag}
+                      isSelected={selection.selectedLanguage === language.id}
                       onClick={() => handleLanguageSelect(language.id)}
                       variant="default"
                       size="lg"
                       className="lesson-selection__language-card"
+                      role="radio"
+                      aria-checked={selection.selectedLanguage === language.id}
                     />
                   ))}
-              </div>
-            )}
-          </section>
-        )}
-
-        {/* Step 2: Difficulty Selection (from API) */}
-        {selectedLanguage && !selectedLevel && (
-          <section className="lesson-selection__step">
-            <Title level={2} className="lesson-selection__step-title">
-              {t("lessonSelection.chooseLevel")}
-            </Title>
-            <div className="lesson-selection__options-grid lesson-selection__options-grid--levels">
-              {difficulties.length === 0 ? (
-                <div className="lesson-selection__loading">
-                  <p>Chargement des niveaux...</p>
                 </div>
-              ) : (
-                difficulties.map((diff) => {
-                  const meta = difficultyMeta[diff] || { id: diff, name: diff };
-                  // Use translation for label
-                  let label = "";
-                  if (diff === "easy") label = t("lessons.difficulty.beginner");
-                  else if (diff === "medium")
-                    label = t("lessons.difficulty.intermediate");
-                  else if (diff === "hard")
-                    label = t("lessons.difficulty.advanced");
-                  else label = diff;
+              )}
+            </section>
+          )}
+
+          {/* Step 2: Level Selection */}
+          {selection.currentStep === SELECTION_STEPS.LEVEL && (
+            <section className="lesson-selection__step" aria-labelledby="level-title">
+              <Title level={2} id="level-title" className="lesson-selection__step-title">
+                {t("lessonSelection.chooseLevel")}
+              </Title>
+              
+              <div 
+                className="lesson-selection__options-grid lesson-selection__options-grid--levels"
+                role="radiogroup" 
+                aria-labelledby="level-title"
+              >
+                {api.data.difficulties.map((difficulty) => {
+                  const meta = difficultyMetadata[difficulty];
                   return (
                     <LevelCard
-                      key={meta.id}
-                      icon={meta.icon}
-                      title={label}
-                      description={meta.description}
-                      difficulty={meta.id}
-                      isSelected={selectedLevel === meta.id}
-                      onClick={() => handleLevelSelect(meta.id)}
+                      key={difficulty}
+                      icon={meta?.icon}
+                      title={t(`levels.${difficulty}`, meta?.name || difficulty)}
+                      description={t(`levels.${meta?.description.toLowerCase()}Desc`, meta?.description || description)}
+                      isSelected={selection.selectedLevel === difficulty}
+                      onClick={() => handleLevelSelect(difficulty)}
                       variant="default"
                       className="lesson-selection__level-card"
+                      role="radio"
+                      aria-checked={selection.selectedLevel === difficulty}
                     />
                   );
-                })
-              )}
-            </div>
-          </section>
-        )}
-
-        {/* Step 3: Category Selection */}
-        {selectedLanguage && selectedLevel && !selectedCategory && (
-          <section className="lesson-selection__step">
-            <Title level={2} className="lesson-selection__step-title">
-              {t("lessonSelection.chooseCategory")}
-            </Title>
-            {loading ? (
-              <div className="lesson-selection__loading">
-                <p>Chargement des catégories...</p>
+                })}
               </div>
-            ) : (
-              <div className="lesson-selection__options-grid lesson-selection__options-grid--categories">
-                {getCategoriesForLevel().map((category) => (
+            </section>
+          )}
+
+          {/* Step 3: Category Selection */}
+          {selection.currentStep === SELECTION_STEPS.CATEGORY && (
+            <section className="lesson-selection__step" aria-labelledby="category-title">
+              <Title level={2} id="category-title" className="lesson-selection__step-title">
+                {t("lessonSelection.chooseCategory")}
+              </Title>
+              
+              <div 
+                className="lesson-selection__options-grid lesson-selection__options-grid--categories"
+                role="radiogroup"
+                aria-labelledby="category-title" 
+              >
+                {filteredCategories.map((category) => (
                   <CategoryCard
                     key={category.id}
-                    category={category.name}
-                    description={
-                      category.description || `Catégorie ${category.name}`
-                    }
+                    category={t(`lessonSelection.categories.${category.name}`, category.name)}
+                    description={category.description || `Catégorie ${category.name}`}
                     color={category.color || "blue"}
-                    isSelected={selectedCategory === category.id}
+                    isSelected={selection.selectedCategory === category.id}
                     onClick={() => handleCategorySelect(category.id)}
                     variant="default"
                     size="large"
                     className="lesson-selection__category-card"
+                    role="radio"
+                    aria-checked={selection.selectedCategory === category.id}
                   />
                 ))}
               </div>
-            )}
-          </section>
-        )}
+            </section>
+          )}
 
-        {/* Step 4: Lesson Selection */}
-        {selectedLanguage && selectedLevel && selectedCategory && (
-          <section className="lesson-selection__step">
-            <Title level={2} className="lesson-selection__step-title">
-              {t("lessonSelection.availableLessons")}
-            </Title>
-            {loading ? (
-              <div className="lesson-selection__loading">
-                <p>Chargement des leçons...</p>
-              </div>
-            ) : (
-              <>
-                <div className="lesson-selection__lessons-grid">
-                  {getLessonsForSelection().map((lesson) => {
-                    return (
-                      <LessonCard
-                        key={lesson.id}
-                        title={lesson.title}
-                        description={lesson.description}
-                        duration={lesson.duration}
-                        level={lesson.level}
-                        price={lesson.price || "Gratuit"}
-                        isSelected={selectedLesson === lesson.id}
-                        onClick={() => handleLessonSelect(lesson)}
-                        className="lesson-selection__lesson-card"
-                      />
-                    );
-                  })}
-                </div>
-                {getLessonsForSelection().length === 0 && (
-                  <div className="lesson-selection__no-lessons">
-                    <p>{t("lessonSelection.noLessonsAvailable")}</p>
-                  </div>
-                )}
-              </>
-            )}
-          </section>
-        )}
+          {/* Step 4: Lesson Selection */}
+          {selection.currentStep === SELECTION_STEPS.LESSON && (
+            <section className="lesson-selection__step" aria-labelledby="lesson-title">
+              <Title level={2} id="lesson-title" className="lesson-selection__step-title">
+                {t("lessonSelection.availableLessons")}
+              </Title>
+              
+              {api.loading.lessons ? (
+                renderLoadingSpinner(t("lessonSelection.loadingLessons", "Chargement des leçons..."))
+              ) : (
+                <>
+                  {filteredLessons.length > 0 ? (
+                    <div className="lesson-selection__lessons-grid">
+                      {filteredLessons.map((lesson) => (
+                        <LessonCard
+                          key={lesson.id}
+                          title={lesson.title}
+                          description={lesson.description}
+                          duration={lesson.duration}
+                          level={lesson.level}
+                          price={lesson.price || t("common.free", "Gratuit")}
+                          isSelected={selection.selectedLesson === lesson.id}
+                          onClick={() => handleLessonSelect(lesson)}
+                          className="lesson-selection__lesson-card"
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="lesson-selection__no-lessons">
+                      <p>{t("lessonSelection.noLessonsAvailable")}</p>
+                      <div className="lesson-selection__no-lessons-actions">
+                        <Button 
+                          variant="outline"
+                          onClick={() => {
+                            selection.resetFromStep(SELECTION_STEPS.CATEGORY);
+                            showInfo("Essayez une autre catégorie pour cette combinaison.");
+                          }}
+                        >
+                          {t("lessonSelection.changeCategory", "Changer de catégorie")}
+                        </Button>
+                        <Button 
+                          variant="outline"
+                          onClick={() => {
+                            selection.resetFromStep(SELECTION_STEPS.LEVEL);
+                            showInfo("Essayez un autre niveau pour cette langue.");
+                          }}
+                        >
+                          {t("lessonSelection.changeLevel", "Changer de niveau")}
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </section>
+          )}
+        </main>
       </div>
 
       {/* Lesson Details Modal */}
@@ -528,4 +733,4 @@ LessonSelection.propTypes = {
   className: PropTypes.string,
 };
 
-export default LessonSelection;
+export default React.memo(LessonSelection);
