@@ -472,10 +472,11 @@
 
       &:hover,
       &--active {
-        @include btn-variant('primary');
-        @include hover-lift(2px, 1.02);
+        // Déplacez les déclarations avant les mixins imbriqués
         box-shadow: 0 8px 30px rgba($primary-500, 0.3);
         border-color: transparent;
+        @include btn-variant('primary');
+        @include hover-lift(2px, 1.02);
       }
 
       svg {
@@ -499,9 +500,9 @@
     // Cascade animation
     @for $i from 1 through 10 {
       &:nth-child(#{$i}) {
-        @include slide-up(0.5s, 30px);
         animation-delay: #{$i * 0.1}s;
         animation-fill-mode: forwards;
+        @include slide-up(0.5s, 30px);
       }
     }
   }
@@ -511,8 +512,8 @@
     .navbar__nav {
       width: 50%;
       .nav-item {
-        @include slide-up(0.5s, 30px);
         animation-fill-mode: forwards;
+        @include slide-up(0.5s, 30px);
       }
     }
   }
@@ -527,8 +528,8 @@
     background: rgba(0, 0, 0, 0.3);
     z-index: $z-index-dropdown + 15;
     opacity: 0;
-    @include fade-in(0.3s);
     animation-fill-mode: forwards;
+    @include fade-in(0.3s);
   }
 
   // Loading states

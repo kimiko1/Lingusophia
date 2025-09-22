@@ -40,7 +40,6 @@ const Home = ({ variant = "default", className = "", ...props }) => {
           </div>
           <Navigations />
         </section>
-
         {/* Reviews Section */}
         <section className="home-page__reviews">
           <div className="home-page__section-header">

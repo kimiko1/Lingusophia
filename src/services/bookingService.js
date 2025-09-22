@@ -64,7 +64,7 @@ export const bookingService = {
    * Confirmer une réservation
    */
   async confirmBooking(bookingId) {
-    const response = await api.put(`/bookings/${bookingId}/confirm`);
+    const response = await api.post(`/api/bookings/confirm/${bookingId}`);
     return response.data;
   },
 

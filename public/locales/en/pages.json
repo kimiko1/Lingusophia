@@ -134,7 +134,8 @@
     "difficulty": {
       "beginner": "Beginner",
       "intermediate": "Intermediate",
-      "advanced": "Advanced"
+      "advanced": "Advanced",
+      "select": "Select a level"
     },
     "currentLessons": "Current Lessons",
     "completedLessons": "Completed Lessons",
@@ -159,7 +160,8 @@
     "categories": {
       "easy": "Easy",
       "medium": "Medium",
-      "hard": "Hard"
+      "hard": "Hard",
+      "select": "Select a category"
     }
   },
   "scheduleLesson": {
@@ -184,13 +186,12 @@
     "availableLessons": "Available Lessons",
     "backButton": "Back",
     "noLessonsAvailable": "No lessons available for this selection.",
+    "loadingLanguages": "Loading languages...",
     "languages": {
-      "english": "English",
-      "french": "French", 
-      "chinese": "Chinese",
-      "spanish": "Spanish",
-      "german": "German",
-      "italian": "Italian"
+  "fr": "French",
+  "en": "English",
+  "zh": "Chinese",
+  "select": "Select a language"
     },
     "levels": {
       "beginnerDesc": "Perfect for starting your language journey",
@@ -198,6 +199,9 @@
       "advancedDesc": "Master complex language skills"
     },
     "categories": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard",
       "easyDesc": "Perfect for beginners",
       "mediumDesc": "For intermediate learners", 
       "hardDesc": "Advanced level challenges"
@@ -322,12 +326,16 @@
       "formPlaceholder": "Form {{type}} will be implemented here..."
     },
     "form": {
+  "teacher": "Teacher",
+  "select": "Select a language",
       "saving": "Saving...",
       "deleting": "Deleting...",
       "create": "Create",
       "update": "Update",
       "duration": "Duration",
       "minutes": "minutes",
+      "durationSelect": "Select a duration",
+      "statusSelect": "Select a status",
       "category": "Category",
       "description": "Description",
       "roles": {

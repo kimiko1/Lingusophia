@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import './Modal.scss';
 
@@ -71,7 +72,8 @@ const Modal = ({
     }
   };
 
-  return (
+  // Utilise React Portal pour rendre le modal à la racine du body
+  return ReactDOM.createPortal(
     <div 
       className="modal-overlay" 
       onClick={handleOverlayClick}
@@ -94,7 +96,6 @@ const Modal = ({
             ×
           </button>
         )}
-        
         {title && (
           <div className="modal__header">
             <h2 id="modal-title" className="modal__title">
@@ -102,12 +103,12 @@ const Modal = ({
             </h2>
           </div>
         )}
-        
         <div className="modal__content">
           {children}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

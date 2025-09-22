@@ -60,7 +60,6 @@ const Navbar = ({
 
   const profileItems = [
     { icon: faUser, label: t('navigation.profile'), href: "/profile" },
-    { icon: faCog, label: t('navigation.settings'), href: "/settings" }
   ];
 
   // Add admin item if user is admin
@@ -92,14 +91,11 @@ const Navbar = ({
 
   const handleLogout = async () => {
     try {
-      await logout();
-      navigate('/');
-      closeAll();
+      navigate('/logout');
     } catch (error) {
       console.error('Erreur de déconnexion:', error);
       // Forcer la déconnexion côté UI même si l'API échoue
-      navigate('/');
-      closeAll();
+      navigate('/logout');
     }
   };
 

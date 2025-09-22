@@ -11,7 +11,7 @@ import "./Register.scss";
 const Register = () => {
   const { t } = useTranslation(["common", "pages"]);
   const navigate = useNavigate();
-  const { register, isLoading, error, isAuthenticated, user, clearError } = useAuth();
+  const { register, isLoading, error, isAuthenticated, user } = useAuth();
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -83,15 +83,11 @@ const Register = () => {
       }));
     }
 
-    // Effacer l'erreur globale
-    if (error) {
-      clearError();
-    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    clearError();
+    
 
     if (!validateForm()) {
       return;

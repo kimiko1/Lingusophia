@@ -4,6 +4,7 @@ import { lessonService } from '@services';
 import { Title, Button } from '@atoms';
 import LessonCard from '@molecules/LessonCard';
 import { loadStripe } from '@stripe/stripe-js';
+import './Bookings.scss';
 
 const Bookings = () => {
   const { user } = useAuth();

@@ -3,6 +3,7 @@ import { useAuth } from '@contexts/AuthContext';
 import { lessonService } from '@services/lessonService';
 import { Title, Button } from '@atoms';
 import LessonCard from '@molecules/LessonCard';
+import './MyLessons.scss';
 
 const MyLessons = () => {
   const { user } = useAuth();
@@ -45,7 +46,7 @@ const MyLessons = () => {
                 level={lesson.level}
                 price={lesson.price}
               />
-              <div style={{ marginTop: 8 }}>
+              <div style={{ marginTop: 8, color: 'white' }}>
                 <span style={{ fontWeight: 'bold' }}>État&nbsp;: </span>Confirmée et payée
               </div>
             </div>
