@@ -133,7 +133,8 @@
     "difficulty": {
       "beginner": "初学者",
       "intermediate": "中级",
-      "advanced": "高级"
+      "advanced": "高级",
+      "select": "选择级别"
     },
     "currentLessons": "当前课程",
     "learningStatistics": "学习统计",
@@ -179,9 +180,10 @@
     "backButton": "返回",
     "noLessonsAvailable": "此选择暂无可用课程。",
     "languages": {
-      "en": "英语",
-      "fr": "法语", 
-      "zh": "中文"
+  "en": "英语",
+  "fr": "法语", 
+  "zh": "中文",
+  "select": "选择语言"
     },
     "levels": {
       "beginnerDesc": "开始您的语言学习之旅的完美选择",
@@ -192,10 +194,10 @@
       "Easy": "簡單",
       "Medium": "中型",
       "Hard": "艱難",
-      "easyDesc": "非常适合初学者",
-      "mediumDesc": "适合中级学习者", 
-      "hardDesc": "高级水平挑战"
-    }
+      "select": "选择类别"
+    },
+    "mediumDesc": "适合中级学习者", 
+    "hardDesc": "高级水平挑战"
   },
   "customerReviews": {
     "title": "学生评价",
@@ -316,12 +318,16 @@
       "formPlaceholder": "表单 {{type}} 将在此处实现..."
     },
     "form": {
+  "teacher": "教师",
+  "select": "选择语言",
       "saving": "保存中...",
       "deleting": "删除中...",
       "create": "创建",
       "update": "更新",
       "duration": "时长",
       "minutes": "分钟",
+      "durationSelect": "选择时长",
+      "statusSelect": "选择状态",
       "category": "类别",
       "description": "描述",
       "roles": {

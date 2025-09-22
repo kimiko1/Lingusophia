@@ -26,6 +26,7 @@ import AdminUsersTab from './AdminUsersTab';
 import LessonsAdminTab from './LessonsAdminTab';
 import AdminBookingsTab from './AdminBookingsTab';
 import AdminModal from './AdminModal';
+import AdminFileUpload from './AdminFileUpload';
 
 /**
  * Admin component - Dashboard d'administration moderne
@@ -40,14 +41,21 @@ const Admin = ({
   
   // Récupérer l'utilisateur authentifié via le context Auth
   const { user } = useAuth();
-  
-  // Définir l'onglet par défaut selon le rôle
-  const [activeTab, setActiveTab] = useState(() => {
-    if (user?.role === 'Teacher') {
-      return 'lessons';
-    }
-    return 'users';
-  });
+
+  // Déterminer les droits
+  const isAdmin = user?.role === 'Admin';
+  const isTeacher = user?.role === 'Teacher';
+
+  // Tabs accessibles selon le rôle
+  const availableTabs = isAdmin
+    ? ['dashboard', 'users', 'bookings'] // Retirer 'lessons' pour Admin
+    : isTeacher
+      ? ['lessons', 'bookings']
+      : [];
+
+  // Onglet par défaut selon le rôle
+  const [activeTab, setActiveTab] = useState(() => availableTabs[0] || '');
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItems, setSelectedItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,8 +68,6 @@ const Admin = ({
   const currentUser = user;
   
   // Vérifier les permissions
-  const isAdmin = currentUser?.role === 'Admin';
-  const isTeacher = currentUser?.role === 'Teacher';
   const canAccessDashboard = isAdmin;
   const canAccessUsers = isAdmin;
   const canAccessLessons = isAdmin || isTeacher;
@@ -113,8 +119,7 @@ const Admin = ({
       </div>
     );
   }
-  
-  if (user && user.role !== 'Admin' && user.role !== 'Teacher') {
+  if (user && !isAdmin && !isTeacher) {
     // Accès refusé si pas admin/teacher
     return (
       <div className="admin__access-denied">
@@ -457,21 +462,22 @@ const bookingsWithActions = getFilteredBookings().map(booking => ({
         </div>
 
         <AdminTabs
-          canAccessDashboard={canAccessDashboard}
-          canAccessUsers={canAccessUsers}
-          canAccessLessons={canAccessLessons}
-          canAccessBookings={canAccessBookings}
+          canAccessDashboard={isAdmin}
+          canAccessUsers={isAdmin}
+          canAccessLessons={isAdmin || isTeacher}
+          canAccessBookings={isAdmin || isTeacher}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           t={t}
+          availableTabs={availableTabs}
         />
         <div className="admin__content">
-          {activeTab === 'dashboard' && (
+          {activeTab === 'dashboard' && isAdmin && (
             <div className="admin__dashboard">
               {/* ...dashboard content... */}
             </div>
           )}
-          {activeTab === 'users' && (
+          {activeTab === 'users' && isAdmin && (
             <AdminUsersTab
               t={t}
               userColumns={userColumns}
@@ -484,7 +490,7 @@ const bookingsWithActions = getFilteredBookings().map(booking => ({
               handleAddNew={handleAddNew}
             />
           )}
-          {activeTab === 'lessons' && (
+          {activeTab === 'lessons' && (isAdmin || isTeacher) && (
             <LessonsAdminTab
               lessons={lessons}
               setLessons={setLessons}
@@ -492,7 +498,7 @@ const bookingsWithActions = getFilteredBookings().map(booking => ({
               setIsLoading={setIsLoading}
             />
           )}
-          {activeTab === 'bookings' && (
+          {activeTab === 'bookings' && (isAdmin || isTeacher) && (
             <AdminBookingsTab
               t={t}
               bookingColumns={bookingColumns}
@@ -515,6 +521,7 @@ const bookingsWithActions = getFilteredBookings().map(booking => ({
           handleSaveUser={handleSaveUser}
           handleSaveLesson={handleSaveLesson}
         />
+        
       </div>
     </div>
   );

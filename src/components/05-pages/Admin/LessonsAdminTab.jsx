@@ -50,13 +50,17 @@ const LessonsAdminTab = ({ lessons, setLessons, isLoading, setIsLoading }) => {
     setIsLoading(true);
     try {
       if (modalType === 'add-lesson') {
+        // Le backend retourne l'id de la nouvelle leçon
         await lessonService.createLesson(lessonData);
+        // Recharge la liste complète après ajout
+        const allData = await userService.getAllUsers();
+        setLessons(allData.lessons || []);
       } else if (modalType === 'edit-lesson') {
         await lessonService.updateLesson(lessonData.id, lessonData);
+        // Recharge la liste complète après édition
+        const allData = await userService.getAllUsers();
+        setLessons(allData.lessons || []);
       }
-      // Recharge les leçons après action
-      const allData = await userService.getAllUsers();
-      setLessons(allData.lessons || []);
       setIsModalOpen(false);
       setCurrentItem(null);
       setModalType('');
@@ -124,6 +128,7 @@ const LessonsAdminTab = ({ lessons, setLessons, isLoading, setIsLoading }) => {
   const lessonsWithActions = lessonsArray.map(lesson => ({
     ...lesson,
     language: lesson.language && typeof lesson.language === 'object' ? lesson.language.name : lesson.language,
+    category: lesson.category && typeof lesson.category === 'object' ? lesson.category.name : lesson.category,
     actions: renderActions(lesson)
   }));
 

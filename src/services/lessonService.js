@@ -8,7 +8,7 @@ export const lessonService = {
    * Récupérer toutes les langues disponibles
    */
   async getLanguages() {
-    const response = await api.get("api/lessons/languages");
+  const response = await api.get("/api/lessons/languages");
     return response.data;
   },
 
@@ -31,7 +31,7 @@ export const lessonService = {
    */
   async getAllLessons() {
     try {
-      const response = await api.get("api/lessons");
+  const response = await api.get("/api/lessons");
       return response.data;
     } catch (error) {
       if (error.response?.status === 404) {
@@ -76,7 +76,7 @@ export const lessonService = {
    * Récupérer les leçons par langue
    */
   async getLessonsByLanguage(language) {
-    const response = await api.get(`api/lessons?language=${language}`);
+  const response = await api.get(`/api/lessons?language=${language}`);
     return response.data;
   },
 
@@ -84,7 +84,7 @@ export const lessonService = {
    * Récupérer les leçons par niveau
    */
   async getLessonsByLevel(level) {
-    const response = await api.get(`api/lessons?level=${level}`);
+  const response = await api.get(`/api/lessons?level=${level}`);
     return response.data;
   },
 
@@ -92,7 +92,7 @@ export const lessonService = {
    * Récupérer les leçons par catégorie
    */
   async getLessonsByCategory(category) {
-    const response = await api.get(`api/lessons?category=${category}`);
+  const response = await api.get(`/api/lessons?category=${category}`);
     return response.data;
   },
 
@@ -107,7 +107,7 @@ export const lessonService = {
     if (filters.category) params.append("category", filters.category);
     if (filters.difficulty) params.append("difficulty", filters.difficulty);
 
-    const response = await api.get(`api/lessons?${params.toString()}`);
+  const response = await api.get(`/api/lessons?${params.toString()}`);
     return response.data;
   },
 
@@ -115,7 +115,7 @@ export const lessonService = {
    * Récupérer une leçon par ID
    */
   async getLessonById(id) {
-    const response = await api.get(`api/lessons/${id}`);
+  const response = await api.get(`/api/lessons/${id}`);
     return response.data;
   },
 
@@ -123,7 +123,7 @@ export const lessonService = {
    * Créer une nouvelle leçon
    */
   async createLesson(lessonData) {
-    const response = await api.post("api/lessons", lessonData);
+  const response = await api.post("/api/lessons", lessonData);
     return response.data;
   },
 
@@ -131,7 +131,7 @@ export const lessonService = {
    * Mettre à jour une leçon
    */
   async updateLesson(id, lessonData) {
-    const response = await api.put(`api/lessons/${id}`, lessonData);
+  const response = await api.put(`/api/lessons/${id}`, lessonData);
     return response.data;
   },
 
@@ -139,7 +139,7 @@ export const lessonService = {
    * Supprimer une leçon
    */
   async deleteLesson(id) {
-    const response = await api.delete(`api/lessons/${id}`);
+  const response = await api.delete(`/api/lessons/${id}`);
     return response.data;
   },
 
@@ -164,7 +164,7 @@ export const lessonService = {
    */
   async completeLesson(lessonId, completionData) {
     const response = await api.post(
-      `api/lessons/${lessonId}/complete`,
+      `/api/lessons/${lessonId}/complete`,
       completionData
     );
     return response.data;

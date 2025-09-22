@@ -151,9 +151,10 @@
     "ongoingLessons": "Leçons en Cours",
     "stats": {
       "title": "Statistiques d'Apprentissage",
-      "lessonsCompleted": "Leçons Terminées",
-      "ongoingLessons": "Leçons en Cours",
-      "lessonsInProgress": "Leçons en Progression",
+      "beginner": "Débutant",
+      "intermediate": "Intermédiaire",
+      "advanced": "Avancé",
+      "select": "Sélectionner un niveau",
       "languagesStudied": "Langues Étudiées",
       "averageScore": "Score Moyen"
     },
@@ -178,7 +179,7 @@
     "lessonScheduled": "Leçon planifiée avec {{teacher}} le {{date}} à {{time}}"
   },
   "lessonSelection": {
-    "title": "Sélectionnez votre leçon",
+    "select": "Sélectionner une catégorie",
     "chooseLanguage": "Choisir la langue",
     "chooseLevel": "Choisir le niveau",
     "chooseCategory": "Choisir la catégorie",
@@ -186,9 +187,10 @@
     "backButton": "Retour",
     "noLessonsAvailable": "Aucune leçon disponible pour cette sélection.",
     "languages": {
-      "fr": "Français",
-      "en": "Anglais",
-      "zh": "Chinois"
+  "fr": "Français",
+  "en": "Anglais",
+  "zh": "Chinois",
+  "select": "Sélectionner une langue"
     },
     "levels": {
       "beginnerDesc": "Parfait pour commencer votre apprentissage",
@@ -323,6 +325,8 @@
       "formPlaceholder": "Formulaire {{type}} sera implémenté ici..."
     },
     "form": {
+  "teacher": "Professeur",
+  "select": "Sélectionner une langue",
       "saving": "Sauvegarde...",
       "deleting": "Suppression...",
       "create": "Créer",
