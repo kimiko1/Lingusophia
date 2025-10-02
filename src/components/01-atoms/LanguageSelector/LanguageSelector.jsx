@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { changeLanguage, getAvailableLanguages } from '@i18n';
@@ -81,9 +80,6 @@ const LanguageSelector = ({
       </div>
     );
   }
-
-  // Variante dropdown par défaut
-  const currentLang = availableLanguages.find(lang => lang.code === currentLanguage);
 
   return (
     <div className={classes} {...props}>

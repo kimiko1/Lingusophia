@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -187,7 +187,7 @@ const ReviewSlider = ({
           </div>
 
           <div className="review-slide__body">
-            <p className="review-slide__comment">"{currentReview.comment}"</p>
+            <p className="review-slide__comment">{currentReview.comment}</p>
           </div>
 
           <div className="review-slide__footer">

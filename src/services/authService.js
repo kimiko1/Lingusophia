@@ -71,6 +71,7 @@ class authService {
 
       return data.user;
     } catch (error) {
+      console.error('Erreur lors de la récupération de l\'utilisateur:', error);
       return null;
     }
   }

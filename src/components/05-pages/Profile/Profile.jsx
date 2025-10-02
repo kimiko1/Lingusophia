@@ -1,22 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@contexts/AuthContext';
-import { userService } from '@services';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateUserProfile as updateProfileThunk } from '@slices/authSlice';
+// import { userService } from '@services';
 import { 
   User, 
   Settings, 
   Camera, 
-  Mail, 
-  Phone, 
-  Globe, 
   Calendar,
-  MapPin,
   Edit3,
   Save,
   X,
-  Bell,
   Shield,
-  Wallet,
   BookOpen,
   TrendingUp,
   Award
@@ -24,8 +19,9 @@ import {
 import './Profile.scss';
 const Profile = () => {
   const { t } = useTranslation();
-  const { user, isLoading, isAuthenticated } = useAuth();
-  const updateProfile = userService.updateUserProfile;
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+  const isLoading = useSelector(state => state.auth.isLoading);
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
   const [formData, setFormData] = useState({});
@@ -89,32 +85,37 @@ const Profile = () => {
   };
 
   const handleSaveProfile = async () => {
-  try {
-    const apiData = {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      phone: formData.phone,
-      bio: formData.bio,
-      nativeLanguage: formData.nativeLanguage,
-      currentLevel: formData.currentLevel,
-      timezone: formData.timezone,
-      avatarUrl: formData.avatarUrl,
-      dateOfBirth: formData.dateOfBirth,
-    };
+    try {
+      const apiData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phone: formData.phone,
+        bio: formData.bio,
+        nativeLanguage: formData.nativeLanguage,
+        currentLevel: formData.currentLevel,
+        timezone: formData.timezone,
+        avatarUrl: formData.avatarUrl,
+        dateOfBirth: formData.dateOfBirth,
+      };
 
-    // user.id passé dans l'URL, apiData dans le body
-    const result = await updateProfile(user.id, apiData);
-    if (result.success || result.message === 'Profil mis à jour avec succès') {
-      setIsEditing(false);
-      setFormData(apiData); // Met à jour l'affichage du profil sans reload
-      // Afficher un message de succès si besoin
-    } else {
-      console.error('Error updating profile:', result.error || result.message || 'Aucune modification détectée ou erreur inconnue');
+     const userId = user?.id || user?._id;
+if (!userId) {
+  console.error('User ID is missing');
+  return;
+}
+      // Dispatch Redux thunk for profile update
+      const result = await dispatch(updateProfileThunk({ userId: user.id, data: apiData }));
+      if (result?.payload?.success || result?.payload?.message === 'Profil mis à jour avec succès') {
+        setIsEditing(false);
+        setFormData(apiData);
+        // Optionally show success message
+      } else {
+        console.error('Error updating profile:', result?.payload?.error || result?.payload?.message || 'Aucune modification détectée ou erreur inconnue');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
     }
-  } catch (error) {
-    console.error('Error updating profile:', error);
-  }
-};
+  };
 
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];

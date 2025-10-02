@@ -1,11 +1,13 @@
 @use '../../../styles/themes/mixins' as *;
 
+// Modern nav-link style
 .nav-link-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   transition: $transition-base;
+  outline: none;
 
   // Size variants
   &--small {
@@ -47,29 +49,37 @@
   // Style variants
   &--default {
     .nav-link {
-      color: $color-text-secondary;
+      color: $text-primary;
+      background: transparent;
+      font-weight: $font-weight-semibold;
       
       &:hover {
-        color: $color-primary;
+        color: $primary-700;
+        background: rgba($primary-500, 0.08);
       }
     }
-    
     .nav-label {
-      color: $color-text-secondary;
+      color: $primary-700;
+      font-weight: $font-weight-semibold;
+      text-shadow: 0 1px 8px rgba($primary-500, 0.08);
     }
   }
 
   &--primary {
     .nav-link {
-      color: $color-primary;
+      color: $primary-700;
+      background: transparent;
+      font-weight: $font-weight-bold;
       
       &:hover {
-        color: $color-primary-dark;
+        color: $primary-500;
+        background: rgba($primary-500, 0.12);
       }
     }
-    
     .nav-label {
-      color: $color-primary;
+      color: $primary-700;
+      font-weight: $font-weight-bold;
+      text-shadow: 0 1px 8px rgba($primary-500, 0.12);
     }
   }
 
@@ -104,15 +114,16 @@
   // Active state
   &--active {
     .nav-link {
-      color: $color-primary !important;
+      color: $primary-700 !important;
+      background: rgba($primary-500, 0.14);
       transform: scale(1.1);
+      font-weight: $font-weight-bold;
     }
-    
     .nav-label {
-      color: $color-primary !important;
-      font-weight: $font-weight-semibold;
+      color: $primary-700 !important;
+      font-weight: $font-weight-bold;
+      text-shadow: 0 2px 12px rgba($primary-500, 0.18);
     }
-
     &::after {
       content: '';
       position: absolute;
@@ -121,7 +132,7 @@
       transform: translateX(-50%);
       width: 4px;
       height: 4px;
-      background-color: $color-primary;
+      background-color: $primary-700;
       border-radius: 50%;
     }
   }
@@ -141,9 +152,10 @@
   // Hover effects
   &:not(&--disabled):not(&--active):hover {
     transform: translateY(-2px);
-    
+    box-shadow: 0 2px 12px rgba($color-primary, 0.08);
     .nav-link {
-      transform: scale(1.05);
+      transform: scale(1.07);
+      background: rgba($color-primary, 0.07);
     }
   }
 }
@@ -156,10 +168,13 @@
   transition: $transition-base;
   border-radius: $border-radius-md;
   padding: $spacing-xs;
-  
+  outline: none;
+
   &:focus {
-    outline: 2px solid $color-focus;
+    outline: 2.5px solid $color-focus;
     outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba($color-primary, 0.12);
+    background: rgba($color-primary, 0.08);
   }
 
   &--disabled {
@@ -176,6 +191,8 @@
 
 .nav-icon {
   transition: $transition-base;
+  color: $primary-700 !important;
+  filter: drop-shadow(0 1px 8px rgba($primary-500, 0.10));
 }
 
 .nav-label {
@@ -184,6 +201,7 @@
   text-align: center;
   transition: $transition-base;
   white-space: nowrap;
+  letter-spacing: 0.5px;
 
   &--disabled {
     cursor: not-allowed;
@@ -194,24 +212,19 @@
 @include mobile-only {
   .nav-link-wrapper {
     &--large {
-      gap: $spacing-sm;
-      
-      .nav-icon {
-        font-size: $font-size-xl;
-      }
-      
-      .nav-label {
-        font-size: $font-size-sm;
-      }
-    }
-
-    &--medium {
       gap: $spacing-xs;
-      
       .nav-icon {
         font-size: $font-size-lg;
       }
-      
+      .nav-label {
+        font-size: $font-size-xs;
+      }
+    }
+    &--medium {
+      gap: 2px;
+      .nav-icon {
+        font-size: $font-size-base;
+      }
       .nav-label {
         font-size: $font-size-xs;
       }

@@ -99,9 +99,9 @@
     display: flex;
     align-items: center;
     gap: $spacing-md;
-    padding: $spacing-lg $spacing-xl;
-    border-radius: 18px;
-    background: linear-gradient(90deg, rgba($primary-500,0.07) 0%, rgba($primary-700,0.04) 100%);
+    padding: $spacing-md $spacing-lg;
+    border-radius: 16px;
+    background: linear-gradient(90deg, rgba($primary-500,0.09) 0%, rgba($primary-700,0.05) 100%);
     transition: background 0.25s, box-shadow 0.25s, color 0.2s;
     box-shadow: 0 2px 12px rgba($primary-700, 0.07);
     font-size: 1.13rem;
@@ -113,24 +113,24 @@
     margin: 6px 0;
 
     &:hover {
-      background: linear-gradient(90deg, rgba($primary-500,0.13) 0%, rgba($primary-700,0.09) 100%);
-      color: $primary-500;
-      box-shadow: 0 4px 18px rgba($primary-500, 0.13);
+      background: linear-gradient(90deg, rgba($primary-500,0.18) 0%, rgba($primary-700,0.12) 100%);
+      color: $primary-600;
+      box-shadow: 0 4px 18px rgba($primary-500, 0.18);
     }
 
     svg {
       width: 26px;
       height: 26px;
-      margin-right: $spacing-lg;
+      margin-right: $spacing-md;
       color: $primary-500;
       transition: color 0.2s;
     }
   }
 
   &--active .nav-link-wrapper {
-    background: linear-gradient(90deg, rgba($primary-500,0.18) 0%, rgba($primary-700,0.12) 100%);
+    background: linear-gradient(90deg, rgba($primary-500,0.22) 0%, rgba($primary-700,0.16) 100%);
     color: $primary-700;
-    box-shadow: 0 6px 24px rgba($primary-500, 0.18);
+    box-shadow: 0 8px 32px rgba($primary-500, 0.22);
     border: 1.5px solid $primary-700;
 
     svg {
@@ -143,21 +143,27 @@
 @include mobile-only {
   .nav-item {
     &--large {
-      padding: $spacing-sm 0;
-    }
-
-    &--medium {
       padding: $spacing-xs 0;
     }
-
+    &--medium {
+      padding: 2px 0;
+    }
     &--primary::before {
       left: -$spacing-xs;
       width: 2px;
     }
-
     &--secondary {
       margin: 2px 0;
       padding: $spacing-xs;
+    }
+    .nav-link-wrapper {
+      padding: $spacing-xs $spacing-sm;
+      font-size: $font-size-sm;
+      svg {
+        width: 20px;
+        height: 20px;
+        margin-right: $spacing-xs;
+      }
     }
   }
 }

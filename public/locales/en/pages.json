@@ -1,4 +1,25 @@
-{
+  {
+    "levels": {
+    "easy": "Beginner",
+    "easyDesc": "Perfect for starting your language journey",
+    "perfect for starting your language journeyDesc": "Perfect for starting your language journey",
+    "hard": "Advanced",
+    "hardDesc": "Master complex language skills",
+    "master": "Master",
+    "masterDesc": "Master complex language skills",
+    "master complex language skillsDesc": "Master complex language skills"
+    },
+    "calendar": {
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "months": [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ],
+      "weekdays": [
+        "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+      ]
+    },
   "home": {
     "title": "Welcome to Yourpersonaltutor",
     "subtitle": "Master new languages with our interactive platform",
@@ -191,12 +212,15 @@
   "fr": "French",
   "en": "English",
   "zh": "Chinese",
+      "undefined": "Unknown language",
   "select": "Select a language"
     },
     "levels": {
       "beginnerDesc": "Perfect for starting your language journey",
       "intermediateDesc": "Build on your existing knowledge",
       "advancedDesc": "Master complex language skills"
+  ,"开始您的语言学习之旅的完美选择Desc": "Perfect for starting your language journey"
+  ,"掌握复杂的语言技能Desc": "Master complex language skills"
     },
     "categories": {
       "easy": "Easy",

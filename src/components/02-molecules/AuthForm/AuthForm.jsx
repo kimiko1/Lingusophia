@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { useAuth } from '@contexts/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input, Card, Title } from '@atoms';
 import './AuthForm.scss';
+import { setUser, setLoading, setAuthenticated, setError, clearError } from '@slices/authSlice';
+import { authService } from '@services';
 
 const AuthForm = ({ mode = 'login' }) => {
   const [formData, setFormData] = useState({
@@ -11,8 +13,10 @@ const AuthForm = ({ mode = 'login' }) => {
     lastName: ''
   });
   const [isLoginMode, setIsLoginMode] = useState(mode === 'login');
-  
-  const { login, register, isLoading, error, clearError } = useAuth();
+
+  const dispatch = useDispatch();
+  const isLoading = useSelector(state => state.auth.isLoading);
+  const error = useSelector(state => state.auth.error);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,34 +24,51 @@ const AuthForm = ({ mode = 'login' }) => {
       ...prev,
       [name]: value
     }));
+    dispatch(clearError());
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    clearError();
-
+    dispatch(clearError());
+    dispatch(setLoading(true));
     try {
       if (isLoginMode) {
-        const result = await login({
-          email: formData.email,
-          password: formData.password
-        });
+        const userData = await authService.login(formData.email, formData.password);
+        if (userData && userData.user) {
+          // On stocke l'objet user + token si présent
+          const user = { ...userData.user };
+          if (userData.token) user.token = userData.token;
+          dispatch(setUser(user));
+          dispatch(setAuthenticated(true));
+        } else {
+          dispatch(setError('Identifiants invalides'));
+        }
       } else {
-        const result = await register({
+        const userData = await authService.register({
           email: formData.email,
           password: formData.password,
           firstName: formData.firstName,
           lastName: formData.lastName
         });
+        if (userData && userData.user) {
+          const user = { ...userData.user };
+          if (userData.token) user.token = userData.token;
+          dispatch(setUser(user));
+          dispatch(setAuthenticated(true));
+        } else {
+          dispatch(setError("Erreur lors de l'inscription"));
+        }
       }
     } catch (error) {
-      console.error('Erreur:', error);
+      dispatch(setError(error.message || 'Erreur serveur'));
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
   const toggleMode = () => {
     setIsLoginMode(!isLoginMode);
-    clearError();
+    dispatch(clearError());
     setFormData({
       email: '',
       password: '',

@@ -1,8 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Modal, Title, Button } from '@atoms';
-import { useBooking } from '@contexts/BookingContext';
+import { useSelector, useDispatch } from 'react-redux';
 import './LessonDetailsModal.scss';
 
 /**
@@ -25,8 +24,22 @@ const LessonDetailsModal = ({
   ...props
 }) => {
   const { t } = useTranslation('common');
-  const { selectedDate, selectedTime, setSelectedTime } = useBooking();
-  
+  const dispatch = useDispatch();
+  const selectedDateRaw = useSelector(state => state.booking.selectedDate);
+  const selectedTime = useSelector(state => state.booking.selectedTime);
+
+  // Always convert Redux date to Date object if possible
+  let selectedDate = null;
+  if (selectedDateRaw) {
+    try {
+      selectedDate = new Date(selectedDateRaw);
+      // If invalid date, fallback to null
+      if (isNaN(selectedDate.getTime())) selectedDate = null;
+    } catch {
+      selectedDate = null;
+    }
+  }
+
   if (!lesson) return null;
 
   const modalClasses = [
@@ -38,7 +51,13 @@ const LessonDetailsModal = ({
   const handleConfirm = () => {
     if (onConfirm && selectedDate && selectedTime) {
       // Convertir la date en format YYYY-MM-DD
-      const dateString = selectedDate.toISOString().split('T')[0];
+      let dateObj = selectedDate instanceof Date ? selectedDate : new Date(selectedDate);
+      const pad = n => n.toString().padStart(2, '0');
+      const dateString = [
+        dateObj.getFullYear(),
+        pad(dateObj.getMonth() + 1),
+        pad(dateObj.getDate())
+      ].join('-');
       onConfirm(lesson, null, dateString, selectedTime);
     } else if (!selectedDate) {
       alert('Veuillez sélectionner une date dans le calendrier');
@@ -119,12 +138,14 @@ const LessonDetailsModal = ({
           <div className="lesson-details-modal__date-field">
             <label>Date sélectionnée :</label>
             <div className="lesson-details-modal__selected-date">
-              {selectedDate ? selectedDate.toLocaleDateString('fr-FR', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              }) : 'Aucune date sélectionnée'}
+              {selectedDate
+                ? selectedDate.toLocaleDateString('fr-FR', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })
+                : 'Aucune date sélectionnée'}
             </div>
             {!selectedDate && (
               <p className="lesson-details-modal__date-warning">
@@ -137,7 +158,7 @@ const LessonDetailsModal = ({
             <select
               id="lesson-time"
               value={selectedTime}
-              onChange={(e) => setSelectedTime(e.target.value)}
+              onChange={(e) => dispatch({ type: 'booking/setSelectedTime', payload: e.target.value })}
               className="lesson-details-modal__time-select"
             >
               <option value="">Sélectionnez une heure</option>

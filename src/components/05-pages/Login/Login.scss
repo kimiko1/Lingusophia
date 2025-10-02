@@ -1,5 +1,6 @@
 @use '../../../styles/themes/mixins' as *;
 
+
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -14,24 +15,29 @@
   max-width: 450px;
 }
 
+
 .login-card {
-  padding: 3rem;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  background: white;
+  padding: 2.5rem 2rem;
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  background: #fff;
   border: none;
+  width: 100%;
+  max-width: 400px;
 }
+
 
 .login-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
+
 
 .login-title {
   color: $primary-color;
   margin-bottom: 0.5rem;
   font-weight: 700;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
 }
 
 .login-subtitle {
@@ -40,23 +46,24 @@
   margin: 0;
 }
 
+
 .login-form {
   .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
   }
 
   .login-input {
     width: 100%;
-    padding: 1rem;
+    padding: 0.9rem 1rem;
     border: 2px solid $border-color;
-    border-radius: 12px;
+    border-radius: 10px;
     font-size: 1rem;
     transition: all 0.3s ease;
     background: white;
 
     &:focus {
       border-color: $primary-color;
-      box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.12);
       outline: none;
     }
 
@@ -67,7 +74,6 @@
 
   .password-input-wrapper {
     position: relative;
-    
     .password-toggle {
       position: absolute;
       right: 1rem;
@@ -76,29 +82,39 @@
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: $text-muted;
-      padding: 0.25rem;
+      padding: 0.2rem;
       border-radius: 4px;
       transition: all 0.2s ease;
-
       &:hover {
-        background: rgba($primary-color, 0.1);
+        background: rgba($primary-color, 0.08);
         color: $primary-color;
       }
     }
   }
 }
 
-.error-message {
-  background: rgba($error-color, 0.1);
-  border: 1px solid rgba($error-color, 0.3);
+
+.login-error {
+  background: rgba($error-color, 0.12);
+  border: 1px solid rgba($error-color, 0.25);
   color: $error-color;
-  padding: 1rem;
+  padding: 0.8rem 1rem;
   border-radius: 8px;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
+  margin-bottom: 1.2rem;
+  font-size: 1rem;
   text-align: center;
+  box-shadow: 0 2px 8px rgba($error-color, 0.08);
+}
+
+
+.login-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin: 1.2rem 0 1.5rem 0;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .login-button {
@@ -107,12 +123,12 @@
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 12px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
   transition: all 0.3s ease;
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba($primary-color, 0.3);
+    box-shadow: 0 8px 20px rgba($primary-color, 0.22);
   }
 
   &:disabled {
@@ -121,20 +137,19 @@
   }
 }
 
+
 .login-links {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 
   a {
     color: $primary-color;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.3s ease;
-
     &:hover {
       color: $secondary-color;
       text-decoration: underline;
@@ -175,39 +190,38 @@
 }
 
 // Responsive design
+
 @media (max-width: 768px) {
   .login-page {
     padding: 1rem;
   }
-
   .login-card {
-    padding: 2rem;
+    padding: 1.5rem;
+    max-width: 95vw;
   }
-
   .login-title {
-    font-size: 2rem;
+    font-size: 1.7rem;
   }
-
   .login-links {
     flex-direction: column;
     text-align: center;
     gap: 0.5rem;
   }
+  .login-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
 }
+
 
 @media (max-width: 480px) {
   .login-card {
-    padding: 1.5rem;
+    padding: 1rem;
+    max-width: 100vw;
   }
-
   .login-title {
-    font-size: 1.8rem;
-  }
-
-  .demo-buttons {
-    .demo-button {
-      font-size: 0.85rem;
-    }
+    font-size: 1.3rem;
   }
 }
 

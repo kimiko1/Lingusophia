@@ -1,8 +1,9 @@
 @use '../../../styles/themes/mixins' as *;
 @use '../../../styles/themes/tokens' as *;
 
+// Modern glass effect, better contrast
 .navbar {
-  @include glass-effect(rgba($bg-primary, 0.95), rgba($border-light, 0.2));
+  @include glass-effect(rgba($bg-primary, 0.98), rgba($border-light, 0.25));
   position: fixed;
   top: 0;
   left: 0;
@@ -12,12 +13,14 @@
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;
-  min-height: 70px;
+  min-height: 72px;
+  box-shadow: 0 2px 24px rgba($primary-500, 0.08);
   @include smooth-transition(0.3s, cubic-bezier(0.4, 0, 0.2, 1));
 
   @include mobile-only {
     min-height: 60px;
-    padding: $spacing-3 $spacing-4;
+    padding: $spacing-2 $spacing-2;
+    box-shadow: 0 1px 8px rgba($primary-500, 0.10);
   }
 
   // Left section - Hamburger always visible
@@ -106,9 +109,10 @@
 
     .navbar__logo {
       @include smooth-transition;
-
+      filter: drop-shadow(0 2px 8px rgba($primary-500, 0.10));
       &:hover {
-        @include hover-lift(2px, 1.05);
+        @include hover-lift(2px, 1.07);
+        filter: drop-shadow(0 4px 16px rgba($primary-500, 0.18));
       }
     }
 
@@ -118,6 +122,7 @@
       font-weight: $font-weight-semibold;
       letter-spacing: 1px;
       margin-top: 0.1rem;
+      text-shadow: 0 1px 8px rgba($primary-500, 0.08);
     }
   }
 
@@ -134,8 +139,8 @@
     padding-right: $spacing-4;
 
     @include mobile-only {
-      padding-right: $spacing-3;
-      gap: $spacing-3;
+      padding-right: $spacing-2;
+      gap: $spacing-2;
     }
   }
 
@@ -247,14 +252,14 @@
     position: absolute;
     top: calc(100% + #{$spacing-sm});
     right: 0;
-    @include glass-effect(rgba($color-surface, 0.98), rgba($color-border, 0.2));
+    @include glass-effect(rgba($color-surface, 0.99), rgba($color-border, 0.22));
     border-radius: $border-radius-xl;
-    box-shadow: $shadow-2xl;
+    box-shadow: 0 8px 32px rgba($primary-500, 0.18);
     min-width: 280px;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px) scale(0.95);
-    @include smooth-transition(0.3s, cubic-bezier(0.4, 0, 0.2, 1));
+    @include smooth-transition(0.32s, cubic-bezier(0.4, 0, 0.2, 1));
     z-index: $z-index-dropdown;
     overflow: hidden;
 
@@ -262,11 +267,12 @@
       opacity: 1;
       visibility: visible;
       transform: translateY(0) scale(1);
+      box-shadow: 0 16px 48px rgba($primary-500, 0.22);
     }
 
     @include mobile-only {
-      right: -$spacing-3;
-      min-width: 260px;
+      right: -$spacing-2;
+      min-width: 220px;
     }
   }
 
@@ -315,12 +321,12 @@
     @include smooth-transition;
     @include button-reset;
     width: 100%;
-    color: $text-inverse;
+    color: $primary-700;
     text-align: left;
     cursor: pointer;
 
     &:hover {
-      background: rgba($primary-500, 0.08);
+      background: rgba($primary-500, 0.10);
       color: $primary-600;
       transform: translateX(4px);
     }
@@ -329,7 +335,7 @@
       color: $color-danger;
 
       &:hover {
-        background: rgba($color-danger, 0.08);
+        background: rgba($color-danger, 0.12);
         color: $color-danger;
       }
     }
@@ -453,8 +459,9 @@
 
   .nav-item {
     width: 100%;
-    transform: translateY(30px);
-    opacity: 0;
+    // Suppression de toute animation, transform et opacity pour visibilité immédiate
+    transform: none !important;
+    opacity: 1 !important;
 
     &__link {
       @include flex-center;
@@ -497,14 +504,14 @@
       }
     }
 
-    // Cascade animation
-    @for $i from 1 through 10 {
-      &:nth-child(#{$i}) {
-        animation-delay: #{$i * 0.1}s;
-        animation-fill-mode: forwards;
-        @include slide-up(0.5s, 30px);
-      }
-    }
+    // Suppression de l'animation slide-up pour visibilité immédiate
+    // @for $i from 1 through 10 {
+    //   &:nth-child(#{$i}) {
+    //     animation-delay: #{$i * 0.1}s;
+    //     animation-fill-mode: forwards;
+    //     @include slide-up(0.5s, 30px);
+    //   }
+    // }
   }
 
   // Menu open state animation
@@ -512,8 +519,9 @@
     .navbar__nav {
       width: 50%;
       .nav-item {
-        animation-fill-mode: forwards;
-        @include slide-up(0.5s, 30px);
+        // Suppression de toute animation sur les nav-items
+        transform: none !important;
+        opacity: 1 !important;
       }
     }
   }
@@ -632,27 +640,30 @@
 // Dark mode support
 @media (prefers-color-scheme: dark) {
   .navbar {
-    @include glass-effect(rgba($secondary-900, 0.95), rgba($secondary-700, 0.3));
+    @include glass-effect(rgba($secondary-900, 0.98), rgba($secondary-700, 0.32));
+    box-shadow: 0 2px 24px rgba($primary-500, 0.18);
 
     .navbar__nav {
-      @include glass-effect(rgba($secondary-900, 0.98), rgba($secondary-700, 0.2));
+      @include glass-effect(rgba($secondary-900, 0.99), rgba($secondary-700, 0.22));
     }
 
     .navbar__nav-list .nav-item__link {
-      @include glass-effect(rgba($secondary-800, 0.8), rgba($secondary-600, 0.3));
+      @include glass-effect(rgba($secondary-800, 0.88), rgba($secondary-600, 0.32));
       color: white;
+      text-shadow: 0 1px 8px rgba($primary-500, 0.18);
     }
 
     .navbar__profile-dropdown {
-      @include glass-effect(rgba($secondary-800, 0.98), rgba($secondary-600, 0.2));
+      @include glass-effect(rgba($secondary-800, 0.99), rgba($secondary-600, 0.22));
+      box-shadow: 0 8px 32px rgba($primary-500, 0.28);
     }
 
     .navbar__auth-button--login {
-      @include glass-effect(rgba($secondary-700, 0.8), rgba($secondary-600, 0.5));
+      @include glass-effect(rgba($secondary-700, 0.88), rgba($secondary-600, 0.52));
       color: white;
 
       &:hover {
-        background: rgba($secondary-600, 0.8);
+        background: rgba($secondary-600, 0.88);
       }
     }
   }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Title, Button } from '@atoms';
 import { useNavigate } from 'react-router-dom';
 import './Cancel.scss';

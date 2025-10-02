@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "@contexts/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Input, Card, Title } from "@atoms";
 import "./Register.scss";
+import { setUser, setLoading, setAuthenticated, setError, clearError } from '@slices/authSlice';
+import { authService } from '@services';
 
 /**
  * Register - Page d'inscription
@@ -11,7 +13,11 @@ import "./Register.scss";
 const Register = () => {
   const { t } = useTranslation(["common", "pages"]);
   const navigate = useNavigate();
-  const { register, isLoading, error, isAuthenticated, user } = useAuth();
+  const dispatch = useDispatch();
+  const isLoading = useSelector(state => state.auth.isLoading);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const user = useSelector(state => state.auth.user);
+  const error = useSelector(state => state.auth.error);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -87,18 +93,26 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-
+    dispatch(clearError());
     if (!validateForm()) {
       return;
     }
-
+    dispatch(setLoading(true));
     try {
       const { confirmPassword, ...registrationData } = formData;
-      await register(registrationData);
-      // Registration successful, user will be redirected by useEffect
+      const userData = await authService.register(registrationData);
+      if (userData) {
+        dispatch(setUser(userData));
+        dispatch(setAuthenticated(true));
+        navigate(userData.role === "admin" ? "/admin" : "/");
+      } else {
+        dispatch(setError("Erreur lors de l'inscription"));
+      }
     } catch (err) {
+      dispatch(setError(err.message || "Erreur serveur"));
       console.error("Erreur d'inscription:", err);
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -123,7 +137,6 @@ const Register = () => {
 
           <form onSubmit={handleSubmit} className="register-form">
             {error && <div className="error-message">{error}</div>}
-
             <div className="form-row">
               <div className="form-group">
                 <Input

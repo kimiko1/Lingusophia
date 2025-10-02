@@ -159,6 +159,11 @@
           gap: $spacing-2;
         }
 
+        // Move declarations above nested rules to avoid deprecation
+        color: $warning-600;
+        font-weight: $font-weight-medium;
+        }
+
         &::before {
           content: '⏳';
           width: 20px;
@@ -209,7 +214,6 @@
       }
     }
   }
-}
 
 // Enhanced LessonCard when used in bookings context
 .bookings-page .lesson-card,

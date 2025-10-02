@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '@contexts/AuthContext';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './Logout.scss';
+import { logout, setLoading, setAuthenticated, setUser } from '@slices/authSlice';
+import { authService } from '@services';
 
 const Logout = () => {
-  const { logout, user, isAuthenticated, isLoading } = useAuth();
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const isLoading = useSelector(state => state.auth.isLoading);
   const navigate = useNavigate();
   const [status, setStatus] = useState('idle'); // idle | loading | success | error
 
@@ -16,11 +21,18 @@ const Logout = () => {
 
   const handleLogout = async () => {
     setStatus('loading');
+    dispatch(setLoading(true));
     try {
-      await logout();
+      await authService.logout();
+      dispatch(logout());
       setStatus('success');
+      dispatch(setLoading(false));
+      dispatch(setAuthenticated(false));
+      dispatch(setUser(null));
+      navigate('/login');
     } catch (e) {
-      setStatus('error');
+      setStatus(`error (${e.message})`);
+      dispatch(setLoading(false));
     }
   };
 

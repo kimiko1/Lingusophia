@@ -1,4 +1,4 @@
-import { Card, Input, Button, Title } from '@atoms';
+import { Card, Input, Title } from '@atoms';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { DataTable } from '@molecules';
 

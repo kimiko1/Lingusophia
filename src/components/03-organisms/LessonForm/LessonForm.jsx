@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { lessonService } from '@services';
 import PropTypes from 'prop-types';
-import { useAuth } from '@contexts/AuthContext';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -26,7 +26,7 @@ const LessonForm = ({
   className = '',
   ...props
 }) => {
-  const { user } = useAuth();
+  const user = useSelector(state => state.auth.user);
   const { t } = useTranslation('pages');
   const { t: tCommon } = useTranslation('common');
   const [formData, setFormData] = useState({
@@ -154,7 +154,6 @@ const LessonForm = ({
 
   // Validation du formulaire
   const validateForm = () => {
-    console.log('LessonForm - validateForm appelé avec formData:', formData);
     const newErrors = {};
 
     if (!formData.title.trim()) {
@@ -169,19 +168,14 @@ const LessonForm = ({
       newErrors.price = t('admin.form.validation.priceInvalid');
     }
 
-    console.log('LessonForm - Erreurs de validation:', newErrors);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   // Gérer la soumission du formulaire
   const handleSubmit = (e) => {
-    console.log('LessonForm - handleSubmit appelé');
     e.preventDefault();
-    
-    console.log('LessonForm - formData avant validation:', formData);
     if (!validateForm()) {
-      console.log('LessonForm - Validation échouée, erreurs:', errors);
       return;
     }
 
@@ -208,8 +202,6 @@ const LessonForm = ({
       lessonData.id = lesson.id;
     }
 
-    console.log('LessonForm - Données converties pour API:', lessonData);
-    console.log('LessonForm - Appel onSave avec:', lessonData);
     onSave && onSave(lessonData);
   };
 

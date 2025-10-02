@@ -1,10 +1,9 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@contexts/AuthContext';
+import { useSelector } from 'react-redux';
 
 const LogoutLink = ({ className = "", style = {} }) => {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
   const handleLogoutClick = () => {
     navigate('/logout');

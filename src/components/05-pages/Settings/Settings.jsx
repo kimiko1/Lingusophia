@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@contexts/AuthContext';
+import { useSelector } from 'react-redux';
 import { Button, Card, Title, Input } from '@atoms';
 import { PageLayout } from '@templates';
 import { userService } from '@services';
@@ -11,7 +11,7 @@ import './Settings.scss';
  */
 const Settings = () => {
   const { t } = useTranslation('pages');
-  const { user } = useAuth();
+  const user = useSelector(state => state.auth.user);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');

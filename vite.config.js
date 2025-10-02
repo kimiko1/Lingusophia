@@ -23,7 +23,7 @@ export default defineConfig({
       '@templates': '/src/components/04-templates',
       '@pages': '/src/components/05-pages',
       '@i18n': '/src/i18n',
-      '@contexts': '/src/contexts',
+      '@slices': '/src/slices',
       '@hooks': '/src/hooks',
       '@store': '/src/store',
       '@utils': '/src/utils',

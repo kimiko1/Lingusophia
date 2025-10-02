@@ -1,4 +1,14 @@
 {
+  "levels": {
+    "easy": "Débutant",
+    "easyDesc": "Parfait pour commencer votre parcours linguistique",
+    "perfect for starting your language journeyDesc": "Parfait pour commencer votre parcours linguistique",
+    "hard": "Avancé",
+    "hardDesc": "Maîtrisez des compétences linguistiques complexes",
+    "master": "Maître",
+    "masterDesc": "Maîtrisez des compétences linguistiques complexes",
+    "master complex language skillsDesc": "Maîtrisez des compétences linguistiques complexes"
+  },
   "home": {
     "title": "Bienvenue sur Yourpersonaltutor",
     "subtitle": "Maîtrisez de nouvelles langues avec notre plateforme interactive",

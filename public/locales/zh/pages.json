@@ -41,7 +41,7 @@
     "subtitle": "安排您的课程",
     "selectedDate": "选定日期",
     "scheduleLesson": "安排课程",
-    "noLessons": "今天没有安排课程",
+    "noLessons": "当天没有安排课程",
     "previousMonth": "上个月",
     "nextMonth": "下个月",
     "months": [
@@ -51,6 +51,16 @@
     "weekdays": [
       "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"
     ]
+  },
+  "levels": {
+    "easy": "初学者",
+    "easyDesc": "非常适合开始您的语言之旅",
+    "perfect for starting your language journeyDesc": "非常适合开始您的语言之旅",
+    "hard": "高级",
+    "hardDesc": "掌握复杂的语言技能",
+    "master": "大师",
+    "masterDesc": "掌握复杂的语言技能",
+    "master complex language skillsDesc": "掌握复杂的语言技能"
   },
   "settings": {
     "title": "设置",

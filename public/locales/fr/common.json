@@ -1,4 +1,8 @@
 {
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler"
+  },
   "app": {
     "name": "Yourpersonaltutor",
     "tagline": "Maîtrisez les langues avec confiance"
@@ -82,12 +86,13 @@
     "goodbye": "À bientôt !"
   },
   "aria": {
-    "openMenu": "Ouvrir le menu",
-    "closeMenu": "Fermer le menu",
-    "openProfile": "Ouvrir le menu profil",
-    "closeProfile": "Fermer le menu profil",
-    "selectLanguage": "Sélectionner la langue",
-    "currentLanguage": "Langue actuelle"
+  "openMenu": "Ouvrir le menu",
+  "closeMenu": "Fermer le menu",
+  "openProfile": "Ouvrir le menu profil",
+  "closeProfile": "Fermer le menu profil",
+  "selectLanguage": "Sélectionner la langue",
+  "currentLanguage": "Langue actuelle",
+  "home": "Aller à l'accueil"
   },
   "languages": {
     "en": "Anglais",
