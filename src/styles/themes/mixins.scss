@@ -1,10 +1,16 @@
-// =============================================
-// MIXINS - Fonctions réutilisables
-// =============================================
-
 @use "sass:color";
 @use './tokens' as *;
 @forward './tokens';
+
+// Tablet only (entre mobile et desktop)
+@mixin tablet-only {
+  @media (min-width: 769px) and (max-width: 1024px) {
+    @content;
+  }
+}
+// =============================================
+// MIXINS - Fonctions réutilisables
+// =============================================
 
 // ==================== LAYOUT MIXINS ====================
 @mixin flex-center {
