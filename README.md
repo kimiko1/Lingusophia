@@ -26,9 +26,10 @@ Une application web moderne d'apprentissage des langues construite avec React, V
 - **Axios** - Client HTTP pour les appels API
 
 ## 📋 Prérequis
-
+- Git
+- Vscode
 - Node.js (version 18 ou supérieure)
-- npm ou yarn
+- npm
 
 ## 🔧 Installation
 
@@ -39,6 +40,15 @@ git clone https://github.com/kimiko1/Lingusophia.git
 cd Lingusophia
 npm install
 ```
+
+Ensuite creer un .env avec les informations si dessous
+
+```
+VITE_API_URL=https://lingusophiaback-production.up.railway.app
+# VITE_API_URL=http://localhost:3000
+VITE_NODE_ENV=production
+```
+utilisez le premier ``VITE_API_URL`` si vous n'avez pas encore cloner le back, mais si vous l'avez fais vous pouvez utilisez le deuxième.
 
 ## 🏃 Démarrage
 
@@ -70,7 +80,7 @@ npm run preview
 
 ## 📦 Déploiement
 
-Ce projet est configuré pour être déployé sur GitHub Pages avec `gh-pages`.
+Ce projet est déployer avec railway.
 
 ## 🛠️ Configuration
 
