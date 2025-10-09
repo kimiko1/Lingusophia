@@ -1,54 +1,334 @@
+@use '../../../styles/themes/mixins' as *;
+
+// =============================================
+// ADMIN NAVBAR - Design moderne et propre
+// =============================================
+
 .admin-navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(90deg, #312e81 0%, #6366f1 100%);
-  color: #fff;
-  padding: 0.75rem 2rem;
-  box-shadow: 0 2px 8px rgba(49, 46, 129, 0.12);
+  @include flex-between;
+  background: linear-gradient(135deg, $primary-600 0%, $primary-500 100%);
+  color: $text-inverse;
+  padding: $spacing-4 $spacing-6;
+  box-shadow: $shadow-lg;
+  position: relative;
+  z-index: $z-index-navbar;
+  min-height: 75px;
+
+  // Bordure subtile en bas
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+
+  // Animation d'entrée
+  animation: slideDown 0.3s ease-out;
 }
 
+// ==================== LOGO ====================
 .admin-navbar__logo {
-  font-weight: bold;
-  font-size: 1.3rem;
+  @include flex-center;
+  gap: $spacing-2;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xl;
+  color: $text-inverse;
+  text-decoration: none;
   cursor: pointer;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  transition: $transition-base;
+  padding: $spacing-2;
+  border-radius: $border-radius-md;
+
+  &:hover {
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  // Icône admin
+  &::before {
+    content: '⚡';
+    font-size: $font-size-2xl;
+    margin-right: $spacing-1;
+  }
+
+  @include mobile-only {
+    font-size: $font-size-lg;
+
+    &::before {
+      font-size: $font-size-xl;
+    }
+  }
 }
 
+// ==================== NAVIGATION LINKS ====================
 .admin-navbar__links {
-  display: flex;
-  gap: 2rem;
+  @include flex-center;
+  gap: $spacing-5;
   list-style: none;
   margin: 0;
   padding: 0;
+
+  @include mobile-only {
+    display: none;
+  }
+
+  @include tablet-only {
+    gap: $spacing-3;
+  }
 }
 
-.admin-navbar__links a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.5rem;
-  transition: background 0.2s;
+.admin-navbar__link {
+  a {
+    @include flex-center;
+    color: white !important; // Force la couleur blanche absolue
+    text-decoration: none !important;
+    font-family: $font-family-primary;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-base;
+    padding: $spacing-3 $spacing-4;
+    border-radius: $border-radius-lg;
+    transition: $transition-base;
+    position: relative;
+    
+    // Override de tous les états possibles de NavLink
+    &:link,
+    &:visited,
+    &:hover,
+    &:active,
+    &.active {
+      color: white !important;
+      text-decoration: none !important;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+      box-shadow: $shadow-sm;
+    }
+
+    &.active {
+      background: rgba(255, 255, 255, 0.2);
+      font-weight: $font-weight-semibold;
+
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 2px;
+        background: $text-inverse;
+        border-radius: $border-radius-full;
+      }
+    }
+
+    &:focus {
+      color: $text-inverse !important; // Garde le blanc au focus
+      outline: 2px solid rgba(255, 255, 255, 0.8);
+      outline-offset: 2px;
+    }
+
+    &:visited {
+      color: $text-inverse !important; // Garde le blanc pour les liens visités
+    }
+  }
 }
 
-.admin-navbar__links a.active {
-  background: #6366f1;
+// ==================== USER SECTION ====================
+.admin-navbar__user {
+  @include flex-center;
+  gap: $spacing-3;
+  background: rgba(255, 255, 255, 0.1);
+  padding: $spacing-2 $spacing-3;
+  border-radius: $border-radius-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  &::before {
+    content: '👤';
+    font-size: $font-size-base;
+  }
+
+  @include mobile-only {
+    font-size: $font-size-xs;
+    padding: $spacing-1 $spacing-2;
+  }
 }
 
+// ==================== LOGOUT BUTTON ====================
 .admin-navbar__logout {
-  background: #ef4444;
-  color: #fff;
-  border: none;
-  border-radius: 1.5rem;
-  padding: 0.5rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  font-weight: 500;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.12);
-  transition: background 0.2s;
+  @include btn-base;
+  background: linear-gradient(135deg, $error-500 0%, $error-600 100%);
+  color: $text-inverse;
+  font-family: $font-family-primary;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-sm;
+  padding: $spacing-3 $spacing-5;
+  border-radius: $border-radius-full;
+  border: 2px solid transparent;
+  box-shadow: $shadow-sm;
+  transition: $transition-base;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, $error-600 0%, darken($error-600, 8%) 100%);
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  // Icône de déconnexion
+  &::before {
+    content: '🚪';
+    margin-right: $spacing-2;
+  }
+
+  @include mobile-only {
+    padding: $spacing-2 $spacing-3;
+    font-size: $font-size-xs;
+
+    // Sur mobile, masquer le texte et garder juste l'icône
+    span {
+      display: none;
+    }
+
+    &::before {
+      margin-right: 0;
+    }
+  }
 }
 
-.admin-navbar__logout:hover {
-  background: #dc2626;
+// ==================== MOBILE MENU ====================
+.admin-navbar__mobile-toggle {
+  display: none;
+
+  @include mobile-only {
+    @include btn-base;
+    @include flex-center;
+    display: flex;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: $border-radius-md;
+    color: $text-inverse;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    &::before {
+      content: '☰';
+      font-size: $font-size-lg;
+    }
+  }
+}
+
+.admin-navbar__mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: $primary-600;
+  box-shadow: $shadow-xl;
+  padding: $spacing-4;
+  z-index: 1000;
+
+  &.open {
+    display: block;
+    animation: slideDown 0.2s ease-out;
+  }
+
+  .admin-navbar__links {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-2;
+
+    a {
+      padding: $spacing-3;
+      text-align: center;
+      border-radius: $border-radius-md;
+    }
+  }
+}
+
+// ==================== ANIMATIONS ====================
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// ==================== RESPONSIVE ACTIONS ====================
+.admin-navbar__actions {
+  @include flex-center;
+  gap: $spacing-4;
+
+  @include mobile-only {
+    gap: $spacing-2;
+  }
+}
+
+// ==================== NOTIFICATIONS BADGE ====================
+.admin-navbar__notifications {
+  position: relative;
+  cursor: pointer;
+  padding: $spacing-2;
+  border-radius: $border-radius-md;
+  transition: $transition-base;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &::before {
+    content: '🔔';
+    font-size: $font-size-lg;
+  }
+
+  // Badge de notification
+  &::after {
+    content: attr(data-count);
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: $error-500;
+    color: $text-inverse;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-bold;
+    padding: 2px 6px;
+    border-radius: $border-radius-full;
+    min-width: 18px;
+    text-align: center;
+    transform: translate(50%, -50%);
+  }
+
+  &[data-count="0"]::after {
+    display: none;
+  }
+}
+
+// ==================== ADMIN BADGE ====================
+.admin-navbar__admin-badge {
+  @include flex-center;
+  gap: $spacing-1;
+  color: $text-inverse;
+  padding: $spacing-1 $spacing-2;
+  border-radius: $border-radius-full;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &::before {
+    content: '👑';
+    font-size: 10px;
+  }
 }

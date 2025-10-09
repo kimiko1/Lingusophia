@@ -43,6 +43,17 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/logout" element={<Logout />} />
 
+            {/* Admin route - MUST be before general routes */}
+            <Route
+              element={
+                <ProtectedRoute requiredRole={["Admin", "Teacher"]}>
+                  <AdminHeaderTemplate />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/admin/*" element={<Admin />} />
+            </Route>
+
             {/* Routes privées avec protection globale */}
             <Route
               element={
@@ -68,18 +79,6 @@ const App = () => {
               <Route path="/cancel" element={<Cancel />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
-            </Route>
-
-            {/* Admin route, protected and without HeaderTemplate */}
-            <Route element={<AdminHeaderTemplate />}>
-              <Route
-                path="/admin/*"
-                element={
-                  <ProtectedRoute requiredRole={["Admin", "Teacher"]}>
-                    <Admin />
-                  </ProtectedRoute>
-                }
-              />
             </Route>
             {/* 404 Not Found route */}
             <Route path="*" element={<NotFound />} />
