@@ -109,7 +109,7 @@ const Logout = () => {
           )}
         </div>
         <div className="logout-footer">
-          <small>Merci d'avoir utilisé Yourpersonaltutor !</small>
+          <small>Merci d'avoir utilisé Vocaify !</small>
         </div>
       </div>
     </div>

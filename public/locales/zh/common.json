@@ -4,7 +4,7 @@
     "cancel": "取消"
   },
   "app": {
-    "name": "Yourpersonaltutor",
+    "name": "Vocaify",
     "tagline": "自信掌握语言"
   },
   "navigation": {
@@ -20,7 +20,8 @@
     "scheduleLesson": "安排课程",
     "lessonSelection": "课程选择",
     "customerReviews": "客户评价",
-    "contactTeacher": "联系老师"
+    "contactTeacher": "联系老师",
+    "admin": "管理后台"
   },
   "user": {
     "greeting": "你好",

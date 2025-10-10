@@ -1,3 +1,4 @@
+@use "sass:color";
 @use '../../../styles/themes/mixins' as *;
 
 // =============================================
@@ -41,13 +42,6 @@
     background: rgba(255, 255, 255, 0.1);
   }
 
-  // Icône admin
-  &::before {
-    content: '⚡';
-    font-size: $font-size-2xl;
-    margin-right: $spacing-1;
-  }
-
   @include mobile-only {
     font-size: $font-size-lg;
 
@@ -86,7 +80,7 @@
     border-radius: $border-radius-lg;
     transition: $transition-base;
     position: relative;
-    
+
     // Override de tous les états possibles de NavLink
     &:link,
     &:visited,
@@ -168,7 +162,7 @@
   transition: $transition-base;
 
   &:hover:not(:disabled) {
-    background: linear-gradient(135deg, $error-600 0%, darken($error-600, 8%) 100%);
+    background: linear-gradient(135deg, $error-600 0%, color.adjust($error-600, $lightness: -8%) 100%);
     transform: translateY(-2px);
     box-shadow: $shadow-md;
     border-color: rgba(255, 255, 255, 0.2);

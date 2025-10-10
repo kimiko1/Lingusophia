@@ -4,7 +4,7 @@
     "cancel": "Annuler"
   },
   "app": {
-    "name": "Yourpersonaltutor",
+    "name": "Vocaify",
     "tagline": "Maîtrisez les langues avec confiance"
   },
   "navigation": {
@@ -20,7 +20,8 @@
     "scheduleLesson": "Planifier une Leçon",
     "lessonSelection": "Sélection de Leçons",
     "customerReviews": "Avis Clients",
-    "contactTeacher": "Contacter un Professeur"
+    "contactTeacher": "Contacter un Professeur",
+    "admin": "Administration"
   },
   "user": {
     "greeting": "Salut",

@@ -12,7 +12,6 @@ import {
   faBookmark,
   faStar,
   faChevronDown,
-  faCog,
   faSignOutAlt,
   faSignInAlt,
   faUserPlus,
@@ -23,8 +22,6 @@ import { NavItem } from '@molecules';
 import { Logo, UserGreeting, LanguageSelector } from '@atoms';
 import testSvg from '@assets/test.svg';
 import './Navbar.scss';
-import { logout } from '@slices/authSlice';
-import { authService } from '@services';
 
 /**
  * Navbar component - Main navigation organism
@@ -66,9 +63,9 @@ const Navbar = ({
     { icon: faUser, label: t('navigation.profile'), href: "/profile" },
   ];
 
-  // Add admin item if user is admin
-  if (user?.role === 'admin') {
-    profileItems.push({ icon: faUserShield, label: "Admin", href: "/admin" });
+  // Add admin item if user is admin or teacher
+  if (user?.role === 'Admin' || user?.role === 'Teacher') {
+    profileItems.push({ icon: faUserShield, label: t("navigation.admin"), href: "/admin" });
   }
 
   // Check if a link is active

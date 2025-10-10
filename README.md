@@ -1,4 +1,4 @@
-# Lingusophia
+# Vocaify
 
 Une application web moderne d'apprentissage des langues construite avec React, Vite et i18next pour une expérience multilingue fluide.
 
@@ -36,8 +36,8 @@ Une application web moderne d'apprentissage des langues construite avec React, V
 Clonez le repository et installez les dépendances :
 
 ```bash
-git clone https://github.com/kimiko1/Lingusophia.git
-cd Lingusophia
+git clone https://github.com/kimiko1/Vocaify.git
+cd Vocaify
 npm install
 ```
 
@@ -94,7 +94,7 @@ Le projet utilise `@vitejs/plugin-react` avec Babel pour le Fast Refresh.
 ## 📁 Structure du Projet
 
 ```
-Lingusophia/
+Vocaify/
 ├── src/
 │   ├── components/     # Composants React réutilisables
 │   ├── pages/          # Pages de l'application

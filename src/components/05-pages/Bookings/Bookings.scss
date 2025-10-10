@@ -151,6 +151,10 @@
         align-items: center;
         justify-content: space-between;
         gap: $spacing-3;
+        
+        // Move declarations above nested rules to avoid deprecation
+        color: $warning-600;
+        font-weight: $font-weight-medium;
 
         // Left part with icon and status
         .status-info {
@@ -158,10 +162,6 @@
           align-items: center;
           gap: $spacing-2;
         }
-
-        // Move declarations above nested rules to avoid deprecation
-        color: $warning-600;
-        font-weight: $font-weight-medium;
         }
 
         &::before {
