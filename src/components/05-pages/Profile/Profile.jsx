@@ -167,7 +167,7 @@ const Profile = () => {
       uploadFormData.append('avatar', file);
       
       try {
-        const response = await fetch('http://localhost:3000/api/users/avatar', {
+        const response = await fetch(`${API_BASE_URL}/api/users/avatar`, {
           method: 'POST',
           credentials: 'include',
           body: uploadFormData
