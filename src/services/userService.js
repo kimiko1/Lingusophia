@@ -1,5 +1,6 @@
 import api from './api';
 import { apiWithFallback, MOCK_DATA } from './mockService';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 /**
  * Service pour la gestion des profils utilisateur
@@ -10,9 +11,9 @@ export const userService = {
    */
   async getCurrentUserProfile() {
     try {
-      const response = await api.get('/users/profile');
-      // Retourner directement la réponse complète pour que le composant puisse gérer response.user
-      return response.data;
+      const response = await api.get('/api/users/profile');
+      // Extraire les données utilisateur correctement
+      return response.data?.user || response.data;
     } catch (error) {
       throw error;
     }
@@ -21,27 +22,41 @@ export const userService = {
   /**
    * Mettre à jour le profil de l'utilisateur
    */
-  async updateUserProfile(userId, userData) {
-  try {
-    const response = await api.put(`api/users/profile/${userId}`, userData);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-},
+  async updateUserProfile(userData) {
+    try {
+      const response = await api.put('/api/users/profile', userData);
+      return response.data?.user || response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
 
   /**
    * Récupérer les statistiques de l'utilisateur
    */
-  async getUserStats(userId) {
-    return apiWithFallback(
-      `/users/${userId}/stats`,
-      MOCK_DATA.userStats(userId),
-      async () => {
-        const response = await api.get(`/users/${userId}/stats`);
-        return response.data;
-      }
-    );
+  async getUserStats() {
+    try {
+      const response = await api.get('/api/users/stats');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Upload avatar
+   */
+  async uploadAvatar(formData) {
+    try {
+      const response = await api.post('/api/users/avatar', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   },
 
   /**
@@ -118,7 +133,7 @@ export const userService = {
    */
   async changePassword(passwordData) {
     try {
-      const response = await api.put('/users/change-password', passwordData);
+      const response = await api.put('/api/users/change-password', passwordData);
       return response.data;
     } catch (error) {
       throw error;

@@ -1,27 +1,57 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// Thunk pour mettre à jour le profil utilisateur
-export const updateUserProfile = createAsyncThunk(
-  'auth/updateUserProfile',
-  async ({ userId, data }, { rejectWithValue }) => {
+import { userService } from '@services';
+
+// Thunk pour récupérer le profil utilisateur
+export const fetchUserProfile = createAsyncThunk(
+  'auth/fetchUserProfile',
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/users/${userId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(result);
-      }
-      return result;
+      const userData = await userService.getCurrentUserProfile();
+      return userData;
     } catch (error) {
-      return rejectWithValue(error.message || 'Erreur inconnue');
+      return rejectWithValue(error.response?.data || error.message || 'Erreur lors de la récupération du profil');
     }
   }
 );
+
+// Thunk pour mettre à jour le profil utilisateur
+export const updateUserProfile = createAsyncThunk(
+  'auth/updateUserProfile',
+  async (data, { rejectWithValue }) => {
+    try {
+      const updatedUser = await userService.updateUserProfile(data);
+      return updatedUser;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message || 'Erreur lors de la mise à jour du profil');
+    }
+  }
+);
+
+// Thunk pour uploader l'avatar
+export const uploadUserAvatar = createAsyncThunk(
+  'auth/uploadUserAvatar',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const result = await userService.uploadAvatar(formData);
+      return result;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message || 'Erreur lors de l\'upload de l\'avatar');
+    }
+  }
+);
+
+// Thunk pour récupérer les statistiques - Temporairement désactivé
+// export const fetchUserStats = createAsyncThunk(
+//   'auth/fetchUserStats',
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const stats = await userService.getUserStats();
+//       return stats;
+//     } catch (error) {
+//       return rejectWithValue(error.response?.data || error.message || 'Erreur lors de la récupération des statistiques');
+//     }
+//   }
+// );
 
 // Récupère l'état initial depuis le sessionStorage
 const getInitialState = () => {
@@ -36,6 +66,12 @@ const getInitialState = () => {
     isLoading: false,
     isAuthenticated: false,
     error: null,
+    stats: {
+      totalLessons: 0,
+      completedLessons: 0,
+      totalTime: 0,
+      streak: 0
+    }
   };
 };
 
@@ -73,27 +109,40 @@ const authSlice = createSlice({
       state.error = null;
       saveToSession(state);
     },
+    setStats: (state, action) => {
+      state.stats = action.payload;
+      saveToSession(state);
+    },
   },
   extraReducers: (builder) => {
     builder
+      // Fetch User Profile
+      .addCase(fetchUserProfile.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        saveToSession(state);
+      })
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isAuthenticated = true;
+        state.isLoading = false;
+        state.error = null;
+        saveToSession(state);
+      })
+      .addCase(fetchUserProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || 'Erreur lors de la récupération du profil';
+        saveToSession(state);
+      })
+      // Update User Profile
       .addCase(updateUserProfile.pending, (state) => {
         state.isLoading = true;
         state.error = null;
         saveToSession(state);
       })
       .addCase(updateUserProfile.fulfilled, (state, action) => {
-        // Met à jour le user si succès
-        if (action.payload) {
-          // Si action.payload.user existe, on prend action.payload.user, sinon action.payload.data ou action.payload
-          if (action.payload.user) {
-            state.user = action.payload.user;
-          } else if (action.payload.data) {
-            state.user = action.payload.data;
-          } else {
-            state.user = action.payload;
-          }
-          state.isAuthenticated = true;
-        }
+        state.user = action.payload;
+        state.isAuthenticated = true;
         state.isLoading = false;
         state.error = null;
         saveToSession(state);
@@ -102,7 +151,41 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload || 'Erreur lors de la mise à jour du profil';
         saveToSession(state);
+      })
+      // Upload Avatar
+      .addCase(uploadUserAvatar.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        saveToSession(state);
+      })
+      .addCase(uploadUserAvatar.fulfilled, (state, action) => {
+        // Mettre à jour l'avatar dans le profil utilisateur
+        if (state.user && action.payload?.data?.avatar_url) {
+          state.user.avatar_url = action.payload.data.avatar_url;
+        }
+        state.isLoading = false;
+        state.error = null;
+        saveToSession(state);
+      })
+      .addCase(uploadUserAvatar.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload || 'Erreur lors de l\'upload de l\'avatar';
+        saveToSession(state);
       });
+      // Fetch User Stats - Temporairement désactivé
+      // .addCase(fetchUserStats.pending, (state) => {
+      //   state.error = null;
+      //   saveToSession(state);
+      // })
+      // .addCase(fetchUserStats.fulfilled, (state, action) => {
+      //   state.stats = action.payload?.data || action.payload || state.stats;
+      //   state.error = null;
+      //   saveToSession(state);
+      // })
+      // .addCase(fetchUserStats.rejected, (state, action) => {
+      //   state.error = action.payload || 'Erreur lors de la récupération des statistiques';
+      //   saveToSession(state);
+      // });
   },
 });
 
@@ -113,5 +196,5 @@ function saveToSession(state) {
   } catch (e) {}
 }
 
-export const { setUser, setLoading, setAuthenticated, logout, setError, clearError } = authSlice.actions;
+export const { setUser, setLoading, setAuthenticated, logout, setError, clearError, setStats } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
-import { updateUserProfile as updateProfileThunk } from '@slices/authSlice';
-// import { userService } from '@services';
+import { useSelector } from 'react-redux';
+import { API_BASE_URL } from '@config/constants';
 import { 
   User, 
   Settings, 
@@ -19,12 +18,12 @@ import {
 import './Profile.scss';
 const Profile = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const user = useSelector(state => state.auth.user);
   const isLoading = useSelector(state => state.auth.isLoading);
+  const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
   const [formData, setFormData] = useState({});
+  const [profileLoading, setProfileLoading] = useState(true);
   const [stats, setStats] = useState({
     totalLessons: 0,
     completedLessons: 0,
@@ -32,32 +31,66 @@ const Profile = () => {
     streak: 0
   });
 
-  useEffect(() => {
-    if (user) {
-      setFormData(user);
-      fetchUserStats();
-    }
-  }, [user]);
-
-  const fetchUserStats = async () => {
+  // Fonction pour récupérer le profil depuis l'API
+  const fetchUserProfile = async () => {
     try {
-      if (!user?.id) return;
-      
-      const response = await fetch(`/api/users/stats/${user.id}`, {
-        credentials: 'include'
+      setProfileLoading(true);
+      const response = await fetch(`${API_BASE_URL}/api/users/profile`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        }
       });
       
       if (response.ok) {
-        const statsData = await response.json();
-        setStats(statsData.data || {});
+        const result = await response.json();
+        console.log('Profile API response:', result);
+        // Le backend renvoie les données dans result.data.user
+        const userData = result.data?.user || result.user || result.data || result;
+        console.log('User data extracted:', userData);
+        setUser(userData);
+        setFormData(userData);
+      } else {
+        console.error('Failed to fetch profile:', response.status);
       }
     } catch (error) {
-      console.error('Error fetching stats:', error);
+      console.error('Error fetching profile:', error);
+    } finally {
+      setProfileLoading(false);
     }
   };
 
+  useEffect(() => {
+    fetchUserProfile();
+    console.log('Profile component mounted', fetchUserProfile);
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      // const fetchStats = async () => {
+      //   try {
+      //     if (!user?.id) return;
+          
+      //     const response = await fetch(`${API_BASE_URL}/api/users/stats`, {
+      //       credentials: 'include'
+      //     });
+          
+      //     if (response.ok) {
+      //       const statsData = await response.json();
+      //       setStats(statsData.data || {});
+      //     }
+      //   } catch (error) {
+      //     console.error('Error fetching stats:', error);
+      //   }
+      // };
+      
+      // fetchStats();
+    }
+  }, [user]);
+
   // Afficher le loading pendant la vérification
-  if (isLoading) {
+  if (isLoading || profileLoading) {
     return (
       <div className="profile-loading">
         <div className="loading-spinner"></div>
@@ -98,19 +131,29 @@ const Profile = () => {
         dateOfBirth: formData.dateOfBirth,
       };
 
-     const userId = user?.id || user?._id;
-if (!userId) {
-  console.error('User ID is missing');
-  return;
-}
-      // Dispatch Redux thunk for profile update
-      const result = await dispatch(updateProfileThunk({ userId: user.id, data: apiData }));
-      if (result?.payload?.success || result?.payload?.message === 'Profil mis à jour avec succès') {
+      const userId = user?.id || user?._id;
+      if (!userId) {
+        console.error('User ID is missing');
+        return;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/users/profile`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(apiData)
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Profile update response:', result);
         setIsEditing(false);
-        setFormData(apiData);
-        // Optionally show success message
+        // Recharger le profil pour avoir les dernières données
+        await fetchUserProfile();
       } else {
-        console.error('Error updating profile:', result?.payload?.error || result?.payload?.message || 'Aucune modification détectée ou erreur inconnue');
+        console.error('Error updating profile:', response.status);
       }
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -124,7 +167,7 @@ if (!userId) {
       uploadFormData.append('avatar', file);
       
       try {
-        const response = await fetch('/api/users/avatar', {
+        const response = await fetch('http://localhost:3000/api/users/avatar', {
           method: 'POST',
           credentials: 'include',
           body: uploadFormData
@@ -157,7 +200,7 @@ if (!userId) {
           <div className="profile-avatar-section">
             <div className="avatar-container">
               <img 
-                src={formData.avatarUrl || formData.avatar_url || '/default-avatar.png'} 
+                src={`${API_BASE_URL}${formData.avatarUrl || formData.avatar_url || '/default-avatar.png'}`} 
                 alt={formData.firstName || formData.first_name || 'User'}
                 className="profile-avatar"
                 loading="lazy"
