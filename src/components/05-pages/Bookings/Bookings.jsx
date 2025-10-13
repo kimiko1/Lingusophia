@@ -40,23 +40,54 @@ const Bookings = () => {
   );
 
   const handlePay = async (lesson) => {
-  try {
-    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-    
-    const { sessionId } = await lessonService.createPaymentIntent({
-      products: [{
-        name: lesson.title,
-        price: lesson.price,
-        quantity: 1
-      }],
-      bookingId: lesson.bookingId,
-    }, user.token);
+    try {
+      // Vérifier que la clé publique Stripe existe
+      if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
+        throw new Error('Clé publique Stripe manquante dans la configuration');
+      }
 
-    await stripe.redirectToCheckout({ sessionId });
-  } catch (err) {
-    setError(err.message);
-  }
-};
+      const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+      
+      if (!stripe) {
+        throw new Error('Impossible de charger Stripe');
+      }
+
+      console.log('🔍 Tentative de paiement pour:', lesson);
+      console.log('🔍 BookingId:', lesson.bookingId);
+      
+      const response = await lessonService.createPaymentIntent({
+        products: [{
+          name: lesson.title,
+          description: lesson.description || 'Cours de langue',
+          price: lesson.price,
+          quantity: 1
+        }],
+        bookingId: lesson.bookingId,
+      });
+
+      console.log('🔍 Réponse du serveur:', response);
+
+      // Le serveur retourne { data: { id: '...' } } ou { data: { sessionId: '...' } }
+      const sessionId = response.data?.sessionId || response.data?.id || response.sessionId;
+      
+      if (!sessionId) {
+        throw new Error('Session ID manquant dans la réponse du serveur');
+      }
+
+      console.log('🔍 Session ID trouvé:', sessionId);
+
+      const result = await stripe.redirectToCheckout({ 
+        sessionId: sessionId 
+      });
+
+      if (result.error) {
+        throw new Error(result.error.message);
+      }
+    } catch (err) {
+      console.error('Erreur lors du paiement:', err);
+      setError('Erreur lors du paiement: ' + err.message);
+    }
+  };
 
   return (
     <div className="bookings-page">
