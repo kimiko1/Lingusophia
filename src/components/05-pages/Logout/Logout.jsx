@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '@contexts/AuthContext';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './Logout.scss';
+import { logoutUser } from '@slices/authSlice';
 
 const Logout = () => {
-  const { logout, user, isAuthenticated, isLoading } = useAuth();
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const isLoading = useSelector(state => state.auth.isLoading);
   const navigate = useNavigate();
   const [status, setStatus] = useState('idle'); // idle | loading | success | error
 
@@ -17,10 +21,11 @@ const Logout = () => {
   const handleLogout = async () => {
     setStatus('loading');
     try {
-      await logout();
+      await dispatch(logoutUser()).unwrap();
       setStatus('success');
+      navigate('/login');
     } catch (e) {
-      setStatus('error');
+      setStatus(`error (${e.message})`);
     }
   };
 
@@ -97,7 +102,7 @@ const Logout = () => {
           )}
         </div>
         <div className="logout-footer">
-          <small>Merci d'avoir utilisé Yourpersonaltutor !</small>
+          <small>Merci d&apos;avoir utilisé Vocaify !</small>
         </div>
       </div>
     </div>

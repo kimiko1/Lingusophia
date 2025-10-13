@@ -151,12 +151,17 @@
         align-items: center;
         justify-content: space-between;
         gap: $spacing-3;
+        
+        // Move declarations above nested rules to avoid deprecation
+        color: $warning-600;
+        font-weight: $font-weight-medium;
 
         // Left part with icon and status
         .status-info {
           display: flex;
           align-items: center;
           gap: $spacing-2;
+        }
         }
 
         &::before {
@@ -209,7 +214,6 @@
       }
     }
   }
-}
 
 // Enhanced LessonCard when used in bookings context
 .bookings-page .lesson-card,

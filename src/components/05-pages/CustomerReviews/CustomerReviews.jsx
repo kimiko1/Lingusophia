@@ -1,18 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faStar, 
   faPlus, 
-  faTimes, 
-  faThumbsUp, 
-  faThumbsDown, 
-  faLightbulb,
-  faHeart,
-  faGraduationCap,
-  faSmile,
-  faMeh,
-  faFrown
 } from '@fortawesome/free-solid-svg-icons';
 import { Title, Button, Card, Modal } from '@atoms';
 import './CustomerReviews.scss';

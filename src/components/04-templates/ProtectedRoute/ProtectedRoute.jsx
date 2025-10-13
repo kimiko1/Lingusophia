@@ -1,12 +1,18 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@contexts/AuthContext';
+import { useSelector } from 'react-redux';
+
 /**
  * ProtectedRoute - Composant pour protéger les routes nécessitant une authentification
  */
 const ProtectedRoute = React.memo(({ children, requiredRole = null }) => {
-  const { isAuthenticated, user, isLoading } = useAuth();
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const user = useSelector(state => state.auth.user);
+  const isLoading = useSelector(state => state.auth.isLoading);
   const location = useLocation();
+  // Avoid crash if user is null
+  if (user && user.role) {
+  }
 
   // Afficher le loader uniquement pendant le chargement
   if (isLoading) {

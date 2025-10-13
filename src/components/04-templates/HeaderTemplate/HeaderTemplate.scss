@@ -1,21 +1,33 @@
+
 @use '../../../styles/themes/mixins' as *;
+
+@media screen and (max-width: 480px) {
+  
+  .navbar__center {
+    display: none !important;
+  }
+}
 
 .header-template {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: $color-background;
 
   // Variants
   &--compact {
     .header-template__header {
       box-shadow: $shadow-sm;
+      padding: 0.5rem 1rem;
     }
   }
 
   &--transparent {
     .header-template__header {
-      background: transparent;
-      backdrop-filter: blur(10px);
+      background: rgba($color-surface, 0.7);
+      backdrop-filter: blur(12px);
+      box-shadow: none;
+      transition: background 0.3s, backdrop-filter 0.3s;
     }
   }
 
@@ -27,10 +39,12 @@
       left: 0;
       right: 0;
       z-index: $z-index-header;
+      box-shadow: $shadow-md;
+      transition: box-shadow 0.2s;
     }
 
     .header-template__content {
-      padding-top: 80px; // Account for fixed header height
+      padding-top: 80px; // Desktop header height
     }
   }
 }
@@ -40,20 +54,51 @@
   border-bottom: 1px solid $color-border-light;
   position: relative;
   z-index: $z-index-header;
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: $shadow-sm;
+  transition: background 0.3s, box-shadow 0.2s;
 }
 
 .header-template__content {
   flex: 1;
-  padding-top: 70px;
+  padding-top: 80px;
   width: 100%;
   overflow-x: hidden;
+  background: $color-background;
+  transition: padding-top 0.2s;
 }
 
 // Responsive design
+@include tablet-only {
+  .header-template__header {
+    padding: 1rem 1.5rem;
+  }
+  .header-template__content {
+    padding-top: 75px;
+  }
+}
+
 @include mobile-only {
+  .header-template__header {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    min-height: 56px;
+  box-shadow: $shadow-sm;
+  }
   .header-template--fixed {
     .header-template__content {
-      padding-top: 70px; // Smaller padding for mobile
+      padding-top: 56px; // Mobile header height
     }
   }
+  .header-template__content {
+    padding-top: 56px;
+  }
+}
+
+// Add smooth shadow on scroll for fixed header
+.header-template--fixed.scrolled .header-template__header {
+  box-shadow: $shadow-lg;
 }

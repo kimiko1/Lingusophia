@@ -1,6 +1,10 @@
 {
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel"
+  },
   "app": {
-    "name": "Yourpersonaltutor",
+    "name": "Vocaify",
     "tagline": "Master languages with confidence"
   },
   "navigation": {
@@ -16,7 +20,8 @@
     "scheduleLesson": "Schedule Lesson",
     "lessonSelection": "Lesson Selection",
     "customerReviews": "Customer Reviews",
-    "contactTeacher": "Contact a Teacher"
+    "contactTeacher": "Contact a Teacher",
+    "admin": "Administration"
   },
   "user": {
     "greeting": "Hi",
@@ -82,12 +87,13 @@
     "goodbye": "See you soon!"
   },
   "aria": {
-    "openMenu": "Open menu",
-    "closeMenu": "Close menu",
-    "openProfile": "Open profile menu",
-    "closeProfile": "Close profile menu",
-    "selectLanguage": "Select language",
-    "currentLanguage": "Current language"
+  "openMenu": "Open menu",
+  "closeMenu": "Close menu",
+  "openProfile": "Open profile menu",
+  "closeProfile": "Close profile menu",
+  "selectLanguage": "Select language",
+  "currentLanguage": "Current language",
+  "home": "Go to home"
   },
   "languages": {
     "en": "English",
@@ -154,6 +160,7 @@
     "completedLessons": "Completed Lessons",
     "streak": "Streak",
     "totalHours": "Total Hours"
+    ,"edit": "Edit Profile"
   },
   "noDataFound": "No data found",
   "itemsSelected": "{{count}} item(s) selected",

@@ -20,7 +20,7 @@ import {
   LessonCard,
 } from "@molecules";
 import { lessonService, bookingService } from "@services";
-import { useAuth } from "@contexts/AuthContext";
+import { useSelector } from "react-redux";
 // Removed react-toastify dependency
 import "./LessonSelection.scss";
 
@@ -28,36 +28,6 @@ import "./LessonSelection.scss";
 import enFlag from "@assets/flags/en.svg";
 import frFlag from "@assets/flags/fr.svg";
 import cnFlag from "@assets/flags/cn.svg";
-
-/**
- * Custom hook for managing notifications
- */
-const useNotifications = () => {
-  const [notifications, setNotifications] = useState([]);
-
-  const addNotification = useCallback((message, type = 'info') => {
-    const id = Date.now();
-    setNotifications(prev => [...prev, { id, message, type }]);
-    
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-      setNotifications(prev => prev.filter(notif => notif.id !== id));
-    }, 5000);
-  }, []);
-
-  const removeNotification = useCallback((id) => {
-    setNotifications(prev => prev.filter(notif => notif.id !== id));
-  }, []);
-
-  return {
-    notifications,
-    addNotification,
-    removeNotification,
-    success: (message) => addNotification(message, 'success'),
-    error: (message) => addNotification(message, 'error'),
-    info: (message) => addNotification(message, 'info'),
-  };
-};
 
 // Constants
 const DIFFICULTY_LEVELS = {
@@ -266,7 +236,7 @@ const LessonSelection = ({ variant = "default", className = "", ...props }) => {
   const { t } = useTranslation(["pages", "common"]);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const user = useSelector(state => state.auth.user);
   
   // Notification state
   const [notifications, setNotifications] = useState([]);
@@ -542,7 +512,7 @@ const LessonSelection = ({ variant = "default", className = "", ...props }) => {
         {/* Header */}
         <header className="lesson-selection__header">
           <Button
-            variant="ghost"
+            variant="primary"
             onClick={handleGoBack}
             className="lesson-selection__back-btn"
             aria-label={t("lessonSelection.backButton")}

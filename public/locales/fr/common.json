@@ -1,6 +1,10 @@
 {
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler"
+  },
   "app": {
-    "name": "Yourpersonaltutor",
+    "name": "Vocaify",
     "tagline": "Maîtrisez les langues avec confiance"
   },
   "navigation": {
@@ -16,7 +20,8 @@
     "scheduleLesson": "Planifier une Leçon",
     "lessonSelection": "Sélection de Leçons",
     "customerReviews": "Avis Clients",
-    "contactTeacher": "Contacter un Professeur"
+    "contactTeacher": "Contacter un Professeur",
+    "admin": "Administration"
   },
   "user": {
     "greeting": "Salut",
@@ -82,12 +87,13 @@
     "goodbye": "À bientôt !"
   },
   "aria": {
-    "openMenu": "Ouvrir le menu",
-    "closeMenu": "Fermer le menu",
-    "openProfile": "Ouvrir le menu profil",
-    "closeProfile": "Fermer le menu profil",
-    "selectLanguage": "Sélectionner la langue",
-    "currentLanguage": "Langue actuelle"
+  "openMenu": "Ouvrir le menu",
+  "closeMenu": "Fermer le menu",
+  "openProfile": "Ouvrir le menu profil",
+  "closeProfile": "Fermer le menu profil",
+  "selectLanguage": "Sélectionner la langue",
+  "currentLanguage": "Langue actuelle",
+  "home": "Aller à l'accueil"
   },
   "languages": {
     "en": "Anglais",

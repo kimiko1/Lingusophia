@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
-import { useAuth } from '@contexts/AuthContext';
+import { useSelector } from 'react-redux';
 import { Button, Card, Title, Input } from '@atoms';
 import { PageLayout } from '@templates';
 import { teacherService, bookingService, lessonService } from '@services';
@@ -12,7 +12,7 @@ import './ScheduleLesson.scss';
  */
 const ScheduleLesson = () => {
   const { t } = useTranslation('pages');
-  const { user } = useAuth();
+  const user = useSelector(state => state.auth.user);
   const location = useLocation();
   
   // Récupérer les données pré-sélectionnées depuis la navigation

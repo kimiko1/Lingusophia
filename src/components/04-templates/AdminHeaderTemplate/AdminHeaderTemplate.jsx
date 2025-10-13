@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import PropTypes from "prop-types";
 import { AdminNavbar } from "@organisms";
-import "./AdminHeaderTemplate.scss";
 import React from "react";
 
 /**
@@ -33,9 +32,7 @@ const AdminHeaderTemplate = React.memo(
 
     return (
       <div className={templateClasses} {...props}>
-        <div className="header-template__header">
           <AdminNavbar />
-        </div>
         <main className="admin_content">
           {children}
           <Outlet />

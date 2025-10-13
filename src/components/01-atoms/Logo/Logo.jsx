@@ -1,6 +1,7 @@
 import React from 'react';
-import SvgReact from '@assets/react-components/React.jsx';
+import LogoSvg from '@assets/react-components/LogoSvg.jsx';
 import PropTypes from 'prop-types';
+import logoPng from '@assets/logo.png';
 import { useTranslation } from 'react-i18next';
 import './Logo.scss';
 
@@ -21,11 +22,10 @@ const Logo = React.memo(function Logo({
   className = '',
   onClick,
   clickable = false,
-  ...props 
+  ...props
 }) {
   const { t } = useTranslation('common');
   const logoText = text || t('app.name');
-  
   const logoClasses = [
     'logo',
     `logo--${size}`,
@@ -54,8 +54,12 @@ const Logo = React.memo(function Logo({
       } : undefined}
       {...props}
     >
-      <SvgReact width={32} height={32} style={{ verticalAlign: 'middle', marginRight: '0.5em' }} />
-      <span className="logo__text">{logoText}</span>
+      <LogoSvg style={{
+            width: 'clamp(80px, 8vw, 120px)',
+            height: 'clamp(80px, 8vw, 120px)',
+            padding: '8px',
+            objectFit: 'contain',
+          }} />
     </div>
   );
 });

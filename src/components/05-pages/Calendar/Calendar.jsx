@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Title } from '@atoms';
-import { useBooking } from '@contexts/BookingContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSelectedDate } from '@slices/bookingSlice';
 import './Calendar.scss';
 
 /**
@@ -14,10 +15,10 @@ import './Calendar.scss';
 const Calendar = () => {
   const { t } = useTranslation('pages');
   const { t: tCommon } = useTranslation('common');
-  const navigate = useNavigate();
-  const { selectedDate: bookingDate, setSelectedDate: setBookingDate } = useBooking();
+  const dispatch = useDispatch();
+  const bookingDate = useSelector(state => state.booking.selectedDate);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(bookingDate);
+const [selectedDate, setSelectedDateLocal] = useState(bookingDate ? new Date(bookingDate) : null);
 
   // Jours de la semaine traduits
   const daysOfWeek = t('calendar.weekdays', { returnObjects: true });
@@ -53,8 +54,8 @@ const Calendar = () => {
     if (isPastDate(day)) return;
     
     const selected = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
-    setSelectedDate(selected);
-    setBookingDate(selected);
+    setSelectedDateLocal(selected);
+    dispatch(setSelectedDate(selected));
   };
 
   // Vérifier si c'est aujourd'hui
@@ -70,10 +71,11 @@ const Calendar = () => {
   // Vérifier si c'est la date sélectionnée
   const isSelected = (day) => {
     if (!selectedDate) return false;
+    const dateObj = selectedDate instanceof Date ? selectedDate : new Date(selectedDate);
     return (
-      selectedDate.getDate() === day &&
-      selectedDate.getMonth() === currentDate.getMonth() &&
-      selectedDate.getFullYear() === currentDate.getFullYear()
+      dateObj.getDate() === day &&
+      dateObj.getMonth() === currentDate.getMonth() &&
+      dateObj.getFullYear() === currentDate.getFullYear()
     );
   };
 
@@ -164,12 +166,12 @@ const Calendar = () => {
         {selectedDate && (
           <div className="selected-date-info">
             <p>
-              {t('calendar.selectedDate')}: {selectedDate.toLocaleDateString(tCommon('locale'), { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-              })}
+              {t('calendar.selectedDate')}: {(() => {
+                const dateObj = selectedDate instanceof Date ? selectedDate : new Date(selectedDate);
+                return dateObj.toLocaleDateString(tCommon('locale'), {
+                  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                });
+              })()}
             </p>
             <Button
               as={Link}

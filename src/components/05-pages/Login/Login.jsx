@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@contexts/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button, Input, Card, Title } from '@atoms';
 import './Login.scss';
+import { loginUser, clearError } from '@slices/authSlice';
 
 /**
  * Login - Page de connexion
@@ -11,21 +12,28 @@ import './Login.scss';
 const Login = () => {
   const { t } = useTranslation(['common', 'pages']);
   const navigate = useNavigate();
-  const { isAuthenticated, user, isLoading, login } = useAuth();
-  
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const user = useSelector(state => state.auth.user);
+  const authError = useSelector(state => state.auth.error);
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-  
+
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Réinitialiser les erreurs au montage du composant
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
+
   // Redirection si déjà connecté
   useEffect(() => {
     if (isAuthenticated && user) {
-      // Rediriger vers admin si c'est un admin, sinon vers home
       if (user.role === 'Admin') {
         navigate('/admin');
       } else {
@@ -40,10 +48,8 @@ const Login = () => {
       ...prev,
       [name]: value
     }));
-    
-    // Effacer l'erreur quand l'utilisateur tape
     if (error) {
-      dispatch(clearError());
+      setError('');
     }
   };
 
@@ -58,94 +64,75 @@ const Login = () => {
       return;
     }
 
+    dispatch(clearError());
     try {
-      await login(formData.email, formData.password);
-    } catch (err) {
-      console.error('Erreur de connexion:', err);
-      setError(err.message || 'Erreur de connexion');
+      const result = await dispatch(loginUser({ 
+        email: formData.email, 
+        password: formData.password 
+      })).unwrap();
+      
+      if (result) {
+        navigate(result.role === 'Admin' ? '/admin' : '/');
+      }
+    } catch (error) {
+      setError(error || 'Erreur lors de la connexion');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
   return (
-      <div className="login-page">
-        <div className="login-container">
-          <Card className="login-card">
-            <div className="login-header">
-              <Title level={1} className="login-title">
-                {t('pages:login.title')}
-              </Title>
-              <p className="login-subtitle">
-                {t('pages:login.subtitle')}
-              </p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="login-form">
-              {error && (
-                <div className="error-message">
-                  {typeof error === 'string' ? error : error.message || 'Une erreur est survenue'}
-                </div>
-              )}
-
-              <div className="form-group">
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder={t('common:form.email')}
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  className="login-input"
-                />
-              </div>
-
-              <div className="form-group">
-                <div className="password-input-wrapper">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder={t('common:form.password')}
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    required
-                    className="login-input"
-                  />
-                  <button
-                    type="button"
-                    className="password-toggle"
-                    onClick={togglePasswordVisibility}
-                  >
-                    {showPassword ? '🙈' : '👁️'}
-                  </button>
-                </div>
-              </div>
-
-              <Button
-                type="submit"
-                variant="primary"
-                className="login-button"
-                disabled={isSubmitting || isLoading}
-              >
-                {(isSubmitting || isLoading) ? t('common:loading') : t('pages:login.loginButton')}
-              </Button>
-
-              <div className="login-links">
-                <Link to="/register" className="register-link">
-                  {t('pages:login.noAccount')}
-                </Link>
-                <Link to="/forgot-password" className="forgot-password-link">
-                  {t('pages:login.forgotPassword')}
-                </Link>
-              </div>
-            </form>
-          </Card>
+    <div className="login-page">
+      <Card className="login-card">
+        <div className="login-header">
+          <Title level={2} className="login-title">{t('pages:login.title', 'Connexion')}</Title>
+          <div className="login-subtitle">{t('pages:login.subtitle', 'Accédez à votre espace personnel')}</div>
         </div>
-      </div>
+        <form onSubmit={handleSubmit} className="login-form" autoComplete="on">
+          {(error || authError) && <div className="login-error" role="alert">{error || authError}</div>}
+          <div className="form-group">
+            <Input
+              type="email"
+              name="email"
+              placeholder={t('common:email', 'Email')}
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+              autoFocus
+              className="login-input"
+            />
+          </div>
+          <div className="form-group password-input-wrapper">
+            <Input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              placeholder={t('common:password', 'Mot de passe')}
+              value={formData.password}
+              onChange={handleInputChange}
+              required
+              className="login-input"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              aria-label={showPassword ? t('pages:login.hidePassword', 'Masquer le mot de passe') : t('pages:login.showPassword', 'Afficher le mot de passe')}
+              onClick={() => setShowPassword(v => !v)}
+              tabIndex={0}
+            >
+              {showPassword ? '🙈' : '👁️'}
+            </button>
+          </div>
+          <div className="login-actions">
+            <Button type="submit" className="login-button" disabled={isSubmitting}>
+              {isSubmitting ? t('common:loading', 'Chargement...') : t('pages:login.button', 'Se connecter')}
+            </Button>
+          </div>
+        </form>
+        <div className="login-links">
+          <Link to="/register" className="login-link-register">{t('pages:login.registerLink', "Créer un compte")}</Link>
+        </div>
+      </Card>
+    </div>
   );
 };
 

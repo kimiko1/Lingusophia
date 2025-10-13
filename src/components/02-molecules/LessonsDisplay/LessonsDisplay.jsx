@@ -1,24 +1,37 @@
 import { useEffect } from 'react';
-import { useLessons } from '@contexts/LessonsContext';
-import { Card, Button } from '@atoms';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button } from '@atoms';
 import LessonCard from '../LessonCard';
 import './LessonsDisplay.scss';
+import { setLessons, setLoading, setError, clearError } from '@slices/lessonsSlice';
+import { lessonService } from '@services';
 
 const LessonsDisplay = () => {
-  const { 
-    lessons, 
-    isLoading, 
-    error, 
-    fetchLessons, 
-    clearError 
-  } = useLessons();
+  const dispatch = useDispatch();
+  const lessons = useSelector(state => state.lessons.lessons);
+  const isLoading = useSelector(state => state.lessons.isLoading);
+  const error = useSelector(state => state.lessons.error);
+
+  const fetchLessons = async () => {
+    dispatch(setLoading(true));
+    dispatch(setError(null));
+    try {
+      const response = await lessonService.getLessons();
+      dispatch(setLessons(response));
+    } catch (err) {
+      dispatch(setError(err.message || 'Erreur lors du chargement des leçons'));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
 
   useEffect(() => {
     fetchLessons();
+    // eslint-disable-next-line
   }, []);
 
   const handleRefresh = () => {
-    clearError();
+    dispatch(clearError());
     fetchLessons();
   };
 
@@ -60,18 +73,9 @@ const LessonsDisplay = () => {
           <p>Aucune leçon disponible pour le moment.</p>
         </div>
       ) : (
-        <div className="lessons-grid">
-          {lessons.map((lesson) => (
-            <LessonCard 
-              key={lesson.id}
-              title={lesson.title}
-              description={lesson.description}
-              duration={lesson.duration ? `${lesson.duration}min` : undefined}
-              level={lesson.level}
-              image={lesson.image}
-              isCompleted={lesson.isCompleted}
-              variant="default"
-            />
+        <div className="lessons-list">
+          {lessons.map(lesson => (
+            <LessonCard key={lesson.id} {...lesson} />
           ))}
         </div>
       )}

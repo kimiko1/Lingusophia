@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@contexts/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faThLarge, 
@@ -12,7 +12,6 @@ import {
   faBookmark,
   faStar,
   faChevronDown,
-  faCog,
   faSignOutAlt,
   faSignInAlt,
   faUserPlus,
@@ -36,10 +35,12 @@ const Navbar = ({
   const { t } = useTranslation('common');
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // Get auth state from AuthContext
-  const { isAuthenticated, user, isLoading, logout } = useAuth();
-  
+  const dispatch = useDispatch();
+  // Get auth state from Redux
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const user = useSelector(state => state.auth.user);
+  const isLoading = useSelector(state => state.auth.isLoading);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
@@ -62,9 +63,9 @@ const Navbar = ({
     { icon: faUser, label: t('navigation.profile'), href: "/profile" },
   ];
 
-  // Add admin item if user is admin
-  if (user?.role === 'admin') {
-    profileItems.push({ icon: faUserShield, label: "Admin", href: "/admin" });
+  // Add admin item if user is admin or teacher
+  if (user?.role === 'Admin' || user?.role === 'Teacher') {
+    profileItems.push({ icon: faUserShield, label: t("navigation.admin"), href: "/admin" });
   }
 
   // Check if a link is active
@@ -87,16 +88,6 @@ const Navbar = ({
   const closeAll = () => {
     setIsMenuOpen(false);
     setIsProfileOpen(false);
-  };
-
-  const handleLogout = async () => {
-    try {
-      navigate('/logout');
-    } catch (error) {
-      console.error('Erreur de déconnexion:', error);
-      // Forcer la déconnexion côté UI même si l'API échoue
-      navigate('/logout');
-    }
   };
 
   // Close menus when clicking outside
@@ -176,13 +167,13 @@ const Navbar = ({
       </div>
 
       <div className="navbar__center">
-      <Link to="/" className="navbar__center">
-        <Logo 
-          size="large" 
-          variant="gradient"
-          clickable
-        />
-      </Link>
+        <Link to="/" className="navbar__logo" tabIndex={0} aria-label={t('aria.home')}>
+          <Logo 
+            size="large" 
+            variant="gradient"
+            clickable
+          />
+        </Link>
       </div>
 
       <div className="navbar__right">
@@ -216,7 +207,8 @@ const Navbar = ({
                   className={`navbar__profile-chevron ${isProfileOpen ? 'navbar__profile-chevron--open' : ''}`}
                 />
               </button>
-              <div className={`navbar__profile-dropdown ${isProfileOpen ? 'navbar__profile-dropdown--open' : ''}`}>
+              <div className={`navbar__profile-dropdown ${isProfileOpen ? 'navbar__profile-dropdown--open' : ''}`}
+                style={{ minWidth: window.innerWidth < 500 ? '180px' : '280px' }}>
                 <div className="navbar__profile-header">
                   <div className="navbar__profile-info">
                     <div className="navbar__profile-name">{user?.firstName} {user?.lastName}</div>
@@ -227,7 +219,7 @@ const Navbar = ({
                 <ul className="navbar__profile-menu">
                   {profileItems.map((item) => (
                     <li key={item.href}>
-                      <Link to={item.href} className="navbar__profile-link">
+                      <Link to={item.href} className="navbar__profile-link" tabIndex={0} aria-label={item.label}>
                         <FontAwesomeIcon icon={item.icon} />
                         <span>{item.label}</span>
                       </Link>
@@ -237,7 +229,9 @@ const Navbar = ({
                   <li>
                     <button 
                       className="navbar__profile-link navbar__profile-link--logout"
-                      onClick={handleLogout}
+                      onClick={() => navigate('/logout')}
+                      tabIndex={0}
+                      aria-label={t('navigation.logout')}
                     >
                       <FontAwesomeIcon icon={faSignOutAlt} />
                       <span>{t('navigation.logout')}</span>
@@ -290,7 +284,7 @@ const Navbar = ({
 
       {/* Overlay for menu/profile */}
       {(isMenuOpen || isProfileOpen) && (
-        <div className="navbar__overlay" onClick={closeAll}></div>
+        <div className="navbar__overlay" onClick={closeAll} tabIndex={0} aria-label={t('aria.closeMenu')}></div>
       )}
     </header>
   );

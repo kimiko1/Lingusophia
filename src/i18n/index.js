@@ -80,7 +80,7 @@ i18n
     
     // Gestion des clés manquantes
     saveMissing: import.meta.env.VITE_NODE_ENV === 'development',
-    missingKeyHandler: (lng, ns, key, fallbackValue) => {
+    missingKeyHandler: (lng, ns, key) => {
       if (import.meta.env.VITE_NODE_ENV === 'development') {
         console.warn(`Missing translation: ${lng}.${ns}.${key}`);
       }

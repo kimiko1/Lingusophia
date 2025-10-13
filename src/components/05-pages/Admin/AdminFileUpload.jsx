@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const AdminFileUpload = () => {
   const [file, setFile] = useState(null);
@@ -44,7 +44,7 @@ const AdminFileUpload = () => {
         setStatus('Erreur lors de l\'upload.');
       }
     } catch (err) {
-      setStatus('Erreur réseau.');
+      setStatus('Erreur réseau. (' + err.message + ')');
     }
   };
 

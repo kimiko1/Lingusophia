@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '@contexts/AuthContext';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { lessonService } from '@services';
 import { Title, Button } from '@atoms';
 import LessonCard from '@molecules/LessonCard';
@@ -7,7 +7,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import './Bookings.scss';
 
 const Bookings = () => {
-  const { user } = useAuth();
+  const user = useSelector(state => state.auth.user);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -19,9 +19,10 @@ const Bookings = () => {
       setError(null);
       try {
         const res = await lessonService.getLessonsByUser(user.id);
+
         setBookings(res?.data?.data?.lessons || []);
       } catch (err) {
-        setError('Erreur lors du chargement de vos réservations');
+        setError('Erreur lors du chargement de vos réservations. (' + err.message + ')');
       } finally {
         setLoading(false);
       }
@@ -38,48 +39,24 @@ const Bookings = () => {
     l => l.bookingStatus === 'Cancelled'
   );
 
-  const stripePublicKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
   const handlePay = async (lesson) => {
-    try {
-      const stripe = await loadStripe(stripePublicKey);
+  try {
+    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+    
+    const { sessionId } = await lessonService.createPaymentIntent({
+      products: [{
+        name: lesson.title,
+        price: lesson.price,
+        quantity: 1
+      }],
+      bookingId: lesson.bookingId,
+    }, user.token);
 
-      const body = {
-        products: [
-          {
-            name: lesson.title,
-            description: lesson.description,
-            price: Number(lesson.price),
-            quantity: 1
-          }
-        ],
-        bookingId: lesson.bookingId,
-      };
-      
-      const headers = {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-      };
-
-      const response = await lessonService.createPaymentIntent(body, headers);
-      
-      const sessionId = response?.id || response?.sessionId || response?.data?.id || response?.data?.sessionId;
-      
-      if (!sessionId) {
-        throw new Error('Session ID manquant dans la réponse');
-      }
-
-      const result = await stripe.redirectToCheckout({
-        sessionId: sessionId,
-      });
-
-      if (result.error) {
-        throw new Error(result.error.message);
-      }
-    } catch (error) {
-      console.error('Erreur lors du paiement:', error);
-      setError('Erreur lors de l\'initialisation du paiement: ' + error.message);
-    }
-  };
+    await stripe.redirectToCheckout({ sessionId });
+  } catch (err) {
+    setError(err.message);
+  }
+};
 
   return (
     <div className="bookings-page">

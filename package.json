@@ -1,10 +1,10 @@
 {
-  "name": "Yourpersonaltutor",
+  "name": "Vocaify",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview --port 5173"
@@ -13,6 +13,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@reduxjs/toolkit": "^2.9.0",
     "@stripe/stripe-js": "^7.4.0",
     "axios": "^1.7.9",
     "framer-motion": "^12.23.3",
@@ -24,6 +25,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-i18next": "^15.6.0",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.0.2",
     "sass": "^1.86.3"
   },

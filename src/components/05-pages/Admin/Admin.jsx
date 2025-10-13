@@ -1,19 +1,13 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@contexts/AuthContext';
+import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faUsers, 
-  faBookOpen, 
-  faChalkboardTeacher, 
   faCalendarCheck,
-  faPlus,
   faEdit,
   faTrash,
   faEye,
-  faSearch,
-  faFilter,
 } from '@fortawesome/free-solid-svg-icons';
 import { Title, Button, Input, Card, Modal } from '@atoms';
 
@@ -39,8 +33,8 @@ const Admin = ({
 }) => {
   const { t } = useTranslation(['pages', 'common']);
   
-  // Récupérer l'utilisateur authentifié via le context Auth
-  const { user } = useAuth();
+  // Récupérer l'utilisateur authentifié via Redux
+  const user = useSelector(state => state.auth.user);
 
   // Déterminer les droits
   const isAdmin = user?.role === 'Admin';
@@ -63,9 +57,6 @@ const Admin = ({
   const [currentItem, setCurrentItem] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  
-  // Utiliser l'utilisateur authentifié au lieu d'une simulation
-  const currentUser = user;
   
   // Vérifier les permissions
   const canAccessDashboard = isAdmin;
@@ -144,15 +135,6 @@ const Admin = ({
     { key: 'actions', label: t('pages:admin.table.actions'), sortable: false }
   ];
 
-  // Colonnes pour la table des leçons
-  const lessonColumns = [
-    { key: 'title', label: t('pages:admin.table.title'), sortable: true },
-    { key: 'language', label: t('pages:admin.table.language'), sortable: true },
-    { key: 'level', label: t('pages:admin.table.level'), sortable: true },
-    { key: 'price', label: t('pages:admin.table.price'), sortable: true },
-    { key: 'actions', label: t('pages:admin.table.actions'), sortable: false }
-  ];
-
   // Colonnes pour la table des réservations
   const bookingColumns = [
     { key: 'studentName', label: t('pages:admin.table.student'), sortable: true },
@@ -168,11 +150,18 @@ const Admin = ({
   const getFilteredBookings = () => {
     // bookings peut être un tableau ou un objet avec .data
     let bookingsArray = Array.isArray(bookings) ? bookings : bookings?.data || [];
+    
     if (isAdmin) {
       return bookingsArray;
     } else if (isTeacher) {
-      // Filtre par teacher_id
-      return bookingsArray.filter(booking => booking.teacher_id === currentUser?.id);
+      // Utiliser user.id directement (pas user.user.id)
+      const teacherId = user?.id;
+      
+      const filteredBookings = bookingsArray.filter(booking => {
+        return booking.teacher_id === teacherId;
+      });
+      
+      return filteredBookings;
     }
     return [];
   };
@@ -226,14 +215,11 @@ const Admin = ({
 
   // Sauvegarder une leçon (création ou modification) via API
   const handleSaveLesson = async (lessonData) => {
-    console.log('handleSaveLesson appelé avec:', lessonData); // ← AJOUTE CECI
     setIsLoading(true);
     try {
       if (modalType === 'add-lesson') {
-        console.log('Appel à createLesson...'); // ← AJOUTE CECI
         await lessonService.createLesson(lessonData);
       } else if (modalType === 'edit-lesson') {
-        console.log('Appel à updateLesson...'); // ← AJOUTE CECI
         await lessonService.updateLesson(lessonData.id, lessonData);
       }
       // Recharge toutes les données admin après action

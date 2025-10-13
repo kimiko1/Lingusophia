@@ -1,16 +1,19 @@
-import { useAuth } from '@contexts/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
 import { UserGreeting, Button, Card } from '@atoms';
 import './UserProfile.scss';
+import { logoutUser } from '@slices/authSlice';
 
 const UserProfile = () => {
-  const { user, logout, isAuthenticated } = useAuth();
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
   if (!isAuthenticated || !user) {
     return null;
   }
 
   const handleLogout = async () => {
-    await logout();
+    dispatch(logoutUser());
   };
 
   return (
