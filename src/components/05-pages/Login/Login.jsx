@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, Input, Card, Title } from '@atoms';
 import './Login.scss';
-import { setUser, setLoading, setAuthenticated } from '@slices/authSlice';
-import { authService } from '@services';
+import { loginUser, clearError } from '@slices/authSlice';
 
 /**
  * Login - Page de connexion
@@ -16,7 +15,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const user = useSelector(state => state.auth.user);
-  const isLoading = useSelector(state => state.auth.isLoading);
+  const authError = useSelector(state => state.auth.error);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -26,6 +25,11 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Réinitialiser les erreurs au montage du composant
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
 
   // Redirection si déjà connecté
   useEffect(() => {
@@ -60,21 +64,20 @@ const Login = () => {
       return;
     }
 
-    dispatch(setLoading(true));
+    dispatch(clearError());
     try {
-      const userData = await authService.login(formData.email, formData.password);
-      if (userData) {
-        dispatch(setUser(userData));
-        dispatch(setAuthenticated(true));
-        navigate(userData.role === 'Admin' ? '/admin' : '/');
-      } else {
-        setError('Identifiants invalides');
+      const result = await dispatch(loginUser({ 
+        email: formData.email, 
+        password: formData.password 
+      })).unwrap();
+      
+      if (result) {
+        navigate(result.role === 'Admin' ? '/admin' : '/');
       }
-    } catch (err) {
-      setError('Erreur lors de la connexion');
+    } catch (error) {
+      setError(error || 'Erreur lors de la connexion');
     } finally {
       setIsSubmitting(false);
-      dispatch(setLoading(false));
     }
   };
 
@@ -86,7 +89,7 @@ const Login = () => {
           <div className="login-subtitle">{t('pages:login.subtitle', 'Accédez à votre espace personnel')}</div>
         </div>
         <form onSubmit={handleSubmit} className="login-form" autoComplete="on">
-          {error && <div className="login-error" role="alert">{error}</div>}
+          {(error || authError) && <div className="login-error" role="alert">{error || authError}</div>}
           <div className="form-group">
             <Input
               type="email"
@@ -120,8 +123,8 @@ const Login = () => {
             </button>
           </div>
           <div className="login-actions">
-            <Button type="submit" className="login-button" disabled={isSubmitting || isLoading}>
-              {isSubmitting || isLoading ? t('common:loading', 'Chargement...') : t('pages:login.button', 'Se connecter')}
+            <Button type="submit" className="login-button" disabled={isSubmitting}>
+              {isSubmitting ? t('common:loading', 'Chargement...') : t('pages:login.button', 'Se connecter')}
             </Button>
           </div>
         </form>

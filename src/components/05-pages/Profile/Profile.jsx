@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { 
+  fetchUserProfile, 
+  updateUserProfile, 
+  uploadUserAvatar,
+  fetchUserStats,
+  clearError
+} from '@slices/authSlice';
+
 import { API_BASE_URL } from '@config/constants';
 import { 
   User, 
@@ -18,79 +26,52 @@ import {
 import './Profile.scss';
 const Profile = () => {
   const { t } = useTranslation();
-  const isLoading = useSelector(state => state.auth.isLoading);
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  
+  // Redux state
+  const { user, isLoading, error, stats } = useSelector(state => state.auth);
+  
+  // Local state
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
   const [formData, setFormData] = useState({});
-  const [profileLoading, setProfileLoading] = useState(true);
-  const [stats, setStats] = useState({
-    totalLessons: 0,
-    completedLessons: 0,
-    totalTime: 0,
-    streak: 0
-  });
 
-  // Fonction pour récupérer le profil depuis l'API
-  const fetchUserProfile = async () => {
-    try {
-      setProfileLoading(true);
-      const response = await fetch(`${API_BASE_URL}/api/users/profile`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Profile API response:', result);
-        // Le backend renvoie les données dans result.data.user
-        const userData = result.data?.user || result.user || result.data || result;
-        console.log('User data extracted:', userData);
-        setUser(userData);
-        setFormData(userData);
-      } else {
-        console.error('Failed to fetch profile:', response.status);
-      }
-    } catch (error) {
-      console.error('Error fetching profile:', error);
-    } finally {
-      setProfileLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserProfile();
-    console.log('Profile component mounted', fetchUserProfile);
-  }, []);
-
+  // Initialiser le formulaire avec les données utilisateur
   useEffect(() => {
     if (user) {
-      // const fetchStats = async () => {
-      //   try {
-      //     if (!user?.id) return;
-          
-      //     const response = await fetch(`${API_BASE_URL}/api/users/stats`, {
-      //       credentials: 'include'
-      //     });
-          
-      //     if (response.ok) {
-      //       const statsData = await response.json();
-      //       setStats(statsData.data || {});
-      //     }
-      //   } catch (error) {
-      //     console.error('Error fetching stats:', error);
-      //   }
-      // };
-      
-      // fetchStats();
+      setFormData({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        phone: user.phone || '',
+        bio: user.bio || '',
+        nativeLanguage: user.nativeLanguage || '',
+        currentLevel: user.currentLevel || 'Beginner',
+        timezone: user.timezone || '',
+        avatarUrl: user.avatarUrl || '',
+        dateOfBirth: user.dateOfBirth ? user.dateOfBirth.split('T')[0] : '',
+        email: user.email || '',
+        role: user.role || '',
+        status: user.status || ''
+      });
     }
   }, [user]);
 
-  // Afficher le loading pendant la vérification
-  if (isLoading || profileLoading) {
+  // Charger le profil seulement si on n'a pas d'utilisateur
+  useEffect(() => {
+    if (!user && !isLoading) {
+      dispatch(fetchUserProfile());
+    }
+  }, [dispatch, user, isLoading]);
+
+  // Charger les statistiques
+  useEffect(() => {
+    if (user?.id && activeTab === 'stats') {
+      dispatch(fetchUserStats(user.id));
+    }
+  }, [dispatch, user?.id, activeTab]);
+
+  // Afficher le loading
+  if (isLoading) {
     return (
       <div className="profile-loading">
         <div className="loading-spinner"></div>
@@ -99,27 +80,31 @@ const Profile = () => {
     );
   }
 
+  // Afficher l'erreur si pas d'utilisateur
+  if (!user) {
+    return (
+      <div className="profile-error">
+        <p>Erreur : {error || 'Utilisateur non trouvé'}</p>
+        <button onClick={() => dispatch(fetchUserProfile())}>
+          Réessayer
+        </button>
+      </div>
+    );
+  }
 
-  // Gère la correspondance camelCase <-> snake_case pour le formulaire
+  // Gestion des changements de formulaire
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // Mappe les noms de champs snake_case vers camelCase dans le state
-    let key = name;
-    if (key === 'first_name') key = 'firstName';
-    if (key === 'last_name') key = 'lastName';
-    if (key === 'native_language') key = 'nativeLanguage';
-    if (key === 'current_level') key = 'currentLevel';
-    if (key === 'avatar_url') key = 'avatarUrl';
-    if (key === 'date_of_birth') key = 'dateOfBirth';
     setFormData(prev => ({
       ...prev,
-      [key]: value
+      [name]: value
     }));
   };
 
+  // Sauvegarder le profil
   const handleSaveProfile = async () => {
     try {
-      const apiData = {
+      const profileData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
         phone: formData.phone,
@@ -127,62 +112,61 @@ const Profile = () => {
         nativeLanguage: formData.nativeLanguage,
         currentLevel: formData.currentLevel,
         timezone: formData.timezone,
-        avatarUrl: formData.avatarUrl,
         dateOfBirth: formData.dateOfBirth,
       };
 
-      const userId = user?.id || user?._id;
-      if (!userId) {
-        console.error('User ID is missing');
-        return;
+      // N'inclure avatarUrl que si elle existe et n'est pas vide
+      if (formData.avatarUrl && formData.avatarUrl.trim() !== '') {
+        profileData.avatarUrl = formData.avatarUrl;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/users/profile`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(apiData)
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Profile update response:', result);
-        setIsEditing(false);
-        // Recharger le profil pour avoir les dernières données
-        await fetchUserProfile();
-      } else {
-        console.error('Error updating profile:', response.status);
-      }
+      await dispatch(updateUserProfile(profileData)).unwrap();
+      setIsEditing(false);
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error('Erreur lors de la mise à jour du profil:', error);
     }
   };
 
+  // Upload d'avatar
   const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const uploadFormData = new FormData();
-      uploadFormData.append('avatar', file);
-      
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/users/avatar`, {
-          method: 'POST',
-          credentials: 'include',
-          body: uploadFormData
-        });
+    if (!file) return;
 
-        if (response.ok) {
-          const result = await response.json();
-          setFormData(prev => ({
-            ...prev,
-            avatar_url: result.data.avatar_url
-          }));
-        }
-      } catch (error) {
-        console.error('Error uploading avatar:', error);
-      }
+    const uploadFormData = new FormData();
+    uploadFormData.append('avatar', file);
+    
+    try {
+      const result = await dispatch(uploadUserAvatar(uploadFormData)).unwrap();
+      
+      // Mettre à jour le formData local aussi
+      setFormData(prev => ({
+        ...prev,
+        avatarUrl: result.data?.avatar_url || result.avatar_url
+      }));
+    } catch (error) {
+      console.error('Erreur lors de l\'upload de l\'avatar:', error);
+    }
+  };
+
+  // Annuler l'édition
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    // Remettre les données originales
+    if (user) {
+      setFormData({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        phone: user.phone || '',
+        bio: user.bio || '',
+        nativeLanguage: user.nativeLanguage || '',
+        currentLevel: user.currentLevel || 'Beginner',
+        timezone: user.timezone || '',
+        avatarUrl: user.avatarUrl || '',
+        dateOfBirth: user.dateOfBirth ? user.dateOfBirth.split('T')[0] : '',
+        email: user.email || '',
+        role: user.role || '',
+        status: user.status || ''
+      });
     }
   };
 
@@ -195,36 +179,73 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
+      {/* Affichage des erreurs */}
+      {error && (
+        <div className="profile-error-banner">
+          <p>Erreur : {error}</p>
+          <button onClick={() => dispatch(clearError())}>×</button>
+        </div>
+      )}
+      
       <div className="profile-header">
         <div className="profile-banner">
           <div className="profile-avatar-section">
             <div className="avatar-container">
-              <img 
-                src={`${API_BASE_URL}${formData.avatarUrl || formData.avatar_url || '/default-avatar.png'}`} 
-                alt={formData.firstName || formData.first_name || 'User'}
-                className="profile-avatar"
-                loading="lazy"
-              />
-              <label htmlFor="avatar-upload" className="avatar-upload-btn">
-                <Camera size={20} />
-                <input
-                  id="avatar-upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleAvatarChange}
-                  style={{ display: 'none' }}
+              {formData.avatarUrl ? (
+                <img 
+                  src={`${API_BASE_URL}${formData.avatarUrl}`} 
+                  alt={formData.firstName || 'User'}
+                  className="profile-avatar"
+                  loading="lazy"
+                  onError={(e) => {
+                    // En cas d'erreur, masquer l'image et afficher les initiales
+                    e.target.style.display = 'none';
+                    e.target.nextElementSibling.style.display = 'flex';
+                  }}
                 />
-              </label>
+              ) : null}
+              <div 
+                className="profile-avatar-placeholder"
+                style={{
+                  display: formData.avatarUrl ? 'none' : 'flex',
+                  width: '100px',
+                  height: '100px',
+                  borderRadius: '50%',
+                  backgroundColor: 'white',
+                  border: '2px solid #e0e0e0',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '36px',
+                  fontWeight: 'bold',
+                  color: '#666',
+                  textTransform: 'uppercase'
+                }}
+              >
+                {formData.firstName?.charAt(0) || ''}
+                {formData.lastName?.charAt(0) || ''}
+              </div>
+              {isEditing && (
+                <label htmlFor="avatar-upload" className="avatar-upload-btn">
+                  <Camera size={20} />
+                  <input
+                    id="avatar-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarChange}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+              )}
             </div>
             <div className="profile-info">
               <h1 className="profile-name">
-                {formData.firstName || formData.first_name} {formData.lastName || formData.last_name}
+                {formData.firstName} {formData.lastName}
               </h1>
-              <p className="profile-email">{formData.email || user?.email}</p>
+              <p className="profile-email">{formData.email}</p>
               <div className="profile-badges">
-                <span className="badge role-badge">{formData.role || user?.role}</span>
-                <span className={`badge status-badge ${(formData.status || user?.status)?.toLowerCase()}`}>
-                  {formData.status || user?.status}
+                <span className="badge role-badge">{formData.role}</span>
+                <span className={`badge status-badge ${formData.status?.toLowerCase()}`}>
+                  {formData.status}
                 </span>
               </div>
             </div>
@@ -234,6 +255,7 @@ const Profile = () => {
               <button 
                 className="btn btn-primary"
                 onClick={() => setIsEditing(true)}
+                disabled={isLoading}
               >
                 <Edit3 size={20} />
                 {t('profile.edit')}
@@ -243,16 +265,15 @@ const Profile = () => {
                 <button 
                   className="btn btn-success"
                   onClick={handleSaveProfile}
+                  disabled={isLoading}
                 >
                   <Save size={20} />
-                  {t('common.save')}
+                  {isLoading ? t('common.saving') : t('common.save')}
                 </button>
                 <button 
                   className="btn btn-secondary"
-                  onClick={() => {
-                    setIsEditing(false);
-                    setFormData(user);
-                  }}
+                  onClick={handleCancelEdit}
+                  disabled={isLoading}
                 >
                   <X size={20} />
                   {t('common.cancel')}
@@ -328,13 +349,13 @@ const ProfileTab = ({ user, formData, editing, onInputChange, t }) => (
           {editing ? (
             <input
               type="text"
-              name="first_name"
+              name="firstName"
               value={formData.firstName || ''}
               onChange={onInputChange}
               className="form-input"
             />
           ) : (
-            <p className="form-value">{formData.firstName || formData.first_name || '-'}</p>
+            <p className="form-value">{formData.firstName || '-'}</p>
           )}
         </div>
         
@@ -343,13 +364,13 @@ const ProfileTab = ({ user, formData, editing, onInputChange, t }) => (
           {editing ? (
             <input
               type="text"
-              name="last_name"
+              name="lastName"
               value={formData.lastName || ''}
               onChange={onInputChange}
               className="form-input"
             />
           ) : (
-            <p className="form-value">{formData.lastName || formData.last_name || '-'}</p>
+            <p className="form-value">{formData.lastName || '-'}</p>
           )}
         </div>
         
@@ -373,7 +394,7 @@ const ProfileTab = ({ user, formData, editing, onInputChange, t }) => (
           {editing ? (
             <input
               type="date"
-              name="date_of_birth"
+              name="dateOfBirth"
               value={formData.dateOfBirth || ''}
               onChange={onInputChange}
               className="form-input"
@@ -415,7 +436,7 @@ const PreferencesTab = ({ user, formData, editing, onInputChange, t }) => (
           <label>{t('profile.nativeLanguage')}</label>
           {editing ? (
             <select
-              name="native_language"
+              name="nativeLanguage"
               value={formData.nativeLanguage || ''}
               onChange={onInputChange}
               className="form-select"
@@ -426,7 +447,7 @@ const PreferencesTab = ({ user, formData, editing, onInputChange, t }) => (
               <option value="Chinese">中文</option>
             </select>
           ) : (
-            <p className="form-value">{formData.nativeLanguage || formData.native_language || '-'}</p>
+            <p className="form-value">{formData.nativeLanguage || '-'}</p>
           )}
         </div>
         
@@ -434,7 +455,7 @@ const PreferencesTab = ({ user, formData, editing, onInputChange, t }) => (
           <label>{t('profile.currentLevel')}</label>
           {editing ? (
             <select
-              name="current_level"
+              name="currentLevel"
               value={formData.currentLevel || ''}
               onChange={onInputChange}
               className="form-select"
@@ -444,7 +465,7 @@ const PreferencesTab = ({ user, formData, editing, onInputChange, t }) => (
               <option value="Advanced">{t('levels.advanced')}</option>
             </select>
           ) : (
-            <p className="form-value">{formData.currentLevel || formData.current_level || '-'}</p>
+            <p className="form-value">{formData.currentLevel || '-'}</p>
           )}
         </div>
         

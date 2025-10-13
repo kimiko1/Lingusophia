@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './Logout.scss';
-import { logout, setLoading, setAuthenticated, setUser } from '@slices/authSlice';
-import { authService } from '@services';
+import { logoutUser } from '@slices/authSlice';
 
 const Logout = () => {
   const dispatch = useDispatch();
@@ -21,18 +20,12 @@ const Logout = () => {
 
   const handleLogout = async () => {
     setStatus('loading');
-    dispatch(setLoading(true));
     try {
-      await authService.logout();
-      dispatch(logout());
+      await dispatch(logoutUser()).unwrap();
       setStatus('success');
-      dispatch(setLoading(false));
-      dispatch(setAuthenticated(false));
-      dispatch(setUser(null));
       navigate('/login');
     } catch (e) {
       setStatus(`error (${e.message})`);
-      dispatch(setLoading(false));
     }
   };
 
@@ -109,7 +102,7 @@ const Logout = () => {
           )}
         </div>
         <div className="logout-footer">
-          <small>Merci d'avoir utilisé Vocaify !</small>
+          <small>Merci d&apos;avoir utilisé Vocaify !</small>
         </div>
       </div>
     </div>

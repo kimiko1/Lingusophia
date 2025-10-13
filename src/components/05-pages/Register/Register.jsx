@@ -4,8 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Input, Card, Title } from "@atoms";
 import "./Register.scss";
-import { setUser, setLoading, setAuthenticated, setError, clearError } from '@slices/authSlice';
-import { authService } from '@services';
+import { registerUser, clearError } from '@slices/authSlice';
 
 /**
  * Register - Page d'inscription
@@ -14,7 +13,6 @@ const Register = () => {
   const { t } = useTranslation(["common", "pages"]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.auth.isLoading);
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const user = useSelector(state => state.auth.user);
   const error = useSelector(state => state.auth.error);
@@ -31,6 +29,12 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Réinitialiser les erreurs au montage du composant
+  useEffect(() => {
+    dispatch(clearError());
+  }, [dispatch]);
 
   // Redirection si déjà connecté
   useEffect(() => {
@@ -97,22 +101,19 @@ const Register = () => {
     if (!validateForm()) {
       return;
     }
-    dispatch(setLoading(true));
+    
+    setIsSubmitting(true);
     try {
       const { confirmPassword, ...registrationData } = formData;
-      const userData = await authService.register(registrationData);
-      if (userData) {
-        dispatch(setUser(userData));
-        dispatch(setAuthenticated(true));
-        navigate(userData.role === "admin" ? "/admin" : "/");
-      } else {
-        dispatch(setError("Erreur lors de l'inscription"));
+      const result = await dispatch(registerUser(registrationData)).unwrap();
+      if (result) {
+        navigate(result.role === "admin" ? "/admin" : "/");
       }
-    } catch (err) {
-      dispatch(setError(err.message || "Erreur serveur"));
-      console.error("Erreur d'inscription:", err);
+    } catch (error) {
+      console.error("Erreur d'inscription:", error);
+      // L'erreur est déjà gérée par le thunk et mise dans le state Redux
     } finally {
-      dispatch(setLoading(false));
+      setIsSubmitting(false);
     }
   };
 
@@ -246,9 +247,9 @@ const Register = () => {
               type="submit"
               variant="primary"
               className="register-button"
-              disabled={isLoading}
+              disabled={isSubmitting}
             >
-              {isLoading
+              {isSubmitting
                 ? t("common:loading")
                 : t("pages:register.registerButton")}
             </Button>

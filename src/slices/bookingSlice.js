@@ -6,7 +6,9 @@ const getInitialState = () => {
     if (saved) {
       return JSON.parse(saved);
     }
-  } catch (e) {}
+  } catch (e) {
+    console.error('Failed to load booking state from sessionStorage', e);
+  }
   return {
     selectedDate: null,
     selectedTime: '',
@@ -55,7 +57,9 @@ const bookingSlice = createSlice({
 function saveToSession(state) {
   try {
     sessionStorage.setItem('booking', JSON.stringify(state));
-  } catch (e) {}
+  } catch (e) {
+    console.error('Failed to save booking state to sessionStorage', e);
+  }
 }
 
 export const { setSelectedDate, setSelectedTime, setSelectedLesson, setSelectedTeacher, resetBooking } = bookingSlice.actions;

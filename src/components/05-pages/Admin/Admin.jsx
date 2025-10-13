@@ -135,15 +135,6 @@ const Admin = ({
     { key: 'actions', label: t('pages:admin.table.actions'), sortable: false }
   ];
 
-  // Colonnes pour la table des leçons
-  const lessonColumns = [
-    { key: 'title', label: t('pages:admin.table.title'), sortable: true },
-    { key: 'language', label: t('pages:admin.table.language'), sortable: true },
-    { key: 'level', label: t('pages:admin.table.level'), sortable: true },
-    { key: 'price', label: t('pages:admin.table.price'), sortable: true },
-    { key: 'actions', label: t('pages:admin.table.actions'), sortable: false }
-  ];
-
   // Colonnes pour la table des réservations
   const bookingColumns = [
     { key: 'studentName', label: t('pages:admin.table.student'), sortable: true },
@@ -159,11 +150,18 @@ const Admin = ({
   const getFilteredBookings = () => {
     // bookings peut être un tableau ou un objet avec .data
     let bookingsArray = Array.isArray(bookings) ? bookings : bookings?.data || [];
+    
     if (isAdmin) {
       return bookingsArray;
     } else if (isTeacher) {
-      // Filtre par teacher_id
-  return bookingsArray.filter(booking => booking.teacher_id === user?.user?.id);
+      // Utiliser user.id directement (pas user.user.id)
+      const teacherId = user?.id;
+      
+      const filteredBookings = bookingsArray.filter(booking => {
+        return booking.teacher_id === teacherId;
+      });
+      
+      return filteredBookings;
     }
     return [];
   };

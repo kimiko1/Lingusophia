@@ -1,8 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { UserGreeting, Button, Card } from '@atoms';
 import './UserProfile.scss';
-import { logout } from '@slices/authSlice';
-import { authService } from '@services';
+import { logoutUser } from '@slices/authSlice';
 
 const UserProfile = () => {
   const dispatch = useDispatch();
@@ -14,8 +13,7 @@ const UserProfile = () => {
   }
 
   const handleLogout = async () => {
-    await authService.logout();
-    dispatch(logout());
+    dispatch(logoutUser());
   };
 
   return (
